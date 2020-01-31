@@ -1,0 +1,31 @@
+<h1 onclick="location.reload()">Flui</h1>
+<style>
+    input{
+        font-family: 'Montserrat', sans-serif;
+        border: 2px solid white;
+        background-color: #212121;
+        color: white;
+        padding: 8px 16px;
+        font-size: 16px;
+        border-radius: 50px;
+        text-align:center;
+        margin-bottom:20%;
+        font-style: italic;
+    }
+</style>
+<div style="float:left;margin-left:15%;">
+    <div id="left" style="text-align:center">
+        <div><img onclick='$("#center").load("/static/html/InfluencerLogin.html");'src="/static/images/Minimal_Camera.png"></img></div>
+        <i style="font-size: 40px;">Influencer</i>
+    </div>
+</div>
+    <div style="float:right;margin-right:15%;">
+        <div id="left" style="text-align:center">
+            <form style="text-align:center"action="/logininfluencer" method="post">
+                <input type="text" name="user" value="Username"><br>
+                <input type="text" name="pass" value="Password"><br>
+                <input style="cursor:pointer"type="submit" value="Login">
+            </form>
+        </div>
+    </div>
+</div>

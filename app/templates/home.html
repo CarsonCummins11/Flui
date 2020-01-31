@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+    h1{
+        font-family: 'Montserrat', sans-serif;
+        font-style: italic;
+        text-align:center;
+        font-size: 350%;
+        color: white;
+        background-color: #212121;
+        margin-top: 0;
+        cursor: pointer;
+    }
+    body{
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 100;
+        margin: auto;
+        color:white;
+        background-color: #212121;
+        background-image: linear-gradient(#FFF, #FFF);
+        background-size: 2px 100%;
+        background-repeat:repeat-y;
+        background-position: center center;
+        margin-top: 5;
+    }
+    .btn {
+        font-family: 'Montserrat', sans-serif;
+        border: 2px solid white;
+        background-color: #212121;
+        color: white;
+        padding: 8px 16px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 50px;
+    }
+    .new {
+        border-color: #FFF;
+        color: white;
+    }
+    i{
+        cursor: default;
+    }
+    .new:hover {
+        background-color: #FFF;
+        color: white;
+    }
+    img{
+        cursor: pointer;
+    }
+    </style>
+</head>
+<body id=center>
+    <h1 onclick="location.reload()">Flui</h1>
+    <div style="float:left;margin-left:15%;">
+        <div id="left" style="text-align:center">
+            <div><img onclick='$("#center").load("/static/html/InfluencerLogin.html");'src="/static/images/Minimal_Camera.png"></img></div>
+            <i style="font-size: 40px;">Influencer</i>
+            <div><button class="btn new" onclick='$("#center").load("/static/html/NewInfluencer.html");'>New Profile</button></div>
+        </div>
+    </div>
+    <div style="float:right;margin-right:15%;">
+        <div id="right" style="text-align: center;">
+            <div><img onclick='$("#center").load("/static/html/AdvertiserLogin.html");' src="/static/images/Minimal_Graph.png"></img></div>
+            <i style="font-size: 40px;">Advertiser</i>
+            <div><button class="btn new" onclick='$("#center").load("/static/html/NewAdvertiser.html");'>New Profile</button></div>
+        </div>
+    </div>
+</body>
+</html>

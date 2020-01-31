@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <style>
+        body{
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 100;
+            color:#707070;
+            background-color: white;
+            font-size: 5vw;
+            text-align:center;
+            overflow-x: hidden;
+        }
+        h1{
+            font-family: 'Montserrat', sans-serif;
+            color:white;
+            font-style:italic;
+            text-align:left;
+            background:#212121;
+            font-size: 70px;
+            margin-top: -10px;
+            margin-right:-10px;
+            margin-left:-10px;
+            margin-bottom:0;
+            padding: -5px;
+            font-weight:100;
+            text-align: center;
+            overflow-x: hidden;
+        }
+        input{
+            font-family: 'Montserrat', sans-serif;
+            border: 2px solid white;
+            background-color: white;
+            color: #707070;
+            padding: 8px 16px;
+            font-size: 16px;
+            border-radius: 50px;
+            text-align:left;
+            font-style: italic;
+            float:center;
+            margin-left: -126px;
+    
+        }
+        ::placeholder {
+            color: #DADADA;
+            opacity: 1;
+        }
+        .searcharea{
+            text-align:center;
+            margin:auto;
+        }
+        </style>
+    </head>
+    <body>
+        <h1>
+        <span style="cursor:pointer;float:left" onclick="window.location.href = '/'">Flui</span>
+        <input id="search" placeholder='Search' type=text>
+        </h1>
+        <div id="searcharea" class="searcharea"></div>
+    </body>
+<script>
+function search(term){
+    $.ajax({
+        type: 'POST',
+        url: '/influencersearch',
+        data: JSON.stringify({ 'term' : term }),
+        contentType: 'application/json',
+        success: function (data) {
+            toadd=''
+            for (var key of Object.keys(data)) {
+                toadd+=data[key];            
+            }
+            $('#searcharea').html(toadd);
+        }   
+    });
+}
+$("#search").on("keydown", function (e) {
+    if (e.keyCode === 13) {  //checks whether the pressed key is "Enter"
+        search($("#search").val());
+    }
+});
+</script>
+</html>
