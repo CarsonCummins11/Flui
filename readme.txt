@@ -6,6 +6,11 @@ how to run:
 
 Code Overview:
 
+Diagram:
+ _______          _____________           _________
+|MongoDB| <----- |Python3/Flask| <------ |JS/JQuery|
+|_______| -----> |_____________| ------> |_________|
+
 Backend - 
     matcher.py starts the code by importing everything in the app folder into the python run environment. 
     __init__.py is the next thing run, it's run by the import in matcher.py. It does stuff like start the database connection, and just set up the website in general
