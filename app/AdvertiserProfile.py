@@ -1,6 +1,9 @@
 from jinja2 import Environment, BaseLoader
+#Creates a Jinja template from an advertiser profile object
+#'Loaders are responsible for loading templates from a resource such as the file system.'
+#This code uses the BaseLoader, which is the base class for every loader
 def create_from(profile):
-    template='''
+    template=''' #Jinja Template for Advertiser as a string
         <style>
     .nametext{
         font-family: 'Montserrat', sans-serif;
@@ -20,5 +23,5 @@ def create_from(profile):
         <div class='text'>{{profile.desc}}</div>
     </div>
     '''
-    rtemplate = Environment(loader=BaseLoader).from_string(template)
-    return rtemplate.render(profile=profile)
+    rtemplate = Environment(loader=BaseLoader).from_string(template) #Creates the Jinja template object for an advertiser from the string 'template'
+    return rtemplate.render(profile=profile) #Returns rendered template(as a unicode string)
