@@ -60,19 +60,20 @@
         </h1>
         <div id="searcharea" class="searcharea"></div>
     </body>
-<script>
+<script> //Hey shouldn't we not have these hard coded and have them linked to like influencer_search.js
+//Search function for influencers
 function search(term){
     $.ajax({
         type: 'POST',
         url: '/influencersearch',
-        data: JSON.stringify({ 'term' : term }),
+        data: JSON.stringify({ 'term' : term }), //String of the json object with the search term(s)
         contentType: 'application/json',
         success: function (data) {
             toadd=''
             for (var key of Object.keys(data)) {
                 toadd+=data[key];            
             }
-            $('#searcharea').html(toadd);
+            $('#searcharea').html(toadd); //Adds the array of results
         }   
     });
 }

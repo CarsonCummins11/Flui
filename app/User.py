@@ -14,6 +14,7 @@ def load_user(username): #returns a user object if the username is present
         return None
     return User(username=u['user'])
 
+#User class
 class User:
     def __init__(self,username):
         self.username=username

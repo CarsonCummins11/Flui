@@ -1,3 +1,7 @@
+<!--
+	Profile page for an advertiser
+-->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -169,15 +173,18 @@
     </form>
 </body>
 <script>
+	//Sizing code for emailtext and companytext
     $('#emailtext').autoresize({padding:0,minWidth:40})
     $('#companytext').autoresize({padding:0,minWidth:40})
     options = {padding:0,minWidth:40};
     options = $.extend({padding:0,minWidth:0,maxWidth:10000}, options||{});
-    $(window).on('resize',function(){
+    //Resize elements on window resize
+	$(window).on('resize',function(){
         $('#emailtext').css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$('#emailtext').textWidth() + options.padding)));
         $('#companytext').css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$('#companytext').textWidth() + options.padding)));
         
     });
+	//Log's keys pressed and sets the height of the text area when the user presses a key
     $("textarea").on('keyup',function(){
         $("textarea").height( $("textarea")[0].scrollHeight);
         console.log(key);
