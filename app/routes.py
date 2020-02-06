@@ -1,3 +1,5 @@
+#routes.py
+#routes html requests to python functions
 from flask import render_template,request, session,redirect
 from app import app,db,User, InfluencerProfile,AdvertiserProfile
 from werkzeug.security import generate_password_hash,check_password_hash

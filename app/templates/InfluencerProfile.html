@@ -1,3 +1,6 @@
+<!--
+	Profile for an Influencer
+-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,13 +90,14 @@
         $('#tc').html('<input onclick="resettwitter()" type="submit" value="Save Changes">')
         $('#twittertext').focus();
     }
+	//Submits tags for the influencer to be identified with
     function submitTags(){
         $.get( "/getinfluencertags", function( data ) {
             let tags = prompt('Search Tags',data)
             $.ajax({
                 type: 'POST',
                 url: '/submitinfluencertags',
-                data: JSON.stringify({ 'tags' : tags }),
+                data: JSON.stringify({ 'tags' : tags }), //Creates a string of a json object from submited tags
                 contentType: 'application/json',
             });
         });
@@ -226,6 +230,7 @@
     </form>
 </body>
 <script>
+	//Sizing code for emailtext, companytext, instatext, twittertext, youtubetext
     $('#emailtext').autoresize({padding:0,minWidth:40});
     $('#companytext').autoresize({padding:0,minWidth:40});
     $('#instatext').autoresize({padding:0,minWidth:40});
@@ -233,7 +238,8 @@
     $('#youtubetext').autoresize({padding:0,minWidth:40});
     options = {padding:0,minWidth:40};
     options = $.extend({padding:0,minWidth:0,maxWidth:10000}, options||{});
-    $(window).on('resize',function(){
+    //Resize text based on window size
+	$(window).on('resize',function(){
         $('#emailtext').css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$('#emailtext').textWidth() + options.padding)));
         $('#companytext').css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$('#companytext').textWidth() + options.padding)));
         $('#instatext').css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$('#instatext').textWidth() + options.padding)));
@@ -241,6 +247,7 @@
         $('#youtubetext').css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$('#youtubetext').textWidth() + options.padding)));
         
     });
+	//Changes text area on key released
     $("textarea").on('keyup',function(){
         $("textarea").height( $("textarea")[0].scrollHeight);
         console.log(key);
