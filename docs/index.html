@@ -20,6 +20,7 @@
         margin: auto;
         color:white;
         background-color: #212121;
+        cursor: default;
     
     }
     .table{
@@ -35,17 +36,21 @@
         padding-bottom: 30px;
         border-radius: 40px;
         margin: 2vw;
+        -webkit-user-select: none;       
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
     }
     .row{
         margin:auto;
         text-align: center;
     }
     .column:not(:focus){
-        -webkit-filter: blur(5px);
-        -moz-filter: blur(5px);
-        -o-filter: blur(5px);
-        -ms-filter: blur(5px);
-        filter: blur(5px);
+        -webkit-filter: blur(4px);
+        -moz-filter: blur(4px);
+        -o-filter: blur(4px);
+        -ms-filter: blur(4px);
+        filter: blur(4px);
     }
     .column:focus{
         outline:0;

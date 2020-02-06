@@ -8,8 +8,8 @@ from flask_login import current_user, login_user
 @app.route("/")
 def main(): #returns the home page on start
     return render_template('home.html')
-@app.route("/")
-def main(): #returns the about page
+@app.route("/about")
+def about(): #returns the about page
     return render_template('about.html')
 @app.route("/newinfluencer",methods=['POST'])
 def newinfluencer(): #Creates a new influencer with blank information from the request form
