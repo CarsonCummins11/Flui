@@ -6,6 +6,9 @@ from flask_login import current_user, login_user
 @app.route("/")
 def main(): #returns the home page on start
     return render_template('home.html')
+@app.route("/")
+def main(): #returns the about page
+    return render_template('about.html')
 @app.route("/newinfluencer",methods=['POST'])
 def newinfluencer(): #Creates a new influencer with blank information from the request form
     if db['influencers'].find_one({'user':request.form['user']}) is None and db['advertisers'].find_one({'user':request.form['user']}) is None:
