@@ -71,7 +71,7 @@
         <span style="cursor:pointer;float:left" onclick="window.location.href = '/'">Flui</span>
         <span class="proflabel">Group Advertisement</span>
         </h1>
-        <form style="text-align:center"action="/loginadvertiser" method="post">
+        <form name="request-form" style="text-align:center" action="/loginadvertiser" method="post"> <!-- Why is this sending form data to /loginadvertiser? I'm gonna make a /createrequest route in routes.py -->
             <input type="text" name="budget" placeholder="Budget" value=""><br>
             <input type="text" name="contact" placeholder="Contact" value=""><br>
             <label id="lab"for="file-upload" class="custom-file-upload">
@@ -80,12 +80,13 @@
             </label>
             <input id="file-upload"type="file" name="file"><br>
             <input type="text" name="note" placeholder="Notes" value=""><br>
-            <input style="cursor:pointer; background-color: white;"type="submit" value="Buy">
+			<input type="text" name="tags" placeholder="Tags" value=""><br> <!-- Need to make this a dropdown or search for tags system -->
+            <input style="cursor:pointer; background-color: white;" type="submit" value="Buy">
         </form>
     </body>
     <script>
     document.getElementById('file-upload').onchange = function() {
-        $('#lab').html("<img src='/static/images/file.png'style='width:4vw'>"+$('#file-upload').val());
+        $('#lab').html("<img src='/static/images/file.png'style='width:4vw'>"+$('#file-upload').val()); //Needs to possibly be video, img or any file
     };
     </script>
 </html>

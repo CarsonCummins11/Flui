@@ -2,6 +2,7 @@
 #routes html requests to python functions
 from flask import render_template,request, session,redirect
 from app import app,db,User, InfluencerProfile,AdvertiserProfile
+from request import Request
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user, login_user
 
@@ -128,6 +129,11 @@ def influencersearch(): #Creates an array of influencers that match a tag and re
     for k in results:
         ret[str(i)]=InfluencerProfile.create_from(k) #Adds influencers's rendered template to a list(something that can be outputed to a webpage)
     return ret if len(ret)>0 else 'No matches for that term :(' #Returns the results
+@app.route("/createrequest", methods=['POST'])
+def create_request(): #Creates a request object from a form submission
+	r = Request(budget=request.form['budget'], media=request.form['file'], description=request.form['note'], tags=request.form['tags'], contact=request.form['contact'], author=None) #change the form submission so the user object is appended
+	db[r.user.username].update('request': r) #update for multiple requests at once
+	return r.get_render_template()
 @app.route("/adwithgroup")
 def adwithgroup():
     return render_template('buygroup.html')
