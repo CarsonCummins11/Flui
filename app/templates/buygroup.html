@@ -24,7 +24,7 @@
         background:#212121;
         font-size: 70px;
         margin-top: -10px;
-        margin-right:10px;
+        margin-right:-10px;
         margin-left:-10px;
         margin-bottom: 0px;
         padding: -5px;
@@ -74,15 +74,18 @@
         <form style="text-align:center"action="/loginadvertiser" method="post">
             <input type="text" name="budget" placeholder="Budget" value=""><br>
             <input type="text" name="contact" placeholder="Contact" value=""><br>
-            <label id="lab"for="file-upload" class="custom-file-upload"><img src="/static/images/file.png">No File</label>
+            <label id="lab"for="file-upload" class="custom-file-upload">
+                <img src="/static/images/file.png" style="width:4vw">
+                No File
+            </label>
             <input id="file-upload"type="file" name="file"><br>
             <input type="text" name="note" placeholder="Notes" value=""><br>
-            <input style="cursor:pointer; background-color: white;"type="submit" value="Login">
+            <input style="cursor:pointer; background-color: white;"type="submit" value="Buy">
         </form>
     </body>
     <script>
     document.getElementById('file-upload').onchange = function() {
-        $('#lab').html("<img src='/static/images/file.png'>"+$('#file-upload').val());
+        $('#lab').html("<img src='/static/images/file.png'style='width:4vw'>"+$('#file-upload').val());
     };
     </script>
 </html>
