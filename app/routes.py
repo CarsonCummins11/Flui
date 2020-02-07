@@ -132,7 +132,7 @@ def influencersearch(): #Creates an array of influencers that match a tag and re
 @app.route("/createrequest", methods=['POST'])
 def create_request(): #Creates a request object from a form submission
 	r = Request(budget=request.form['budget'], media=request.form['file'], description=request.form['note'], tags=request.form['tags'], contact=request.form['contact'], author=None) #change the form submission so the user object is appended
-	db[r.user.username].update('request': r) #update for multiple requests at once
+	db[r.user.username].update('request': r) #update for multiple requests at once, this code will replace a request that already exists
 	return r.get_render_template()
 @app.route("/adwithgroup")
 def adwithgroup():
