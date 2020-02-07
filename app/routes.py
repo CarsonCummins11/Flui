@@ -84,7 +84,7 @@ def advertiserprofilechange(): #Changes the current user based on a request form
     return redirect('/advertiserprofile')
 @app.route("/influencerprofilechange",methods=['POST'])
 def influencerprofilechange(): #Changes the influencer based on a request form
-    db['influencer'].update({'user':current_user.username},{'$set':{"first":request.form['fname'],
+    db['influencers'].update({'user':current_user.username},{'$set':{"first":request.form['fname'],
     "desc":request.form['desc'],"email":request.form['email'],"instagram":request.form['instagram'],
     "youtube":request.form['youtube'],"twitter":request.form['twitter']}})
     return redirect('/influencerprofile')
@@ -128,3 +128,6 @@ def influencersearch(): #Creates an array of influencers that match a tag and re
     for k in results:
         ret[str(i)]=InfluencerProfile.create_from(k) #Adds influencers's rendered template to a list(something that can be outputed to a webpage)
     return ret if len(ret)>0 else 'No matches for that term :(' #Returns the results
+@app.route("/adwithgroup")
+def adwithgroup():
+    return render_template('buygroup.html')

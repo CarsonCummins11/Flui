@@ -1,3 +1,6 @@
+<!-- 
+	allows advertisers to search for influencers
+-->
 <!DOCTYPE html>
 <html>
     <head>
@@ -51,6 +54,14 @@
             text-align:center;
             margin:auto;
         }
+        .adstyle{
+            text-align: center;
+            font-style:italic;
+            font-size: 2.5vw;
+            margin-top: 20px;
+            color:#bfbfbf;
+            font-weight: lighter;
+        }
         </style>
     </head>
     <body>
@@ -58,6 +69,7 @@
         <span style="cursor:pointer;float:left" onclick="window.location.href = '/'">Flui</span>
         <input id="search" placeholder='Search' type=text>
         </h1>
+        <div class="adstyle"style="cursor: pointer;" onclick="adwithgroup()">Advertise with Group</div>
         <div id="searcharea" class="searcharea"></div>
     </body>
 <script> //Hey shouldn't we not have these hard coded and have them linked to like influencer_search.js
@@ -76,6 +88,10 @@ function search(term){
             $('#searcharea').html(toadd); //Adds the array of results
         }   
     });
+}
+function adwithgroup() {
+    term = $("#search").val();
+    window.location.href="/adwithgroup?"+term;
 }
 $("#search").on("keydown", function (e) {
     if (e.keyCode === 13) {  //checks whether the pressed key is "Enter"

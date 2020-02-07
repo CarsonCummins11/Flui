@@ -1,0 +1,88 @@
+<!-- 
+	allows advertisers to buy influencer groups
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <style>
+        body{
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 100;
+            color:#707070;
+            background-color: white;
+            font-size: 5vw;
+            text-align:center;
+            overflow-x: hidden;
+        }
+        h1{
+        font-family: 'Montserrat', sans-serif;
+        color:white;
+        font-style:italic;
+        text-align:left;
+        background:#212121;
+        font-size: 70px;
+        margin-top: -10px;
+        margin-right:10px;
+        margin-left:-10px;
+        margin-bottom: 0px;
+        padding: -5px;
+        font-weight:100;
+        }
+        input{
+            font-family: 'Montserrat', sans-serif;
+            border: 2px solid #707070;
+            color: #707070;
+            padding: 8px 16px;
+            font-size: 16px;
+            border-radius: 50px;
+            text-align:center;
+            font-style: italic;
+            float:center; 
+        }
+        input[type=file]{
+            position: fixed;
+            right: 100%;
+            bottom: 100%;
+        }
+        .custom-file-upload{
+            font-family: 'Montserrat', sans-serif;
+            color: #707070;
+            padding: 8px 16px;
+            font-size: 16px;
+            text-align:center;
+            font-style: italic;
+            float:center;
+            border: none;
+            cursor:pointer;
+        }
+        .proflabel{
+        font-size:30%;
+        padding:0;
+        font-weight: 100;
+       
+        margin-right:0;
+    }
+        </style>
+    </head>
+    <body>
+        <h1>
+        <span style="cursor:pointer;float:left" onclick="window.location.href = '/'">Flui</span>
+        <span class="proflabel">Group Advertisement</span>
+        </h1>
+        <form style="text-align:center"action="/loginadvertiser" method="post">
+            <input type="text" name="budget" placeholder="Budget" value=""><br>
+            <input type="text" name="contact" placeholder="Contact" value=""><br>
+            <label id="lab"for="file-upload" class="custom-file-upload"><img src="/static/images/file.png">No File</label>
+            <input id="file-upload"type="file" name="file"><br>
+            <input type="text" name="note" placeholder="Notes" value=""><br>
+            <input style="cursor:pointer; background-color: white;"type="submit" value="Login">
+        </form>
+    </body>
+    <script>
+    document.getElementById('file-upload').onchange = function() {
+        $('#lab').html("<img src='/static/images/file.png'>"+$('#file-upload').val());
+    };
+    </script>
+</html>
