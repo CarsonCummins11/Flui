@@ -131,3 +131,7 @@ def influencersearch(): #Creates an array of influencers that match a tag and re
 @app.route("/adwithgroup")
 def adwithgroup():
     return render_template('buygroup.html')
+@app.route("/buygroup", methods=['POST'])
+def buygroup():
+    k = request.form['budget']
+    return redirect('/advertiserprofile')
