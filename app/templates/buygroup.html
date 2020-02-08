@@ -81,12 +81,13 @@
             </label>
             <input id="file-upload"type="file" name="file"><br>
             <input type="text" name="note" placeholder="Notes" value=""><br>
-            <input style="cursor:pointer; background-color: white;"type="submit" value="Buy">
+			<input type="text" name="tags" placeholder="Tags" value=""><br> <!-- Need to make this a dropdown or search for tags system -->
+            <input style="cursor:pointer; background-color: white;" type="submit" value="Buy">
         </form>
     </body>
     <script>
     document.getElementById('file-upload').onchange = function() {
-        $('#lab').html("<img src='/static/images/file.png'style='width:4vw'>"+$('#file-upload').val());
+        $('#lab').html("<img src='/static/images/file.png'style='width:4vw'>"+$('#file-upload').val()); //Needs to possibly be video, img or any file
     };
     </script>
 </html>
