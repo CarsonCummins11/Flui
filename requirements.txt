@@ -2,3 +2,4 @@ flask
 werkzeug
 flask_login
 pymongo
+google-api-python-client
