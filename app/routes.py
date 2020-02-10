@@ -16,11 +16,11 @@ def about(): #returns the about page
 def newinfluencer(): #Creates a new influencer with blank information from the request form
     if db['influencers'].find_one({'user':request.form['user']}) is None and db['advertisers'].find_one({'user':request.form['user']}) is None:
         prof = {'first':request.form['fname'],
-        'last':request.form['lname'],
+        'last':'',
         'user':request.form['user'],
         'pass':generate_password_hash(request.form['pass']), #generates password hash from entered password
         'desc':'No Description',
-        'email':'No Email',
+        'email':request.form['email'],
         'image':'', #file path?
         'instagram':'No Instagram',
         'youtube':'No YouTube',
@@ -131,10 +131,18 @@ def influencersearch(): #Creates an array of influencers that match a tag and re
     return ret if len(ret)>0 else 'No matches for that term :(' #Returns the results
 @app.route("/createrequest", methods=['POST'])
 def create_request(): #Creates a request object from a form submission
-	r = Request(budget=request.form['budget'], media=request.form['file'], description=request.form['note'], tags=request.form['tags'], contact=request.form['contact'], author=None) #change the form submission so the user object is appended
+	r = Request(budget=request.form['budget'], media=request.form['file'], description=request.form['note'], tags=request.form['tags'], contact=request.form['contact'], author=r.user.username) #change the form submission so the user object is appended
 	db[r.user.username].update({'request': pickle.dumps(r)}) #update for multiple requests at once, this code will replace a request that already exists
     r.sendmail()
 	return r.get_render_template()
 @app.route("/adwithgroup")
 def adwithgroup():
     return render_template('buygroup.html')
+@app.route("/viewrequest")
+def viewrequest():
+    r = pickle.loads(db[request.args.get('co')].find({})['request'])
+    return r.get_render_template()
+@app.route("/acceptrequest")
+def acceptrequest():
+    #TODO pay the influencer here
+    return 'Everyone at Flui is excited to see your ad in the coming week!'
