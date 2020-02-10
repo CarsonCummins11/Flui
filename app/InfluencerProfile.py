@@ -3,7 +3,8 @@ from jinja2 import Environment, BaseLoader
 #'Loaders are responsible for loading templates from a resource such as the file system.'
 #This code uses the BaseLoader, which is the base class for every loader
 def create_from(profile):
-    template=''' #String for the Jinja template
+ #String for the Jinja template
+    template='''
         <style>
     .nametext{
         font-family: 'Montserrat', sans-serif;

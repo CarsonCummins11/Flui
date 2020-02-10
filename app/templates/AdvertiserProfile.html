@@ -58,6 +58,9 @@
     function submitTags(){
         $.get( "/getadvertisertags", function( data ) {
             let tags = prompt('Search Tags',data)
+			if(tags == null) {
+				tags = data;
+			}
             $.ajax({
                 type: 'POST',
                 url: '/submitadvertisertags',

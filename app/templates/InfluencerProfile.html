@@ -94,6 +94,9 @@
     function submitTags(){
         $.get( "/getinfluencertags", function( data ) {
             let tags = prompt('Search Tags',data)
+			if(tags == null) {
+				tags = data;
+			}
             $.ajax({
                 type: 'POST',
                 url: '/submitinfluencertags',
