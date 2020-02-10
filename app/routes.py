@@ -137,7 +137,3 @@ def create_request(): #Creates a request object from a form submission
 @app.route("/adwithgroup")
 def adwithgroup():
     return render_template('buygroup.html')
-@app.route("/buygroup", methods=['POST'])
-def buygroup():
-    k = request.form['budget']
-    return redirect('/advertiserprofile')
