@@ -1,5 +1,7 @@
 #Class for a request object
 from flask import Flask, render_template
+from app import app,db,User
+import yagmail
 
 class Request:
 	#budget is an integer, media will be some multimedia object(needs to be implemented), description is a string, tags is an array of strings, author is a string
@@ -10,7 +12,14 @@ class Request:
 		self.tags = tags
 		self.contact = contact
 		self.author = author
-	
+	#sends emails to relevant creators
+	def sendmail(self):
+		yag = yagmail.SMTP('carson@flui.co',oauth2_file="../credentials.json")
+		yag.send(
+		to=receiver,
+		subject="Flui Advertising Request",
+		contents=body
+		)
 	#Returns the request class as a jinja template
 	def get_render_template(self):
 		request = {'budget': self.budget, 'media': self.media, 'description': self.description, 'tags':tags, 'author': author}
