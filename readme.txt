@@ -1,8 +1,9 @@
 how to run:
     1. run the setup batch file appropriate for your device
-    2. open command prompt in the project directory 
-    3. run the command python3 -m flask run
-    4. go to the link displayed in command prompt
+    2. Create a folder named "authentication" in /app/scraping/ and put a file called "auth.py" in with authentication information as a json
+    3. open command prompt in the project directory 
+    4. run the command python3 -m flask run
+    5. go to the link displayed in command prompt
 
 Code Overview:
 
