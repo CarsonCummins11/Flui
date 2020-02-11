@@ -4,20 +4,12 @@ from requests.auth import HTTPBasicAuth
 import tweepy
 from app import InfluencerProfile
 
-'''
+#should we change how we store these
+api_key = "3fTZMPvKj8M1ryDE1pNXRA6el"
+api_secret = "TVet3ZZ68Qn3rtDl6IbdsmbV1pIhpuSaFHM4GCPxCZF9HS8Ffs"
 
-Api key: 3fTZMPvKj8M1ryDE1pNXRA6el
-
-API secret key:TVet3ZZ68Qn3rtDl6IbdsmbV1pIhpuSaFHM4GCPxCZF9HS8Ffs
-
-#auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-#auth.set_access_token(access_token, access_token_secret)
-
-access_token ->1225240357387956225-TMEOZx7mWGHBLUNOA0EQgEwdNEOr0l
-access_secret -> qsQGjoUownO2l21qx98qjEqtJt8T6IARP3p8d3lA8JaP6
-#api = tweepy.API(auth)
-'''
-api = None
+access_token = "1225240357387956225-TMEOZx7mWGHBLUNOA0EQgEwdNEOr0l"
+access_secret = "qsQGjoUownO2l21qx98qjEqtJt8T6IARP3p8d3lA8JaP6"
 
 likes_weight = 1
 retweet_weight = 1.5
@@ -34,10 +26,19 @@ class TweepyBot():
 	def __init__(self):
 		self.engagement_scores = []
 		self.big_data_txt = {}
-	
+		self.auth = tweepy.OAuthHandler(api_key, api_secret)
+		self.auth.set_access_token(access_token, access_secret)
+		self.api = tweepy.API(auth)
+		
+		try:
+			api.verify_credentials()
+			print("Twitter Authentication OK")
+		except:
+			print("Error during twitter authentication")
+			
 	#updates the engagement ratio
 	def set_engagement_ratio(self, influencer):
-		tweets = get_tweets(influencer.tw)
+		tweets = get_tweets(self.api, influencer.tw)
 		for t in tweets:
 			engagement_scores.append(
 				(likes * t.user.favorite_count) + (retweet_weight * t.retweet_count) / t.user.followers_count
