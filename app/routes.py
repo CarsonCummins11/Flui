@@ -15,19 +15,13 @@ def about(): #returns the about page
 @app.route("/newinfluencer",methods=['POST'])
 def newinfluencer(): #Creates a new influencer with blank information from the request form
     if db['influencers'].find_one({'user':request.form['user']}) is None and db['advertisers'].find_one({'user':request.form['user']}) is None:
-        prof = {'first':request.form['fname'],
-        'last':'',
-        'user':request.form['user'],
-        'pass':generate_password_hash(request.form['pass']), #generates password hash from entered password
-        'desc':'No Description',
-        'email':request.form['email'],
-        'image':'', #file path?
-        'instagram':'No Instagram',
-        'youtube':'No YouTube',
-        'twitter':'No Twitter',
-        'tags':''} #Does python have enums? We could use enums for tags
-        db['influencers'].insert_one(prof) #Adds the profile to db
-        use = User.User(username=prof['user']) #Sets the user to the newly created user
+        new_influencer = Influencer(
+            username = request.form['user'],
+            password = request.form['pass'], #generates hash in __init__()
+            email = request.form['email']
+        )
+        db['influencers'].insert_one(new_influencer) #Adds the profile to db
+        use = User.User(username=new_influencer.username) #Sets the user to the newly created user
         login_user(use) #Logins in through Flask's LoginManager
         return redirect('/influencerprofile') #Redirects to their profile
     else:
@@ -36,15 +30,12 @@ def newinfluencer(): #Creates a new influencer with blank information from the r
 @app.route("/newadvertiser",methods=['POST'])
 def newadvertiser(): #Creates a new advertiser
     if db['advertisers'].find_one({'user':request.form['user']}) is None and db['influencers'].find_one({'user':request.form['user']}) is None:
-        prof = {'company':request.form['company'], #create a profile object from the request form
-        'user':request.form['user'],
-        'pass':generate_password_hash(request.form['pass']),
-        'desc':'No Description',
-        'email':'No Email',
-        'image':'',#file path
-        'tags':''}#Does python have enums? We could use enums for tags
-        db['advertisers'].insert_one(prof) #Adds the profile to db
-        use = User.User(username=prof['user']) #Sets the user to the newly created user
+        new_advertiser = Advertiser(
+            username = request.form['user'],
+            password = request.form['pass'], #generates hash in __init__()
+        )
+        db['advertisers'].insert_one(new_advertiser) #Adds the profile to db
+        use = User.User(username=new_advertiser.username) #Sets the user to the newly created user
         login_user(use)#Logins in through Flask's LoginManager
         return redirect('/advertiserprofile')#Redirects to their profile
     else:
@@ -131,10 +122,17 @@ def influencersearch(): #Creates an array of influencers that match a tag and re
     return ret if len(ret)>0 else 'No matches for that term :(' #Returns the results
 @app.route("/createrequest", methods=['POST'])
 def create_request(): #Creates a request object from a form submission
-	r = Request(budget=request.form['budget'], media=request.form['file'], description=request.form['note'], tags=request.form['tags'], contact=request.form['contact'], author=r.user.username) #change the form submission so the user object is appended
-	db[r.user.username].update({'request': pickle.dumps(r)}) #update for multiple requests at once, this code will replace a request that already exists
+	r = Request(
+        budget=request.form['budget'],
+        media=request.form['file'],
+        description=request.form['note'],
+        tags=request.form['tags'],
+        contact=request.form['contact'],
+        author=r.user.username
+    )
+    db[r.user.username].update({'request': pickle.dumps(r)})
     r.sendmail()
-	return r.get_render_template()
+    return r.get_render_template()
 @app.route("/adwithgroup")
 def adwithgroup():
     return render_template('buygroup.html')
