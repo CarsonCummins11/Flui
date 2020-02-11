@@ -1,19 +1,20 @@
 import json
 import copy
-from requests.auth import HTTPBasicAuth
 import tweepy
-from app import InfluencerProfile
+import pickle
+import os.path
+from requests.auth import HTTPBasicAuth
+from app import InfluencerProfile, db
+from authentication import auth_data
 
-#should we change how we store these
-api_key = "3fTZMPvKj8M1ryDE1pNXRA6el"
-api_secret = "TVet3ZZ68Qn3rtDl6IbdsmbV1pIhpuSaFHM4GCPxCZF9HS8Ffs"
 
-access_token = "1225240357387956225-TMEOZx7mWGHBLUNOA0EQgEwdNEOr0l"
-access_secret = "qsQGjoUownO2l21qx98qjEqtJt8T6IARP3p8d3lA8JaP6"
-
+data_file = "/mldata/twdata.json"
 likes_weight = 1
 retweet_weight = 1.5
 
+#Gets the tweets for a twitter user
+#api = tweepy api
+#user = string of a user's username
 def get_tweets(api, user):
 	statuses =  api.get_user(user).user_timeline()
 	for status in statuses:
@@ -24,10 +25,18 @@ def get_tweets(api, user):
 class TweepyBot():
 	#init arrays and create api
 	def __init__(self):
-		self.engagement_scores = []
-		self.big_data_txt = {}
-		self.auth = tweepy.OAuthHandler(api_key, api_secret)
-		self.auth.set_access_token(access_token, access_secret)
+		self.twdata = {}
+		if(not os.path.exists(data_file))
+		    with open(data_file, 'w') as f:
+		        json.dump(self.twdata, f)
+		self.auth = tweepy.OAuthHandler(
+		    auth_data['tw_auth']['api_key'],
+		    auth_data['tw_auth']['api_secret']
+		)
+		self.auth.set_access_token(
+		    auth_data['tw_auth']['access_token'],
+		    auth_data['tw_auth']['access_secret']
+		)
 		self.api = tweepy.API(auth)
 		
 		try:
@@ -37,23 +46,22 @@ class TweepyBot():
 			print("Error during twitter authentication")
 			
 	#updates the engagement ratio
+	#also dumps the text of all tweets analyzed to a json file for ML and language processing
 	def set_engagement_ratio(self, influencer):
 		tweets = get_tweets(self.api, influencer.tw)
+		self.twdata = json.load(open(data_file))
+		engagement_scores = []
 		for t in tweets:
 			engagement_scores.append(
 				(likes * t.user.favorite_count) + (retweet_weight * t.retweet_count) / t.user.followers_count
 			)
-			if not t.id in big_data_txt.values():
-				big_data_txt.append({
+			if not t.id in self.twdata.values():
+				twdata.append({
 					'id': t.id,
 					'text': t.text
 				})
 		influencer.engagement_ratio_tw = sum(engagement_scores) / len(engagement_scores)
+		with open(data_file, 'w') as f
+		    json.dump(self.twdata, f)
 		
-	#returns an array of {"id": t.id, "text": t.text} for Carson's ML
-	def get_big_text_data(self):
-		duplication = copy.copy(big_data_txt) #does this code suck, probably
-		self.big_data_txt.clear()
-		return duplication
-	
 #tb = TweepyBot() #used for testing
