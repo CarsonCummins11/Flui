@@ -1,12 +1,17 @@
 import tweepy
 from app import InfluencerProfile
 
-#I need your secrets Carson
+'''
+
+Api key: 3fTZMPvKj8M1ryDE1pNXRA6el
+
+API secret key:TVet3ZZ68Qn3rtDl6IbdsmbV1pIhpuSaFHM4GCPxCZF9HS8Ffs
 
 #auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 #auth.set_access_token(access_token, access_token_secret)
 
 #api = tweepy.API(auth)
+'''
 api = None
 
 def get_tweets(user):
