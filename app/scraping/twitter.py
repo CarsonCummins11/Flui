@@ -45,7 +45,8 @@ class TweepyBot():
             if not t.id in self.twdata.values():
                 self.twdata.append({
 					'id': t.id,
-					'text': t.text
+					'text': t.text,
+                    'engagement_score': engagement_scores[-1]
 				})
         influencer.engagement_ratio_tw = sum(engagement_scores) / len(engagement_scores)
         with open(data_file) as f:

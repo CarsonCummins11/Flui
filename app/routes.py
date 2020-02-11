@@ -19,6 +19,7 @@ def about(): #returns the about page
 def newinfluencer(): #Creates a new influencer with blank information from the request form
     if db['influencers'].find_one({'user':request.form['user']}) is None and db['advertisers'].find_one({'user':request.form['user']}) is None:
         new_influencer = Influencer(
+            name = request.form['fname'], #NewInfluencer has the tag as 'name', but when you inspect it's still fname?
             username = request.form['user'],
             password = request.form['pass'], #generates hash in __init__()
             email = request.form['email'],
