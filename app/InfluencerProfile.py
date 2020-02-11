@@ -44,7 +44,7 @@ class Influencer:
         self.img = img
         self.insta = insta
         self.yt = yt
-        self.tw = tw
+        self.tw = tw #This has to be their twitter handle
         self.tags = tags
         self.engagement_ratio_tw = 0
 

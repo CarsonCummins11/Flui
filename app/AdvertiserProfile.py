@@ -29,10 +29,9 @@ def create_from(profile):
     return rtemplate.render(profile=profile) #Returns rendered template(as a unicode string)
 
 class Advertiser():
-    def __init__(self, username, password, desc, email, img, insta, yt, tw, tags): #when initializing just Influencer(name="name") and you can leave the others blank
+    def __init__(self, username, password, desc, email, img): #when initializing just Influencer(name="name") and you can leave the others blank
         self.username = username
         self.password = generate_password_hash(password)
         self.desc = desc
         self.email = email
         self.img = img
-        self.tags = tags

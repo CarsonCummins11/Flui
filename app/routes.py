@@ -1,11 +1,13 @@
 #routes.py
 #routes html requests to python functions
 from flask import render_template,request, session,redirect
-from app import app,db,User, InfluencerProfile,AdvertiserProfile
+from app import app,db,User,AdvertiserProfile,InfluencerProfile,tweepy_bot
+from app.InfluencerProfile import Influencer
+from app.AdvertiserProfile import Advertiser
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user, login_user
 import pickle
-from request import Request
+from app.request import Request
 
 @app.route("/")
 def main(): #returns the home page on start
@@ -19,7 +21,13 @@ def newinfluencer(): #Creates a new influencer with blank information from the r
         new_influencer = Influencer(
             username = request.form['user'],
             password = request.form['pass'], #generates hash in __init__()
-            email = request.form['email']
+            email = request.form['email'],
+            desc = None,
+            img = None,
+            insta = None,
+            yt = None,
+            tw = None,
+            tags = None
         )
         db['influencers'].insert_one(new_influencer) #Adds the profile to db
         use = User.User(username=new_influencer.username) #Sets the user to the newly created user
@@ -34,6 +42,9 @@ def newadvertiser(): #Creates a new advertiser
         new_advertiser = Advertiser(
             username = request.form['user'],
             password = request.form['pass'], #generates hash in __init__()
+            desc = None,
+            email = None,
+            img = None
         )
         db['advertisers'].insert_one(new_advertiser) #Adds the profile to db
         use = User.User(username=new_advertiser.username) #Sets the user to the newly created user
@@ -129,9 +140,9 @@ def create_request(): #Creates a request object from a form submission
         description=request.form['note'],
         tags=request.form['tags'],
         contact=request.form['contact'],
-        author=r.user.username
+        author=session['username']
     )
-    db[r.user.username].update({'request': pickle.dumps(r)})
+    db[session['username']].update({'request': pickle.dumps(r)})
     r.sendmail()
     return r.get_render_template()
 @app.route("/adwithgroup")

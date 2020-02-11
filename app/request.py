@@ -1,5 +1,6 @@
 #Class for a request object
 from flask import Flask, render_template
+from jinja2 import Environment, BaseLoader
 from app import app,db,User
 import yagmail
 
@@ -24,9 +25,9 @@ class Request:
 		self.author = author
 	#sends emails to relevant creators
 	def sendmail(self):
-		request = {'budget': self.budget, 'media': self.media, 'description': self.description, 'tags':tags, 'author': author}
+		request = {'budget': self.budget, 'media': self.media, 'description': self.description, 'tags':self.tags, 'author': self.author}
 		db['influencers'].create_index([('tags','text')])
-    	results = db['influencers'].find({'$text': { '$search': request.get_json()['term'] } })
+		results = db['influencers'].find({'$text': { '$search': request.get_json()['term'] } })
 		rtemplate = Environment(loader=BaseLoader).from_string(emailbody)
 		yag = yagmail.SMTP('carson@flui.co',oauth2_file="../credentials.json")
 		for creator in results:
