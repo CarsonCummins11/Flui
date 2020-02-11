@@ -5,6 +5,7 @@ from app import app,db,User, InfluencerProfile,AdvertiserProfile
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user, login_user
 import pickle
+from request import Request
 
 @app.route("/")
 def main(): #returns the home page on start
