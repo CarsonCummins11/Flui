@@ -107,6 +107,29 @@
     }
     </script>
     <style>
+	.alert {
+		padding: 20px;
+		background-color: #f44336; /* Red */
+		color: white;
+		margin-bottom: 15px;
+	}
+
+	/* Settings for alert close button */
+	.closebtn {
+		margin-left: 15px;
+		color: white;
+		font-weight: bold;
+		float: right;
+		font-size: 22px;
+		line-height: 20px;
+		cursor: pointer;
+		transition: 0.3s;
+	}
+
+	/* When moving the mouse over the close button */
+	.closebtn:hover {
+		color: black;
+	}
     body{
         font-family: 'Montserrat', sans-serif;
         font-weight: 100;
@@ -193,6 +216,10 @@
     </style>
 </head>
 <body>
+	<div class="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+		This is a test.
+	</div>
     <h1>
     <span style="cursor:pointer" onclick="window.location.href = '/'">Flui</span>
     <span class="proflabel">Influencer Profile</span>
