@@ -14,7 +14,7 @@
         return width;
     };
     $.fn.autoresize = function(options){//resizes elements based on content size.  usage: $('input').autoresize({padding:10,minWidth:0,maxWidth:100});
-        options = $.extend({padding:0,minWidth:0,maxWidth:10000}, options||{});
+        options = $.extend({padding:0,minWidth:0,maxWidth:200}, options||{});
         $(this).on('input', function() {
             $(this).css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$(this).textWidth() + options.padding)));
         }).trigger('input');
