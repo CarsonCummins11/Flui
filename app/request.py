@@ -38,7 +38,7 @@ class Request:
 			)
 	#Returns the request class as a jinja template
 	def get_render_template(self):
-		request = {'budget': self.budget, 'media': self.media, 'description': self.description, 'tags':tags, 'author': author}
+		request = {'budget': self.budget, 'media': self.media, 'description': self.description, 'tags':self.tags, 'author': self.author}
 		#Might want to change this template in the future, it's just a skeleton of viewing a request object
 		#Jinja Template for request as a string
 		template = '''

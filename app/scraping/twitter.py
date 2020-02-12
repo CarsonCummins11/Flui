@@ -49,5 +49,5 @@ class TweepyBot():
                     'engagement_score': engagement_scores[-1]
 				})
         influencer.engagement_ratio_tw = sum(engagement_scores) / len(engagement_scores)
-        with open(data_file) as f:
-            json.dumps(self.twdata, f)
+        with open(data_file, 'w') as f:
+            f.write(json.dumps(self.twdata))

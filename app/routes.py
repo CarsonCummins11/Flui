@@ -5,7 +5,7 @@ from app import app,db,User,AdvertiserProfile,InfluencerProfile,tweepy_bot
 from app.InfluencerProfile import Influencer
 from app.AdvertiserProfile import Advertiser
 from werkzeug.security import generate_password_hash,check_password_hash
-from flask_login import current_user, login_user
+from flask_login import current_user, login_user, login_required
 import pickle
 from app.request import Request
 
@@ -30,7 +30,7 @@ def newinfluencer(): #Creates a new influencer with blank information from the r
             tw = None,
             tags = None
         )
-        db['influencers'].insert_one(new_influencer) #Adds the profile to db
+        db['influencers'].insert_one(new_influencer.to_dict()) #Adds the profile to db, needs to be a dict
         use = User.User(username=new_influencer.username) #Sets the user to the newly created user
         login_user(use) #Logins in through Flask's LoginManager
         return redirect('/influencerprofile') #Redirects to their profile
@@ -47,9 +47,11 @@ def newadvertiser(): #Creates a new advertiser
             email = None,
             img = None
         )
-        db['advertisers'].insert_one(new_advertiser) #Adds the profile to db
+        db['advertisers'].insert_one(new_advertiser.to_dict()) #Adds the profile to db, needs to be a dict
         use = User.User(username=new_advertiser.username) #Sets the user to the newly created user
+        print(current_user)
         login_user(use)#Logins in through Flask's LoginManager
+        print(current_user)
         return redirect('/advertiserprofile')#Redirects to their profile
     else:
         return 'That username is in use'
@@ -77,6 +79,7 @@ def loginadvertiser(): #Logs an advertiser in
     return redirect('/')
 @app.route("/advertiserprofile")
 def advertiserprofile(): #If the user isn't null, then return a rendered template(using Jinja), this is used in rendering to browser
+    print(current_user)
     profile = db['advertisers'].find_one({'user':current_user.username})
     return render_template('AdvertiserProfile.html',profile=profile) 
 @app.route("/influencerprofile")
@@ -141,9 +144,9 @@ def create_request(): #Creates a request object from a form submission
         description=request.form['note'],
         tags=request.form['tags'],
         contact=request.form['contact'],
-        author=session['username']
+        author=current_user.username
     )
-    db[session['username']].update({'request': pickle.dumps(r)})
+    db[current_user.username].update({'request': pickle.dumps(r)})
     r.sendmail()
     return r.get_render_template()
 @app.route("/adwithgroup")

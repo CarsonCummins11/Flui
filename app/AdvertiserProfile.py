@@ -35,3 +35,11 @@ class Advertiser():
         self.desc = desc
         self.email = email
         self.img = img
+    def to_dict(self):
+        return {
+            "username": self.username,
+            "password": self.password, #hashed in __init__() of course
+            "description": self.desc,
+            "email": self.email,
+            "img": self.img
+        }
