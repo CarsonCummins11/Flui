@@ -1,0 +1,198 @@
+<!--
+	Profile page for an advertiser
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+    $.fn.textWidth = function(_text, _font){//get width of text with font.  usage: $("div").textWidth();
+        var fakeEl = $('<span>').hide().appendTo(document.body).text(_text || this.val() || this.text()).css({font: _font || this.css('font'), whiteSpace: "pre"}),
+                    width = fakeEl.width();
+        fakeEl.remove();
+        return width;
+    };
+    $.fn.autoresize = function(options){//resizes elements based on content size.  usage: $('input').autoresize({padding:10,minWidth:0,maxWidth:100});
+        options = $.extend({padding:0,minWidth:0,maxWidth:10000}, options||{});
+        $(this).on('input', function() {
+            $(this).css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$(this).textWidth() + options.padding)));
+        }).trigger('input');
+        return this;
+    }
+    function resetemail(){
+        $('#userprofile').submit();
+        $('#emailtext').prop("readonly", true);
+        $('body').focus();
+        $('#ec').html('<span id="emailchange" class="change" onclick="changemail()">Change</span>');
+
+    }
+    function resetcompany(){
+        $('#userprofile').submit();
+        $('#companytext').prop("readonly", true);
+        $('body').focus();
+        $('#cc').html('<span id="companychange" class="change" onclick="changecompany()">Change</span>');
+    }
+    function resetdesc(){
+        $('#userprofile').submit();
+        $('#desctext').prop("readonly", true);
+        $('body').focus();
+        $('#dc').html('<span id="descchange" class="change" onclick="changedesc()">Change</span>');
+    }
+    function changedesc(){
+        $('#desctext').prop('readonly',false);
+        $('#dc').html('<input onclick="resetdesc()" type="submit" value="Save Changes">');
+        $('#desctext').focus();
+    }
+    function changemail(){
+        $('#emailtext').prop('readonly',false);
+        $('#ec').html('<input onclick="resetemail()" type="submit" value="Save Changes">');
+        $('#emailtext').focus();
+    }
+    function changecompany(){
+        $('#companytext').prop('readonly',false)
+        $('#cc').html('<input onclick="resetcompany()" type="submit" value="Save Changes">')
+        $('#companytext').focus();
+    }
+    function submitTags(){
+        $.get( "/getadvertisertags", function( data ) {
+            let tags = prompt('Search Tags',data)
+			if(tags == null) {
+				tags = data;
+			}
+            $.ajax({
+                type: 'POST',
+                url: '/submitadvertisertags',
+                data: JSON.stringify({ 'tags' : tags }),
+                contentType: 'application/json',
+            });
+        });
+    }
+    </script>
+    <style>
+    body{
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 100;
+        color:#707070;
+        background-color: white;
+        font-size: 5vw;
+        overflow: hidden;
+    }
+    .change{
+        font-family: 'Montserrat', sans-serif;
+        color:#7B7B7B;
+        font-style: italic;
+        font-size: 20%;
+        cursor: pointer;
+    }
+    input{
+        font-family: 'Montserrat', sans-serif;
+        color:#707070;
+        border:0;
+        font-size: 5vw;
+        font-style: italic;
+        font-weight: 100;
+        padding: 0px;
+        background: none;
+    }
+    input[type=submit]{
+        font-family: 'Montserrat', sans-serif;
+        color:#7B7B7B;
+        font-style: italic;
+        font-size: 1vw;
+        cursor: pointer;
+        background:white;
+    }
+    input[type=text]:focus:read-write{
+        outline: 0px;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 3px solid #707070;
+    }
+    .descriptiontext{
+        font-family: 'Montserrat', sans-serif;
+        color:#707070;
+        font-weight: lighter;
+        font-size: 50%;
+        text-align:left;
+        border: 0px;
+        outline: 0px;
+        resize: none;
+        overflow:hidden;
+    }
+    h1{
+        font-family: 'Montserrat', sans-serif;
+        color:white;
+        font-style:italic;
+        text-align:left;
+        background:#212121;
+        font-size: 70px;
+        margin-top: -10px;
+        margin-right:-10px;
+        margin-left:-10px;
+        margin-bottom: 0px;
+        padding: -5px;
+        font-weight:100;
+        box-shadow: 0px 12px 17px  #707070;
+    }
+    .proflabel{
+        font-size:30%;
+        padding:0;
+        font-weight: 100;
+        margin:-15px;
+        margin-right:0;
+    }
+    .search{
+        cursor:pointer;
+        float:right;
+        width: 70px;
+        height: 70px;
+        margin-top: 10px;
+        margin-right:30px;
+    }
+    </style>
+</head>
+<body>
+    <h1>
+    <span style="cursor:pointer" onclick="window.location.href = '/'">Flui</span>
+    <span class="proflabel">Advertiser Profile</span>
+    <span style="cursor:pointer" onclick="submitTags()"class="proflabel">(Tags)</span>
+    <img class="search" onclick="window.location.href='/searchforinfluencers'" src="/static/images/Minimal_Search.png"></img>
+    </h1>
+    <form id="userprofile" action="/advertiserprofilechange" method="post">
+        <div id="company">
+            <input id="companytext"type="text" name="company" value="{{profile.company}}" readonly=true>
+            <span id='cc'><span id="companychange" class="change" onclick="changecompany()">Change</span></span>
+        </div>
+        <div id="email">
+            <input id="emailtext"type="text" name="email" value="{{profile.email}}" readonly=true>
+            <span id='ec'><span id="emailchange" class="change" onclick="changemail()">Change</span></span>
+        </div>
+        <div id="description">
+            <i>Description</i>
+            <span id='dc'><span id="descchange" class="change" onclick="changedesc()">Change</span></span><br>
+            <textarea rows=200 id='desctext'readonly=true maxlength=150 name=desc class="descriptiontext">{{profile.desc}}</textarea>
+        </div>
+    </form>
+</body>
+<script>
+	//Sizing code for emailtext and companytext
+    $('#emailtext').autoresize({padding:0,minWidth:40})
+    $('#companytext').autoresize({padding:0,minWidth:40})
+    options = {padding:0,minWidth:40};
+    options = $.extend({padding:0,minWidth:0,maxWidth:10000}, options||{});
+    //Resize elements on window resize
+	$(window).on('resize',function(){
+        $('#emailtext').css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$('#emailtext').textWidth() + options.padding)));
+        $('#companytext').css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$('#companytext').textWidth() + options.padding)));
+        
+    });
+	//Log's keys pressed and sets the height of the text area when the user presses a key
+    $("textarea").on('keyup',function(){
+        $("textarea").height( $("textarea")[0].scrollHeight);
+        console.log(key);
+    });
+</script>
+</html>

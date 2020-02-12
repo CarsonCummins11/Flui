@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+    h1{
+        font-family: 'Montserrat', sans-serif;
+        font-style: italic;
+        text-align:center;
+        font-size: 350%;
+        color: white;
+        background-color: #212121;
+        margin-top: 0;
+        cursor: pointer;
+    }
+    body{
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 100;
+        margin: auto;
+        color:white;
+        background-color: #212121;
+    
+    }
+    .table{
+        position:relative;
+    }
+    .column {
+        font-style: italic;
+        float: left;
+        width: 28%;
+        font-size: 3vw;
+        border: 1px solid white;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        border-radius: 40px;
+        margin: 2vw;
+    }
+    .row{
+        margin:auto;
+        text-align: center;
+    }
+    .column:not(:focus){
+        -webkit-filter: blur(5px);
+        -moz-filter: blur(5px);
+        -o-filter: blur(5px);
+        -ms-filter: blur(5px);
+        filter: blur(5px);
+    }
+    .column:focus{
+        outline:0;
+    }
+    .infotext{
+        font-style: italic;
+        position:absolute;
+        visibility: hidden;
+        bottom: 0;
+        font-size: 2vw;
+    }
+    </style>
+</head>
+<body>
+    <h1 onclick="window.location.href = '/'">Flui</h1>
+    <div id="info" class="infotext"></div>
+    <div class = "table">
+    <div class="row">
+        <div id="what" tabindex="0" class="column">
+          What
+        </div>
+        <div id="who" tabindex="1" class="column" >
+          Who
+        </div>
+        <div id="why"tabindex="2" class="column" >
+            Why
+        </div>
+      </div>
+      
+      <div class="row">
+        <div id="how"tabindex="3" class="column">
+          How
+        </div>
+        <div id="contact"tabindex="4" class="column">
+          Contact
+        </div>
+        <div id="new"tabindex="5" class="column">
+            New
+        </div>
+      </div>
+    </div>
+</body>
+<script>
+    $('#info').css("bottom",5);
+    document.getElementById('what').addEventListener('mouseover', function() {
+        $('#what').focus();
+        $('#info').css("top",$('#who').offset().top);
+        $('#info').css("left",$('#who').offset().left);
+        $('#info').css("right",5);
+        $('#info').css("visibility","visible");
+        $('#info').html("Flui connects advertisers to groups of similar influencers. It allows small time influencers to get brand deals that are typically reserved for those with a larger audience, and allows advertisers to reach high engagement, niche markets. Flui will fix social media marketing.");
+    });
+    document.getElementById('who').addEventListener('mouseover', function() {
+        $('#who').focus();
+        $('#info').css("top",$('#why').offset().top);
+        $('#info').css("left",$('#why').offset().left);
+        $('#info').css("right",5);
+        $('#info').css("visibility","visible");
+        $('#info').html("Flui was created by a group of Portland teenagers with one goal: fixing social media. We want to help small influencers focus on what matters: creativity, and advertisers find audiences that will be receptive, rather than annoyed, by their advertisements.");
+    });
+    document.getElementById('why').addEventListener('mouseover', function() {
+        $('#why').focus();
+        $('#info').css("top",$('#what').offset().top);
+        $('#info').css("left",$('#what').offset().left);
+        $('#info').css("right",($(window).width() - ($('#who').offset().left + $('#who').outerWidth())));
+        $('#info').css("visibility","visible");
+        $('#info').html("Social media is broken. The small time influencers are forced to work inhumane hours to make just enough revenue to live. Some don't even have the ability to monetize. Flui is here to fix that.");
+    });
+    document.getElementById('how').addEventListener('mouseover', function() {
+        $('#how').focus();
+        $('#info').css("top",$('#contact').offset().top);
+        $('#info').css("left",$('#contact').offset().left);
+        $('#info').css("right",5);
+        $('#info').css("visibility","visible");
+        $('#info').html("Flui uses industry standard machine learning to build groups of influencers tailored exactly to match the requests of advertisers. Flui's custom algorithm takes away the stress of finding an influencer to run your ad.");
+    });
+    document.getElementById('contact').addEventListener('mouseover', function() {
+        $('#contact').focus();
+        $('#info').css("top",$('#how').offset().top);
+        $('#info').css("left",$('#how').offset().left);
+        $('#info').css("right",($(window).width() - ($('#how').offset().left + $('#how').outerWidth())));
+        $('#info').css("visibility","visible");
+        $('#info').html("Our founder can be contacted by email at carson@flui.co. You can find us on Instagram at flui.co, and Twitter at flui_co");
+    });
+    document.getElementById('new').addEventListener('mouseover', function() {
+        $('#new').focus();
+        $('#info').css("top",$('#how').offset().top);
+        $('#info').css("left",$('#how').offset().left);
+        $('#info').css("right",($(window).width() - ($('#contact').offset().left + $('#contact').outerWidth())));
+        $('#info').css("visibility","visible");
+        $('#info').html("Flui development is well underway, and will launch soon. Stay ready to save social media.");
+    });
+</script>
+</html>
