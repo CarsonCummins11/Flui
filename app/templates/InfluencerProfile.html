@@ -250,7 +250,7 @@
     $('#twittertext').autoresize({padding:0,minWidth:40});
     $('#youtubetext').autoresize({padding:0,minWidth:40});
     options = {padding:0,minWidth:40};
-    options = $.extend({padding:0,minWidth:0,maxWidth:10000}, options||{});
+    options = $.extend({padding:0,minWidth:0,maxWidth:500}, options||{});
     //Resize text based on window size
 	$(window).on('resize',function(){
         $('#emailtext').css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$('#emailtext').textWidth() + options.padding)));
