@@ -3,7 +3,7 @@ import tweepy
 from TwitterSearch import *
 from app.scraping.authentication.auth import auth_data
 
-data_file = "mldata/twdata.json"
+data_file = "app/scraping/mldata/twdata.json"
 likes_weight = 1
 retweet_weight = 1.5
 follower_threshold = 1
