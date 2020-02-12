@@ -62,6 +62,7 @@ class TweepyBot():
                     'engagement_score': engagement_scores[-1]
 				})
         influencer.engagement_ratio_tw = sum(engagement_scores) / len(engagement_scores)
+        {k: v for k, v in sorted(self.twdata.items(), key=lambda item: item[1])} #sorts by engagement
         with open(data_file, 'w') as f:
             f.write(json.dumps(self.twdata))
         self.twdata.clear() #for ram
@@ -80,6 +81,7 @@ class TweepyBot():
                         'text': tweet['text'],
                         'engagement_score': ((likes_weight * tweet['favorite_count']) + (retweet_weight * tweet['retweet_count']) / tweet['user']['followers_count'])
                     })
+        {k: v for k, v in sorted(self.twdata.items(), key=lambda item: item[1])} #sorts by engagement
         with open(data_file, 'w') as f:
             f.write(json.dumps(self.twdata))
         self.twdata.clear() #for ram
