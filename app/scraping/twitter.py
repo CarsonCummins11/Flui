@@ -1,10 +1,13 @@
 import json
 import tweepy
+from TwitterSearch import *
 from app.scraping.authentication.auth import auth_data
+from app import db
 
 data_file = "app/scraping/mldata/twdata.json"
 likes_weight = 1
 retweet_weight = 1.5
+follower_threshold = 20000
 
 #Gets the tweets for a twitter user
 #api = tweepy api
@@ -19,7 +22,8 @@ def get_tweets(api, user):
 class TweepyBot():
 	#init arrays and create api
     def __init__(self):
-        self.twdata = {}     
+        self.potential_influencers = []
+        self.twdata = {}
         with open(data_file, 'w') as f:
             f.write(json.dumps(self.twdata))
         self.auth = tweepy.OAuthHandler(
@@ -31,6 +35,15 @@ class TweepyBot():
 		    auth_data['tw_auth']['access_secret']
 		)
         self.api = tweepy.API(self.auth)
+        self.tso = TwitterSearchOrder()
+        self.tso.set_language("en")
+        self.tso.set_include_entities(False)
+        self.ts = TwitterSearch(
+            consumer_key=auth_data['tw_auth']['api_key'],
+            consumer_secret=auth_data['tw_auth']['api_secret'],
+            access_token=auth_data['tw_auth']['access_token'],
+            access_token_secret=auth_data['tw_auth']['access_secret']
+        )
 			
 	#updates the engagement ratio
 	#also dumps the text of all tweets analyzed to a json file for ML and language processing
@@ -51,3 +64,10 @@ class TweepyBot():
         influencer.engagement_ratio_tw = sum(engagement_scores) / len(engagement_scores)
         with open(data_file, 'w') as f:
             f.write(json.dumps(self.twdata))
+
+    #searches tweets with a given str array of keywords 
+    def search(self, keywords):
+        self.tso.set_keywords(keywords)
+        for tweet in self.ts.search_tweets_iterable(self.tso):
+            if(tweet['user']['followers_count'] > follower_threshold):
+                self.potential_influencers.append(tweet['user']['screen_name'])
