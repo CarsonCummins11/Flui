@@ -1,20 +1,13 @@
 import json
 import tweepy
-<<<<<<< HEAD
 from TwitterSearch import *
 from app.scraping.authentication.auth import auth_data
 from app import db
-=======
-from app.scraping.authentication.auth import auth_data
->>>>>>> refs/remotes/origin/master
 
 data_file = "app/scraping/mldata/twdata.json"
 likes_weight = 1
 retweet_weight = 1.5
-<<<<<<< HEAD
 follower_threshold = 20000
-=======
->>>>>>> refs/remotes/origin/master
 
 #Gets the tweets for a twitter user
 #api = tweepy api
@@ -29,12 +22,8 @@ def get_tweets(api, user):
 class TweepyBot():
 	#init arrays and create api
     def __init__(self):
-<<<<<<< HEAD
         self.potential_influencers = []
         self.twdata = {}
-=======
-        self.twdata = {}     
->>>>>>> refs/remotes/origin/master
         with open(data_file, 'w') as f:
             f.write(json.dumps(self.twdata))
         self.auth = tweepy.OAuthHandler(
@@ -46,7 +35,6 @@ class TweepyBot():
 		    auth_data['tw_auth']['access_secret']
 		)
         self.api = tweepy.API(self.auth)
-<<<<<<< HEAD
         self.tso = TwitterSearchOrder()
         self.tso.set_language("en")
         self.tso.set_include_entities(False)
@@ -56,8 +44,6 @@ class TweepyBot():
             access_token=auth_data['tw_auth']['access_token'],
             access_token_secret=auth_data['tw_auth']['access_secret']
         )
-=======
->>>>>>> refs/remotes/origin/master
 			
 	#updates the engagement ratio
 	#also dumps the text of all tweets analyzed to a json file for ML and language processing
@@ -77,15 +63,23 @@ class TweepyBot():
 				})
         influencer.engagement_ratio_tw = sum(engagement_scores) / len(engagement_scores)
         with open(data_file, 'w') as f:
-<<<<<<< HEAD
             f.write(json.dumps(self.twdata))
+        self.twdata.clear() #for ram
 
     #searches tweets with a given str array of keywords 
+    #also dumps tweet data to mldata/twdata.json
     def search(self, keywords):
         self.tso.set_keywords(keywords)
+        self.twdata = json.load(open(data_file))
         for tweet in self.ts.search_tweets_iterable(self.tso):
             if(tweet['user']['followers_count'] > follower_threshold):
                 self.potential_influencers.append(tweet['user']['screen_name'])
-=======
+                if not tweet['id'] in self.twdata.values():
+                    self.twdata.append({
+                        'id': tweet['id'],
+                        'text': tweet['text'],
+                        'engagement_score': ((likes_weight * tweet['favorite_count']) + (retweet_weight * tweet['retweet_count']) / tweet['user']['followers_count'])
+                    })
+        with open(data_file, 'w') as f:
             f.write(json.dumps(self.twdata))
->>>>>>> refs/remotes/origin/master
+        self.twdata.clear() #for ram

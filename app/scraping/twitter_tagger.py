@@ -7,7 +7,7 @@ import json
 def build():
     tweets = json.load('mldata/twdata.json')
     all_data = []
-    for tweet in tweets
+    for tweet in tweets:
         f = s.replace("\n", " ")
         data = []
         # iterate through each sentence in the file 
