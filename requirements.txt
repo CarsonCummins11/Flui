@@ -1,7 +1,0 @@
-flask
-werkzeug
-flask_login
-pymongo
-yagmail
-tweepy
-TwitterSearch

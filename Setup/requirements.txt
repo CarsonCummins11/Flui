@@ -5,3 +5,5 @@ pymongo
 yagmail
 nltk
 gensim
+tweepy
+TwitterSearch
