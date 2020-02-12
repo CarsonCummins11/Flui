@@ -1,13 +1,12 @@
 import json
 import tweepy
 from TwitterSearch import *
-from app.scraping.authentication.auth import auth_data
-from app import db
+from authentication.auth import auth_data
 
-data_file = "app/scraping/mldata/twdata.json"
+data_file = "mldata/twdata.json"
 likes_weight = 1
 retweet_weight = 1.5
-follower_threshold = 20000
+follower_threshold = 1
 
 #Gets the tweets for a twitter user
 #api = tweepy api
@@ -50,19 +49,21 @@ class TweepyBot():
     def set_engagement_ratio(self, influencer):
         tweets = get_tweets(self.api, influencer.tw)
         self.twdata = json.load(open(data_file))
+        count=0
         engagement_scores = []
         for t in tweets:
             engagement_scores.append(
 				(likes_weight * t.user.favorite_count) + (retweet_weight * t.retweet_count) / t.user.followers_count
 			)
             if not t.id in self.twdata.values():
-                self.twdata.append({
+                self.twdata[count] = {
 					'id': t.id,
 					'text': t.text,
                     'engagement_score': engagement_scores[-1]
-				})
+				}
+                count+=1
         influencer.engagement_ratio_tw = sum(engagement_scores) / len(engagement_scores)
-        {k: v for k, v in sorted(self.twdata.items(), key=lambda item: item[1])} #sorts by engagement
+        #{k: v for k, v in sorted(self.twdata.items(), key=lambda item: item[1])} #sorts by engagement
         with open(data_file, 'w') as f:
             f.write(json.dumps(self.twdata))
         self.twdata.clear() #for ram
@@ -72,16 +73,18 @@ class TweepyBot():
     def search(self, keywords):
         self.tso.set_keywords(keywords)
         self.twdata = json.load(open(data_file))
+        count=0
         for tweet in self.ts.search_tweets_iterable(self.tso):
             if(tweet['user']['followers_count'] > follower_threshold):
                 self.potential_influencers.append(tweet['user']['screen_name'])
                 if not tweet['id'] in self.twdata.values():
-                    self.twdata.append({
+                    self.twdata[count] = {
                         'id': tweet['id'],
                         'text': tweet['text'],
                         'engagement_score': ((likes_weight * tweet['favorite_count']) + (retweet_weight * tweet['retweet_count']) / tweet['user']['followers_count'])
-                    })
-        {k: v for k, v in sorted(self.twdata.items(), key=lambda item: item[1])} #sorts by engagement
+                    }
+                    count+=1
+        #{k: v for k, v in sorted(self.twdata.items(), key=lambda item: item[1])} #sorts by engagement
         with open(data_file, 'w') as f:
             f.write(json.dumps(self.twdata))
         self.twdata.clear() #for ram

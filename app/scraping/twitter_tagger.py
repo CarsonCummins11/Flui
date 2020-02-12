@@ -1,24 +1,25 @@
 from gensim.test.utils import common_texts
 from gensim.models import Word2Vec, Phrases
-from nltk.tokenize import sent_tokenize, word_tokenize
 import json
+from twitter import TweepyBot
 
-#call this to train the model
-def build():
-    tweets = json.load('mldata/twdata.json')
-    all_data = []
+#searches using most common words in english as keywords
+def build_with_generic_keys():
+    build(['the','be','to','of','and','a','in','that','have','I','it','for','not','on','with'])
+#call this to get training data and train the model
+def build(keywords):
+    bot = TweepyBot()
+    bot.search(keywords)
+    tweets = json.load(open('mldata/twdata.json'))
+    data = []
     for tweet in tweets:
-        f = s.replace("\n", " ")
-        data = []
-        # iterate through each sentence in the file 
-        for i in sent_tokenize(f): 
-            temp = [] 
+        f = tweet.replace("\n", " ")
+        temp = [] 
             # tokenize the sentence into words 
-            for j in word_tokenize(i): 
-                temp.append(j.lower()) 
-            data.append(temp)
-        all_data.append(data)
-    model = Word2Vec(all_data,size=100, window=5, min_count=1, workers=4)
+        for j in tweet.split(): 
+            temp.append(j.lower()) 
+        data.append(temp)
+    model = Word2Vec(data,size=100, window=5, min_count=1, workers=4)
     model.save("word2vec.model")
 
 #call this to tag an array of tweets
@@ -45,3 +46,4 @@ def tag(tweets):
         if(val>.99):
             final_tags.append(key)
     return final_tags
+build_with_generic_keys()
