@@ -90,46 +90,26 @@
         $('#tc').html('<input onclick="resettwitter()" type="submit" value="Save Changes">')
         $('#twittertext').focus();
     }
-	//Submits tags for the influencer to be identified with
-    function submitTags(){
-        $.get( "/getinfluencertags", function( data ) {
-            let tags = prompt('Search Tags',data)
-			if(tags == null) {
-				tags = data;
-			}
-            $.ajax({
+	function resetTags(key){
+		if(key.keycode == 13 || key.which == 13){
+			tags = $("#stuff").val();
+			$("#editTags").html('<span style="cursor:pointer;text-align:left" onclick="submitTags()"class="proflabel">(Edit Tags)</span>');
+			$.ajax({
                 type: 'POST',
                 url: '/submitinfluencertags',
                 data: JSON.stringify({ 'tags' : tags }), //Creates a string of a json object from submited tags
                 contentType: 'application/json',
             });
+		}
+	}
+	//Submits tags for the influencer to be identified with
+    function submitTags(){
+        $.get( "/getinfluencertags", function( data ) {
+			$("#editTags").html("<input id='stuff'onkeypress='resetTags(event)' class=inputTags value="+data+" type='text'>");
         });
     }
     </script>
     <style>
-	.alert {
-		padding: 20px;
-		background-color: #f44336; /* Red */
-		color: white;
-		margin-bottom: 15px;
-	}
-
-	/* Settings for alert close button */
-	.closebtn {
-		margin-left: 15px;
-		color: white;
-		font-weight: bold;
-		float: right;
-		font-size: 22px;
-		line-height: 20px;
-		cursor: pointer;
-		transition: 0.3s;
-	}
-
-	/* When moving the mouse over the close button */
-	.closebtn:hover {
-		color: black;
-	}
     body{
         font-family: 'Montserrat', sans-serif;
         font-weight: 100;
@@ -145,6 +125,11 @@
         font-size: 1vw;
         cursor: pointer;
     }
+	.inputTags{
+		color:white;
+		font-size:30%;
+		text-decoration: underline;
+	}
     input{
         font-family: 'Montserrat', sans-serif;
         color:#707070;
@@ -154,6 +139,7 @@
         font-weight: 100;
         padding: 0px;
         background: none;
+		text-align: "left";
     }
     input[type=submit]{
         font-family: 'Montserrat', sans-serif;
@@ -216,14 +202,10 @@
     </style>
 </head>
 <body>
-	<div class="alert">
-		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-		This is a test.
-	</div>
     <h1>
     <span style="cursor:pointer" onclick="window.location.href = '/'">Flui</span>
     <span class="proflabel">Influencer Profile</span>
-    <span style="cursor:pointer" onclick="submitTags()"class="proflabel">(Tags)</span>
+    <span id="editTags"><span style="cursor:pointer;text-align:left" onclick="submitTags()"class="proflabel">(Edit Tags)</span></span>
     <img class="search" onclick="window.location.href='/searchforadvertisers'"src="/static/images/Minimal_Search.png"></img>
     </h1>
     <form id="userprofile" action="/influencerprofilechange" method="post">

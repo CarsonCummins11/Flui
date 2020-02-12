@@ -10,7 +10,7 @@ def build_with_generic_keys():
 def build(keywords):
     bot = TweepyBot()
     bot.search(keywords)
-    tweets = json.load(open('mldata/twdata.json'))
+    tweets = json.load(open('app/scraping/mldata/twdata.json'))
     data = []
     for tweet in tweets:
         f = tweet.replace("\n", " ")
@@ -30,11 +30,11 @@ def tag(tweets):
         words = tweet.split()
         for word in words:
             avgsim = 0
-            tags = open('mldata/tags.txt')
+            tags = open('app/scraping/mldata/tags.txt')
             for tag in tags:
                 probs[tag]+=model.similarity(word,tag)
             tags.close()
-    tags = open('mldata/tags.txt')
+    tags = open('app/scraping/mldata/tags.txt')
     length=0
     for line in tags:
         length+=1
