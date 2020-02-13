@@ -18,7 +18,7 @@ def get_tweets(api, user):
 	return statuses
 
 #class for the twitter bot
-class TweepyBot():
+class TweepyBot:
 	#init arrays and create api
     def __init__(self):
         self.potential_influencers = []

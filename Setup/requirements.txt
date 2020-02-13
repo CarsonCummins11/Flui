@@ -7,3 +7,4 @@ nltk
 gensim
 tweepy
 TwitterSearch
+instagram_private_api
