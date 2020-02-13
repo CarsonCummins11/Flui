@@ -18,12 +18,11 @@ class InstagramBot:
 	def set_engagement_ratio(self, username):
 		posts = self.api.username_feed(username)
 		info = self.api.username_info(username)
-		print(info)
-				
+		
 		ratios = []
 		for post in posts['items']:
 			ratios.append(post['like_count'] / info['follower_count']
-		self.engagement_score = sum(ratios) / len(ratios)			
+		self.engagement_score = sum(ratios) / len(ratios)
 
 #testing commands, remove when finished
 insta_bot = InstagramBot()
