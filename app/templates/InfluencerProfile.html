@@ -105,7 +105,7 @@
 	//Submits tags for the influencer to be identified with
     function submitTags(){
         $.get( "/getinfluencertags", function( data ) {
-			$("#editTags").html("<input id='stuff'onkeypress='resetTags(event)' class=inputTags  type='text' value="+data+">");
+			$("#editTags").html("<input id='stuff' onkeypress='resetTags(event)' class=inputTags  type='text' value='"+data+"'>");
         });
     }
     </script>
@@ -128,7 +128,6 @@
 	.inputTags{
 		color:white;
 		font-size:30%;
-		text-decoration: underline;
 	}
     input{
         font-family: 'Montserrat', sans-serif;

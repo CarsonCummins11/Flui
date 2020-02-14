@@ -55,18 +55,22 @@
         $('#cc').html('<input onclick="resetcompany()" type="submit" value="Save Changes">')
         $('#companytext').focus();
     }
-    function submitTags(){
-        $.get( "/getadvertisertags", function( data ) {
-            let tags = prompt('Search Tags',data)
-			if(tags == null) {
-				tags = data;
-			}
-            $.ajax({
+    function resetTags(key){
+		if(key.keycode == 13 || key.which == 13){
+			tags = $("#stuff").val();
+			$("#editTags").html('<span style="cursor:pointer;text-align:left" onclick="submitTags()"class="proflabel">(Edit Tags)</span>');
+			$.ajax({
                 type: 'POST',
                 url: '/submitadvertisertags',
-                data: JSON.stringify({ 'tags' : tags }),
+                data: JSON.stringify({ 'tags' : tags }), //Creates a string of a json object from submited tags
                 contentType: 'application/json',
             });
+		}
+	}
+	//Submits tags for the influencer to be identified with
+    function submitTags(){
+        $.get( "/getadvertisertags", function( data ) {
+			$("#editTags").html("<input id='stuff' onkeypress='resetTags(event)' class=inputTags  type='text' value='"+data+"'>");
         });
     }
     </script>
@@ -86,6 +90,10 @@
         font-size: 20%;
         cursor: pointer;
     }
+    .inputTags{
+		color:white;
+		font-size:30%;
+	}
     input{
         font-family: 'Montserrat', sans-serif;
         color:#707070;
@@ -158,7 +166,7 @@
     <h1>
     <span style="cursor:pointer" onclick="window.location.href = '/'">Flui</span>
     <span class="proflabel">Advertiser Profile</span>
-    <span style="cursor:pointer" onclick="submitTags()"class="proflabel">(Tags)</span>
+    <span id="editTags"><span style="cursor:pointer;text-align:left" onclick="submitTags()"class="proflabel">(Edit Tags)</span></span>
     <img class="search" onclick="window.location.href='/searchforinfluencers'" src="/static/images/Minimal_Search.png"></img>
     </h1>
     <form id="userprofile" action="/advertiserprofilechange" method="post">
