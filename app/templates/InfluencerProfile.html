@@ -105,7 +105,7 @@
 	//Submits tags for the influencer to be identified with
     function submitTags(){
         $.get( "/getinfluencertags", function( data ) {
-			$("#editTags").html("<input id='stuff'onkeypress='resetTags(event)' class=inputTags value="+data+" type='text'>");
+			$("#editTags").html("<input id='stuff'onkeypress='resetTags(event)' class=inputTags  type='text' value="+data+">");
         });
     }
     </script>
@@ -228,7 +228,7 @@
             
         </span>
         <span id="company">
-            <input id="companytext"type="text" name="fname" value="{{profile.first}}" readonly=true>
+            <input id="companytext"type="text" name="fname" value="{{profile.name}}" readonly=true>
             <span id='cc'><span id="companychange" class="change" onclick="changecompany()">Change</span></span>
         </span><br>
         <span id="email">

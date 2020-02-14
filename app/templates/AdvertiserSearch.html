@@ -30,6 +30,8 @@
         font-weight:100;
         text-align: center;
         box-shadow: 0px 12px 17px  #707070;
+        position: fixed;
+        width:100%;
     }
     input{
         font-family: 'Montserrat', sans-serif;
@@ -50,7 +52,7 @@
         opacity: 1;
     }
     .searcharea{
-        text-align:center;
+        text-align:left;
         margin:auto;
     }
     </style>
@@ -60,7 +62,7 @@
     <span style="cursor:pointer;float:left" onclick="window.location.href = '/'">Flui</span>
     <input id="search" placeholder='Search' type=text>
     </h1>
-    <div id="searcharea" class="searcharea"></div>
+    <div style='text-align: center;display: inline-block;'><div id="searcharea" class="searcharea"></div></div>
 </body>
 <script>
 //Search function, returns an array of results
@@ -73,9 +75,9 @@ function search(term){
         success: function (data) {
             toadd=''
             for (var key of Object.keys(data)) { 
-                toadd+=data[key];            
+                toadd+=data[key]+'<br>';            
             }
-            $('#searcharea').html(toadd);
+            $('#searcharea').html('<br>'+toadd);
         }   
     });
 }

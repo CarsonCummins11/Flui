@@ -2,7 +2,7 @@
 
 #uncomment this when running with python3 -m flask run(running the whole app)
 #from app.scraping.authentication.auth import auth_data
-from authentication.auth import auth_data #this is for local testing with the command python3 instagram.py(testing just this script)
+from app.scraping.authentication.auth import auth_data #this is for local testing with the command python3 instagram.py(testing just this script)
 from instagram_private_api import Client, ClientCompatPatch, ClientError, ClientLoginError
 import json
 
@@ -40,7 +40,6 @@ class InstagramBot:
 		r = requests.get('https://api.instagram.com/oembed/?url={}'.format(url))
 		media_id = r.json()['media_id']
 		return media_id'''
-
 #testing commands, remove when finished
 insta_bot = InstagramBot()
 #insta_bot.set_engagement_ratio(auth_data['insta_auth']['username'])

@@ -1,9 +1,14 @@
 #Sets up the mongo database
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash
+import random
 
 client = MongoClient()
 db = client['matcher']
+
+def randomtags():
+    tags = [ line for line in open('dummydata/tags.txt')]
+    return random.choice(tags)+','+random.choice(tags)+','+random.choice(tags)+','+random.choice(tags)
 #Loops over 'companies.txt' and creates profiles for each
 with open('dummydata/companies.txt') as f:
     for row in f:
@@ -13,7 +18,7 @@ with open('dummydata/companies.txt') as f:
         'desc':'No Description',
         'email':'No Email',
         'image':'',
-        'tags':''}
+        'tags':randomtags()}
         db['advertisers'].insert_one(prof)
 #Loops over 'influencers.txt' and creates profiles for each
 with open('dummydata/influencers.txt') as f:
@@ -28,5 +33,5 @@ with open('dummydata/influencers.txt') as f:
         'instagram':'No Instagram',
         'youtube':'No YouTube',
         'twitter':'No Twitter',
-        'tags':''}
+        'tags':randomtags()}
         db['influencers'].insert_one(prof)
