@@ -1,4 +1,4 @@
-import youtube-python
+import youtube_python
 from app.scraping.authentication.auth import auth_data
 
 class YoutubeBot:

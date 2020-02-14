@@ -51,8 +51,8 @@ class Influencer:
     def to_dict(self):
         return {
             "name": self.name,
-            "username": self.username,
-            "password": self.password, #hashed in __init__() of course
+            "user": self.username,
+            "pass": self.password, #hashed in __init__() of course
             "description": self.desc,
             "email": self.email,
             "img": self.img,
@@ -60,6 +60,6 @@ class Influencer:
             "yt": self.yt,
             "tw": self.tw, #This has to be their twitter handle
             "tags": self.tags,
-            "engagement_ratio": self.engagement_ratio
+            "engagement_ratio": 0 #change to this later -> self.engagement_ratio
         }
 

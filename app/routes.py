@@ -19,16 +19,16 @@ def about(): #returns the about page
 def newinfluencer(): #Creates a new influencer with blank information from the request form
     if db['influencers'].find_one({'user':request.form['user']}) is None and db['advertisers'].find_one({'user':request.form['user']}) is None:
         new_influencer = Influencer(
-            name = request.form['fname'], #NewInfluencer has the tag as 'name', but when you inspect it's still fname?
+            name = request.form['name'], #NewInfluencer has the tag as 'name', but when you inspect it's still fname?
             username = request.form['user'],
             password = request.form['pass'], #generates hash in __init__()
             email = request.form['email'],
-            desc = None,
-            img = None,
-            insta = None,
-            yt = None,
-            tw = None,
-            tags = None
+            desc = '',
+            img = '',
+            insta = '',
+            yt = '',
+            tw = '',
+            tags = ''
         )
         db['influencers'].insert_one(new_influencer.to_dict()) #Adds the profile to db, needs to be a dict
         use = User.User(username=new_influencer.username) #Sets the user to the newly created user
@@ -43,9 +43,9 @@ def newadvertiser(): #Creates a new advertiser
         new_advertiser = Advertiser(
             username = request.form['user'],
             password = request.form['pass'], #generates hash in __init__()
-            desc = None,
-            email = None,
-            img = None
+            desc = '',
+            email = '',
+            img = ''
         )
         db['advertisers'].insert_one(new_advertiser.to_dict()) #Adds the profile to db, needs to be a dict
         use = User.User(username=new_advertiser.username) #Sets the user to the newly created user
@@ -126,6 +126,7 @@ def advertisersearch(): #Creates an array of advertisers that match a tag and re
     i = 0
     for k in results:
         ret[str(i)]=AdvertiserProfile.create_from(k) #Adds advertiser's rendered template to a list(something that can be outputed to a webpage)
+        i+=1
     return ret if len(ret)>0 else 'No matches for that term :(' #Returns the results
 @app.route("/influencersearch", methods=['POST'])
 def influencersearch(): #Creates an array of influencers that match a tag and returns it
@@ -135,6 +136,7 @@ def influencersearch(): #Creates an array of influencers that match a tag and re
     i = 0
     for k in results:
         ret[str(i)]=InfluencerProfile.create_from(k) #Adds influencers's rendered template to a list(something that can be outputed to a webpage)
+        i+=1
     return ret if len(ret)>0 else 'No matches for that term :(' #Returns the results
 @app.route("/createrequest", methods=['POST'])
 def create_request(): #Creates a request object from a form submission

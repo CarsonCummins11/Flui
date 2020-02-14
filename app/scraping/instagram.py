@@ -2,7 +2,7 @@
 
 #uncomment this when running with python3 -m flask run(running the whole app)
 #from app.scraping.authentication.auth import auth_data
-from authentication.auth import auth_data #this is for local testing with the command python3 instagram.py(testing just this script)
+from app.scraping.authentication.auth import auth_data #this is for local testing with the command python3 instagram.py(testing just this script)
 from instagram_private_api import Client, ClientCompatPatch, ClientError, ClientLoginError
 
 class InstagramBot:
@@ -21,7 +21,7 @@ class InstagramBot:
 		
 		ratios = []
 		for post in posts['items']:
-			ratios.append(post['like_count'] / info['follower_count']
+			ratios.append(post['like_count'] / info['follower_count'])
 		self.engagement_score = sum(ratios) / len(ratios)
 
 #testing commands, remove when finished

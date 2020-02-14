@@ -5,7 +5,8 @@ from werkzeug.security import generate_password_hash
 #'Loaders are responsible for loading templates from a resource such as the file system.'
 #This code uses the BaseLoader, which is the base class for every loader
 def create_from(profile):
-    template=''' #Jinja Template for Advertiser as a string
+    #Jinja Template for Advertiser as a string
+    template='''
         <style>
     .nametext{
         font-family: 'Montserrat', sans-serif;
@@ -37,8 +38,8 @@ class Advertiser():
         self.img = img
     def to_dict(self):
         return {
-            "username": self.username,
-            "password": self.password, #hashed in __init__() of course
+            "user": self.username,
+            "pass": self.password, #hashed in __init__() of course
             "description": self.desc,
             "email": self.email,
             "img": self.img
