@@ -1,10 +1,15 @@
 #scraping bot for instagram
 #uncomment this when running with python3 -m flask run(running the whole app)
 #from app.scraping.authentication.auth import auth_data
-from app.scraping.authentication.auth import auth_data #this is for local testing with the command python3 instagram.py(testing just this script)
+from authentication.auth import auth_data #this is for local testing with the command python3 instagram.py(testing just this script)
 from instagram_private_api import Client, ClientCompatPatch, ClientError, ClientLoginError
 import json
+from lxml import html
 import requests
+from io import BytesIO
+from PIL import Image
+import pickle
+import base64
 class InstagramBot:
     #Log into instagram and init api object with auth data
     def __init__(self):
@@ -25,21 +30,20 @@ class InstagramBot:
             v = 1+1
     def store_data(self, username):
         posts = self.api.username_feed(username)
+        i = 0
+        results = {}
         for post in posts['items']:
-            results = {}
-            results['postInfo'] = post['caption']["media_id"]
+            results['postInfo'+str(i)] = post['caption']["media_id"]
             post_url = 'https://www.instagram.com/p/' + post['code']
-            html = requests.get(post_url)
-            print(html.text)
+            page = requests.get(post_url)
+            tree = html.fromstring(page.content)
+            img_url = tree.xpath('/html/head/meta[11]/@content')[0]
+            response = requests.get(img_url)
+            img = Image.open(BytesIO(response.content))
+            stri = base64.b64encode(response.content).decode('utf-8')
             # results['desc'] = description
-            results['capt'] = post['caption']['text']
+            results['capt'+str(i)] = post['caption']['text']
+            results['img'+str(i)] = stri
             # print(results)
-        json.dump(results, open("instadata.json", 'w+'))
-    '''def get_media_id(url):
-        r = requests.get('https://api.instagram.com/oembed/?url={}'.format(url))
-        media_id = r.json()['media_id']
-        return media_id'''
-#testing commands, remove when finished
-insta_bot = InstagramBot()
-#insta_bot.set_engagement_ratio(auth_data['insta_auth']['username'])
-insta_bot.store_data('ty.greenwood')
+            i+=1
+        json.dump(results, open("mldata/instadata.json", 'w+'))

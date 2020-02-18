@@ -1,7 +1,7 @@
 from gensim.test.utils import common_texts
 from gensim.models import Word2Vec, Phrases
 import json
-from twitter import TweepyBot
+from app.scraping.twitter import TweepyBot
 
 #searches using most common words in english as keywords
 def build_with_generic_keys():
@@ -15,10 +15,11 @@ def build(keywords):
     for tweet in tweets:
         f = tweet.replace("\n", " ")
         temp = [] 
-            # tokenize the sentence into words 
+            # tokenize the tweet into words 
         for j in tweet.split(): 
             temp.append(j.lower()) 
         data.append(temp)
+    #train the model
     model = Word2Vec(data,size=100, window=5, min_count=1, workers=4)
     model.save("word2vec.model")
 
