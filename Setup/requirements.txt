@@ -1,6 +1,6 @@
 flask
 requests
-BeautifulSoup
+BeautifulSoup4
 werkzeug
 flask_login
 pymongo
