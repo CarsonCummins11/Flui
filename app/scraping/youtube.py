@@ -22,6 +22,8 @@ class YoutubeBot:
 		return (requests.get(url) != self.youtube_404)
 	
 	#given a username, create and return an json of the user's basic info with some calculated stats
+	#only returns a user if it passes through "exists"
+	#needs to be updated to handle non unique urls and IDs
 	def get_user_by_name(self, youtuber):
 		if(self.exists(youtuber)):
 			page = requests.get(youtubeuserurl + youtuber)
