@@ -13,15 +13,29 @@ def create_from(profile):
         font-weight: 100;
         color:#707070;
         font-size: 100%;
+        padding-left:8px;
     }
     .text{
         font-family: 'Montserrat', sans-serif;
         font-weight: 100;
         color:#707070;
         font-size: 25%;
+        padding-left:14px;
+    }
+    .clickbox{
+        display:inline-block;
+        text-align:left;
+        border-radius:25px;
+        box-shadow: 0px 3px 7px DarkGrey;
+        cursor:pointer;
+        margin-top:20px;
+    }
+    .clickbox:focus, .clickbox:active, .clickbox.active, .clickbox:focus:active {
+        -webkit-box-shadow: none;
+        box-shadow: none;
     }
     </style>
-    <div style="display:inline-block;text-align:left;">
+    <div class=clickbox>
         <div class='nametext'>{{profile.first}}</div>
         <div class='text'>
             <img style="width:1vw;height:1vw;" src="/static/images/Instagram_Logo.png">{{profile.instagram}}

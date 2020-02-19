@@ -56,6 +56,7 @@
         .searcharea{
             text-align:center;
             margin:auto;
+            margin-top: 30px;
         }
         .adstyle{
             text-align: center;
@@ -72,6 +73,7 @@
         <span style="cursor:pointer;float:left" onclick="window.location.href = '/'">Flui</span>
         <input id="search" placeholder='Search' type=text>
         </h1>
+        <br>
         <div class="adstyle"style="cursor: pointer;" onclick="adwithgroup()">Advertise with Group</div>
         <div style="text-align: center;display: inline-block;"><div id="searcharea" class="searcharea"></div></div>
     </body>
@@ -88,13 +90,13 @@ function search(term){
             for (var key of Object.keys(data)) {
                 toadd+=data[key]+'<br>';            
             }
-            $('#searcharea').html('<br>'+toadd); //Adds the array of results
+            $('#searcharea').html(toadd); //Adds the array of results
         }   
     });
 }
 function adwithgroup() {
     term = $("#search").val();
-    window.location.href="/adwithgroup?"+term;
+    window.location.href="/adwithgroup?tags="+term;
 }
 $("#search").on("keydown", function (e) {
     if (e.keyCode === 13) {  //checks whether the pressed key is "Enter"

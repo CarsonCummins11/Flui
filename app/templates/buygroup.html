@@ -33,19 +33,15 @@
         }
         input{
             font-family: 'Montserrat', sans-serif;
-            border: 2px solid #707070;
+            border: 2px solid #707070be;
             color: #707070;
             padding: 8px 16px;
             font-size: 16px;
             border-radius: 50px;
             text-align:center;
             font-style: italic;
-            float:center; 
-        }
-        input[type=file]{
-            position: fixed;
-            right: 100%;
-            bottom: 100%;
+            float:center;
+            box-shadow: 0px 3px 6px darkgray; 
         }
         .custom-file-upload{
             font-family: 'Montserrat', sans-serif;
@@ -75,13 +71,7 @@
         <form style="text-align:center"action="/createrequest" method="post">
             <input type="text" name="budget" placeholder="Budget" value=""><br>
             <input type="text" name="contact" placeholder="Contact" value=""><br>
-            <label id="lab"for="file-upload" class="custom-file-upload">
-                <img src="/static/images/file.png" style="width:4vw">
-                No File
-            </label>
-            <input id="file-upload"type="file" name="file"><br>
-            <input type="text" name="note" placeholder="Notes" value=""><br>
-			<input type="text" name="tags" placeholder="Tags" value=""><br> <!-- Need to make this a dropdown or search for tags system -->
+            <input type="text" name="note" placeholder="Link" value=""><br>
             <input style="cursor:pointer; background-color: white;" type="submit" value="Buy">
         </form>
     </body>

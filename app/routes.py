@@ -144,7 +144,7 @@ def create_request(): #Creates a request object from a form submission
         budget=request.form['budget'],
         media=request.form['file'],
         description=request.form['note'],
-        tags=request.form['tags'],
+        tags=request.args['tags'],
         contact=request.form['contact'],
         author=current_user.username
     )
