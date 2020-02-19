@@ -1,4 +1,6 @@
 flask
+requests
+BeautifulSoup4
 werkzeug
 flask_login
 pymongo
@@ -8,4 +10,4 @@ gensim
 tweepy
 TwitterSearch
 instagram_private_api
-youtube-python
+youtube-dl
