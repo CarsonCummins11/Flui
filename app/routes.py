@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user, login_user, login_required
 import pickle
 from app.request import Request
+from jinja2 import Environment, BaseLoader
 
 @app.route("/")
 def main(): #returns the home page on start
@@ -128,7 +129,7 @@ def advertisersearch(): #Creates an array of advertisers that match a tag and re
     for k in results:
         ret[str(i)]=AdvertiserProfile.create_from(k) #Adds advertiser's rendered template to a list(something that can be outputed to a webpage)
         i+=1
-    return ret if len(ret)>0 else 'No matches for that term :(' #Returns the results
+    return ret if len(ret)>0 else 'no matches for that term:(' #Returns the results
 @app.route("/influencersearch", methods=['POST'])
 def influencersearch(): #Creates an array of influencers that match a tag and returns it
     db['influencers'].create_index([('tags','text')])
@@ -138,7 +139,7 @@ def influencersearch(): #Creates an array of influencers that match a tag and re
     for k in results:
         ret[str(i)]=InfluencerProfile.create_from(k) #Adds influencers's rendered template to a list(something that can be outputed to a webpage)
         i+=1
-    return ret if len(ret)>0 else 'No matches for that term :(' #Returns the results
+    return ret if len(ret)>0 else 'no matches for term:(' #Returns the results
 @app.route("/createrequest", methods=['POST'])
 def create_request(): #Creates a request object from a form submission
     r = Request(
