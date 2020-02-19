@@ -190,10 +190,11 @@
     .search{
         cursor:pointer;
         float:right;
-        width: 70px;
-        height: 70px;
-        margin-top: 10px;
+        font-size:56%;
         margin-right:30px;
+        margin-top:20px;
+        white-space: pre;
+        
     }
     .media{
         float:right;
@@ -205,7 +206,8 @@
     <span style="cursor:pointer" onclick="window.location.href = '/'">Flui</span>
     <span class="proflabel">Influencer Profile</span>
     <span id="editTags"><span style="cursor:pointer;text-align:left" onclick="submitTags()"class="proflabel">(Edit Tags)</span></span>
-    <img class="search" onclick="window.location.href='/searchforadvertisers'"src="/static/images/Minimal_Search.png"></img>
+    <span class = search onclick="window.location.href='/searchforadvertisers'">Search</span>
+    <span class = search onclick="window.location.href='/viewrequest?user={{profile.user}}'">Ads  |</span>
     </h1>
     <form id="userprofile" action="/influencerprofilechange" method="post">
         <span class="media">

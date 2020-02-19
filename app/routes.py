@@ -81,6 +81,7 @@ def loginadvertiser(): #Logs an advertiser in
 def advertiserprofile(): #If the user isn't null, then return a rendered template(using Jinja), this is used in rendering to browser
     print(current_user)
     profile = db['advertisers'].find_one({'user':current_user.username})
+    print(profile)
     return render_template('AdvertiserProfile.html',profile=profile) 
 @app.route("/influencerprofile")
 def influencerprofile(): #If the user isn't null, then return a rendered template(using Jinja), this is used in rendering to browser
@@ -142,8 +143,7 @@ def influencersearch(): #Creates an array of influencers that match a tag and re
 def create_request(): #Creates a request object from a form submission
     r = Request(
         budget=request.form['budget'],
-        media=request.form['file'],
-        description=request.form['note'],
+        link=request.form['note'],
         tags=request.args['tags'],
         contact=request.form['contact'],
         author=current_user.username
@@ -156,7 +156,7 @@ def adwithgroup():
     return render_template('buygroup.html')
 @app.route("/viewrequest")
 def viewrequest():
-    r = pickle.loads(db[request.args.get('co')].find({})['request'])
+    r = pickle.loads(db[request.args.get('user')].find_one({})['request'])
     return r.get_render_template()
 @app.route("/acceptrequest")
 def acceptrequest():
