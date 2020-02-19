@@ -1,3 +1,4 @@
+setuptools
 flask
 requests
 BeautifulSoup4
@@ -6,6 +7,7 @@ flask_login
 pymongo
 yagmail
 nltk
+anaconda
 gensim
 tweepy
 TwitterSearch
