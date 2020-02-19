@@ -29,13 +29,14 @@ def create_from(profile):
         box-shadow: 0px 3px 7px DarkGrey;
         cursor:pointer;
         margin-top:20px;
+        width:120%;
     }
     .clickbox:focus, .clickbox:active, .clickbox.active, .clickbox:focus:active {
         -webkit-box-shadow: none;
         box-shadow: none;
     }
     </style>
-    <div class=clickbox">
+    <div class="clickbox">
         <div class='nametext'>{{profile.company}}</div>
         <div class='text'>{{profile.desc}}</div>
     </div>
