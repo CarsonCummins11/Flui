@@ -74,7 +74,11 @@ function search(term){
         contentType: 'application/json',
         success: function (data) {
             toadd=''
-            for (var key of Object.keys(data)) { 
+            for (var key of Object.keys(data)) {
+                if(data=='no matches for term:('){
+                    toadd = '<div>No matches for term</div>';
+                    break;
+                } 
                 toadd+=data[key]+'<br>';            
             }
             $('#searcharea').html('<br>'+toadd);

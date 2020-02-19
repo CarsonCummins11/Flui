@@ -9,6 +9,7 @@ from flask_login import current_user, login_user, login_required
 import pickle
 from app.request import Request
 from jinja2 import Environment, BaseLoader
+from urllib.parse import unquote
 
 @app.route("/")
 def main(): #returns the home page on start
@@ -145,11 +146,11 @@ def create_request(): #Creates a request object from a form submission
     r = Request(
         budget=request.form['budget'],
         link=request.form['note'],
-        tags=request.args['tags'],
+        tags=unquote(request.args.get('tags')),
         contact=request.form['contact'],
         author=current_user.username
     )
-    db[current_user.username].update({'request': pickle.dumps(r)})
+    db[current_user.username].insert_one({'request': r.get_json()})
     r.sendmail()
     return r.get_render_template()
 @app.route("/adwithgroup")
@@ -157,7 +158,16 @@ def adwithgroup():
     return render_template('buygroup.html')
 @app.route("/viewrequest")
 def viewrequest():
-    r = pickle.loads(db[request.args.get('user')].find_one({})['request'])
+    prof = db[request.args.get('user')].find_one({})['request']
+    print(prof)
+    r= Request(
+        budget=prof['budget'],
+        link=prof['link'],
+        tags=prof['tags'],
+        contact=prof['contact'],
+        author=prof['author']
+    )
+
     return r.get_render_template()
 @app.route("/acceptrequest")
 def acceptrequest():

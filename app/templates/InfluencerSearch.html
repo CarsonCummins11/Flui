@@ -88,6 +88,10 @@ function search(term){
         success: function (data) {
             toadd=''
             for (var key of Object.keys(data)) {
+                if(data=='no matches for term:('){
+                    toadd = '<div>No matches for term</div>';
+                    break;
+                }
                 toadd+=data[key]+'<br>';            
             }
             $('#searcharea').html(toadd); //Adds the array of results

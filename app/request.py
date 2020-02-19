@@ -8,18 +8,25 @@ class Request:
 	#budget is an integer, media will be some multimedia object(needs to be implemented), description is a string, tags is an array of strings, author is a string
 	def __init__(self, budget, link, tags, contact, author):
 		self.budget = budget
-		self.media = media
 		self.link = link
 		self.tags = tags
 		self.contact = contact
 		self.author = author
+	def get_json(self):
+		return {
+			'budget':self.budget,
+			'link':self.link,
+			'tags':self.tags,
+			'contact':self.contact,
+			'author':self.author
+		}
 	#sends emails to relevant creators
 	def sendmail(self):
 		request = {'budget': self.budget, 'description': self.link, 'tags':self.tags, 'author': self.author}
 		db['influencers'].create_index([('tags','text')])
-		results = db['influencers'].find({'$text': { '$search': request.get_json()['term'] } })
+		results = db['influencers'].find({'$text': { '$search': self.tags } })
 		for influencer in results:
-			db[influencer['username']].update({'request': request})
+			db[influencer['user']].insert_one({'request': self.get_json()})
 	#Returns the request class as a jinja template
 	def get_render_template(self):
 		request = {'budget': self.budget, 'description': self.link, 'tags':self.tags, 'author': self.author}

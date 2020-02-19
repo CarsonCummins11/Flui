@@ -68,7 +68,7 @@
         <span style="cursor:pointer;float:left" onclick="window.location.href = '/'">Flui</span>
         <span class="proflabel">Group Advertisement</span>
         </h1>
-        <form style="text-align:center"action="/createrequest" method="post">
+        <form id = "makestuff" style="text-align:center" method="post">
             <input type="text" name="budget" placeholder="Budget" value=""><br>
             <input type="text" name="contact" placeholder="Contact" value=""><br>
             <input type="text" name="note" placeholder="Link" value=""><br>
@@ -76,8 +76,13 @@
         </form>
     </body>
     <script>
-    document.getElementById('file-upload').onchange = function() {
-        $('#lab').html("<img src='/static/images/file.png'style='width:4vw'>"+$('#file-upload').val()); //Needs to possibly be video, img or any file
-    };
+    function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+    }
+    $('#makestuff').attr('action','/createrequest?tags='+getUrlVars()['tags'])
     </script>
 </html>
