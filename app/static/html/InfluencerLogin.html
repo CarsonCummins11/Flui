@@ -20,13 +20,13 @@
         color: white;
     }
 </style>
-<div style="float:left;margin-left:15%;">
+<div style="float:left;margin-left:15%;position: relative;top: 50%;transform: translateY(50%);">
     <div id="left" style="text-align:center">
         <div><img onclick='$("#center").load("/static/html/InfluencerLogin.html");'src="/static/images/Minimal_Camera.png"></img></div>
         <i style="font-size: 40px;">Influencer</i>
     </div>
 </div>
-    <div style="float:right;margin-right:15%;">
+    <div style="float:right;margin-right:15%;position: relative;top: 50%;transform: translateY(50%);">
         <div id="left" style="text-align:center">
             <form style="text-align:center"action="/logininfluencer" method="post">
                 <input type="text" name="user" onfocus="this.value=''" value="Username"><br>
