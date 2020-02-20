@@ -66,12 +66,20 @@
             color:#bfbfbf;
             font-weight: lighter;
         }
+        .search{
+        cursor:pointer;
+        float:right;
+        font-size:56%;
+        margin-right:30px;
+        margin-top:20px;
+    }
         </style>
     </head>
     <body>
         <h1>
         <span style="cursor:pointer;float:left" onclick="window.location.href = '/'">Flui</span>
         <input id="search" placeholder='Search' type=text>
+        <span class = search onclick="window.location.href='/advertiserprofile'">Profile</span>
         </h1>
         <br>
         <div class="adstyle"style="cursor: pointer;" onclick="adwithgroup()">Advertise with Group</div>

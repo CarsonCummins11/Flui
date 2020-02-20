@@ -155,10 +155,9 @@
     .search{
         cursor:pointer;
         float:right;
-        width: 70px;
-        height: 70px;
-        margin-top: 10px;
+        font-size:56%;
         margin-right:30px;
+        margin-top:20px;
     }
     </style>
 </head>
@@ -167,7 +166,7 @@
     <span style="cursor:pointer" onclick="window.location.href = '/'">Flui</span>
     <span class="proflabel">Advertiser Profile</span>
     <span id="editTags"><span style="cursor:pointer;text-align:left" onclick="submitTags()"class="proflabel">(Edit Tags)</span></span>
-    <img class="search" onclick="window.location.href='/searchforinfluencers'" src="/static/images/Minimal_Search.png"></img>
+    <span class = search onclick="window.location.href='/searchforadvertisers'">Search</span>
     </h1>
     <form id="userprofile" action="/advertiserprofilechange" method="post">
         <div id="company">

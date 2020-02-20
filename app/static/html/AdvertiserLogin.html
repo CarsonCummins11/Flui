@@ -11,6 +11,14 @@
             text-align:center;
             margin-bottom:20%;
             font-style: italic;
+            
+        }
+        .new{
+            font-style: normal;
+        }
+        .new:hover {
+        background-color: #FFF;
+        color: white;
         }
     </style>
     <div style="float:left;margin-left:15%;">
@@ -18,7 +26,7 @@
             <form style="text-align:center"action="/loginadvertiser" method="post">
                 <input type="text" name="user" onfocus="this.value=''" value="Username"><br>
                 <input type="text" name="pass" onfocus="this.value=''" value="Password"><br>
-                <input style="cursor:pointer"type="submit" value="Login">
+                <input class="new" style="cursor:pointer;"type="submit" value="Login">
             </form>
         </div>
     </div>
