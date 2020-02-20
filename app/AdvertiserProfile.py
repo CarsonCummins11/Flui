@@ -7,6 +7,7 @@ from werkzeug.security import generate_password_hash
 def create_from(profile):
     #Jinja Template for Advertiser as a string
     template='''
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
         <style>
     .nametext{
         font-family: 'Montserrat', sans-serif;
@@ -36,6 +37,17 @@ def create_from(profile):
         box-shadow: none;
     }
     </style>
+    <div class="clickbox">
+        <div class='nametext'>{{profile.company}}</div>
+        <div class='text'>{{profile.desc}}</div>
+    </div>
+    '''
+    rtemplate = Environment(loader=BaseLoader).from_string(template) #Creates the Jinja template object for an advertiser from the string 'template'
+    return rtemplate.render(profile=profile) #Returns rendered template(as a unicode string)
+def create_from_plain(profile):
+    #Jinja Template for Advertiser as a string
+    print(profile)
+    template='''
     <div class="clickbox">
         <div class='nametext'>{{profile.company}}</div>
         <div class='text'>{{profile.desc}}</div>

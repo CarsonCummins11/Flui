@@ -7,6 +7,7 @@ from werkzeug.security import generate_password_hash
 def create_from(profile):
  #String for the Jinja template
     template='''
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
         <style>
     .nametext{
         font-family: 'Montserrat', sans-serif;
