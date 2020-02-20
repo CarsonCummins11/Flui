@@ -26,7 +26,7 @@ class Request:
 		db['influencers'].create_index([('tags','text')])
 		results = db['influencers'].find({'$text': { '$search': self.tags } })
 		for influencer in results:
-			db[influencer['user']].insert_one({'request': self.get_json()})
+			db['influencers'].update({'user':influencer['user']},{'$set':{'request':self.get_json()}})
 	#Returns the request class as a jinja template
 	def get_render_template(self):
 		request = {'budget': self.budget, 'description': self.link, 'tags':self.tags, 'author': self.author,'contact':self.contact}

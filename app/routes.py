@@ -95,7 +95,7 @@ def advertiserprofilechange(): #Changes the current user based on a request form
     return redirect('/advertiserprofile')
 @app.route("/influencerprofilechange",methods=['POST'])
 def influencerprofilechange(): #Changes the influencer based on a request form
-    db['influencers'].update({'user':current_user.username},{'$set':{"first":request.form['fname'],
+    db['influencers'].update({'user':current_user.username},{'$set':{"name":request.form['fname'],
     "desc":request.form['desc'],"email":request.form['email'],"instagram":request.form['instagram'],
     "youtube":request.form['youtube'],"twitter":request.form['twitter']}})
     return redirect('/influencerprofile')
@@ -150,7 +150,7 @@ def create_request(): #Creates a request object from a form submission
         contact=request.form['contact'],
         author=current_user.username
     )
-    db[current_user.username].insert_one({'request': r.get_json()})
+    db['influencers'].update({'user':current_user.username},{'$set':{'request':r.get_json()}})
     r.sendmail()
     return r.get_render_template()
 @app.route("/adwithgroup")
@@ -158,7 +158,7 @@ def adwithgroup():
     return render_template('buygroup.html')
 @app.route("/viewrequest")
 def viewrequest():
-    prof = db[request.args.get('user')].find_one({})['request']
+    prof = db['influencers'].find_one({'user':request.args.get('user')})['request']
     print(prof)
     r= Request(
         budget=prof['budget'],

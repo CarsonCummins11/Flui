@@ -35,8 +35,7 @@ with open('dummydata/companies.txt') as f:
 #Loops over 'influencers.txt' and creates profiles for each
 with open('dummydata/influencers.txt') as f:
     for row in f:
-        prof = {'first':row[:-1],
-        'last':'',
+        prof = {'name':row[:-1],
         'user':row[:-1],
         'pass':generate_password_hash('p'), #generates password hash from entered password
         'desc':'No Description',
