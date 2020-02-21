@@ -37,7 +37,7 @@ def create_from(profile):
         box-shadow: none;
     }
     </style>
-    <div class="clickbox">
+    <div class="clickbox" onclick="window.location.href='/viewadvertiserprofile?user={{profile.user}}'">
         <div class='nametext'>{{profile.company}}</div>
         <div class='text'>{{profile.desc}}</div>
     </div>

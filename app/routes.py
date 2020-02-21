@@ -169,7 +169,11 @@ def viewrequest():
     )
 
     return r.get_render_template()
-@app.route("/acceptrequest")
-def acceptrequest():
-    #TODO pay the influencer here
-    return 'Everyone at Flui is excited to see your ad in the coming week!'
+@app.route("/viewadvertiserprofile")
+def viewadvertiserprofile():
+    prof = db['advertisers'].find_one({'user':request.args.get('user')})
+    return render_template('StaticAdvertiser.html',profile=prof)
+@app.route("/viewinfluencerprofile")
+def viewinfluencerprofile():
+    prof = db['influencers'].find_one({'user':request.args.get('user')})
+    return render_template('StaticInfluencer.html',profile=prof)

@@ -68,7 +68,7 @@
     .infotext{
         font-style: italic;
         position:absolute;
-        visibility: hidden;
+        display: none;
         bottom: 0;
         font-size: 2vw;
     }
@@ -89,7 +89,6 @@
             Why
         </div>
       </div>
-      
       <div class="row">
         <div id="how"tabindex="3" class="column">
           How
@@ -104,54 +103,61 @@
     </div>
 </body>
 <script>
+    fade_time=600;
     $('#info').css("bottom",5);
     document.getElementById('what').addEventListener('mouseover', function() {
+        $('#info').css("display","none");
         $('#what').focus();
         $('#info').css("top",$('#who').offset().top);
         $('#info').css("left",$('#who').offset().left);
         $('#info').css("right",5);
-        $('#info').css("visibility","visible");
+        $('#info').fadeIn(fade_time);
         $('#info').html("Flui connects advertisers to groups of similar influencers. It allows small time influencers to get brand deals that are typically reserved for those with a larger audience, and allows advertisers to reach high engagement, niche markets. Flui will fix social media marketing.");
     });
     document.getElementById('who').addEventListener('mouseover', function() {
+        $('#info').css("display","none");
         $('#who').focus();
         $('#info').css("top",$('#why').offset().top);
         $('#info').css("left",$('#why').offset().left);
         $('#info').css("right",5);
-        $('#info').css("visibility","visible");
+        $('#info').fadeIn(fade_time);
         $('#info').html("Flui was created by a group of Portland teenagers with one goal: fixing social media. We want to help small influencers focus on what matters: creativity, and advertisers find audiences that will be receptive, rather than annoyed, by their advertisements.");
     });
     document.getElementById('why').addEventListener('mouseover', function() {
+        $('#info').css("display","none");
         $('#why').focus();
         $('#info').css("top",$('#what').offset().top);
         $('#info').css("left",$('#what').offset().left);
         $('#info').css("right",($(window).width() - ($('#who').offset().left + $('#who').outerWidth())));
-        $('#info').css("visibility","visible");
+        $('#info').fadeIn(fade_time);
         $('#info').html("Social media is broken. The small time influencers are forced to work inhumane hours to make just enough revenue to live. Some don't even have the ability to monetize. Flui is here to fix that.");
     });
     document.getElementById('how').addEventListener('mouseover', function() {
+        $('#info').css("display","none");
         $('#how').focus();
         $('#info').css("top",$('#contact').offset().top);
         $('#info').css("left",$('#contact').offset().left);
         $('#info').css("right",5);
-        $('#info').css("visibility","visible");
+        $('#info').fadeIn(fade_time);
         $('#info').html("Flui uses industry standard machine learning to build groups of influencers tailored exactly to match the requests of advertisers. Flui's custom algorithm takes away the stress of finding an influencer to run your ad.");
     });
     document.getElementById('contact').addEventListener('mouseover', function() {
+        $('#info').css("display","none");
         $('#contact').focus();
         $('#info').css("top",$('#how').offset().top);
         $('#info').css("left",$('#how').offset().left);
         $('#info').css("right",($(window).width() - ($('#how').offset().left + $('#how').outerWidth())));
-        $('#info').css("visibility","visible");
+        $('#info').fadeIn(fade_time);
         $('#info').html("Our founder can be contacted by email at carson@flui.co. You can find us on Instagram at flui.co, and Twitter at flui_co");
     });
     document.getElementById('new').addEventListener('mouseover', function() {
+        $('#info').css("display","none");
         $('#new').focus();
         $('#info').css("top",$('#how').offset().top);
         $('#info').css("left",$('#how').offset().left);
         $('#info').css("right",($(window).width() - ($('#contact').offset().left + $('#contact').outerWidth())));
-        $('#info').css("visibility","visible");
-        $('#info').html("Flui development is well underway, and will launch soon. Stay ready to save social media.");
+        $('#info').fadeIn(fade_time);
+        $('#info').html("Flui development is well underway, and will launch March 5th.");
     });
 </script>
 </html>

@@ -1,0 +1,117 @@
+<!--
+	Profile page for an advertiser
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+    body{
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 100;
+        color:#707070;
+        background-color: white;
+        font-size: 5vw;
+        overflow: hidden;
+    }
+    .change{
+        font-family: 'Montserrat', sans-serif;
+        color:#7B7B7B;
+        font-style: italic;
+        font-size: 20%;
+        cursor: pointer;
+    }
+    .inputTags{
+		color:white;
+		font-size:30%;
+	}
+    input{
+        font-family: 'Montserrat', sans-serif;
+        color:#707070;
+        border:0;
+        font-size: 5vw;
+        font-style: italic;
+        font-weight: 100;
+        padding: 0px;
+        background: none;
+    }
+    input[type=submit]{
+        font-family: 'Montserrat', sans-serif;
+        color:#7B7B7B;
+        font-style: italic;
+        font-size: 1vw;
+        cursor: pointer;
+        background:white;
+    }
+    input[type=text]:focus:read-write{
+        outline: 0px;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 3px solid #707070;
+    }
+    .descriptiontext{
+        font-family: 'Montserrat', sans-serif;
+        color:#707070;
+        font-weight: lighter;
+        font-size: 50%;
+        text-align:left;
+        border: 0px;
+        outline: 0px;
+        resize: none;
+        overflow:hidden;
+    }
+    h1{
+        font-family: 'Montserrat', sans-serif;
+        color:white;
+        font-style:italic;
+        text-align:left;
+        background:#212121;
+        font-size: 70px;
+        margin-top: -10px;
+        margin-right:-10px;
+        margin-left:-10px;
+        margin-bottom: 0px;
+        padding: -5px;
+        font-weight:100;
+        box-shadow: 0px 12px 17px  #707070;
+    }
+    .proflabel{
+        font-size:30%;
+        padding:0;
+        font-weight: 100;
+        margin:-15px;
+        margin-right:0;
+    }
+    .search{
+        cursor:pointer;
+        float:right;
+        font-size:56%;
+        margin-right:30px;
+        margin-top:20px;
+    }
+    </style>
+</head>
+<body>
+    <h1>
+    <span style="cursor:pointer" onclick="window.location.href = '/'">Flui</span>
+    <span class="proflabel">Advertiser Profile</span>
+    <span class = search onclick="window.location.href='/searchforadvertisers'">Search</span>
+    </h1>
+    <form id="userprofile" action="/advertiserprofilechange" method="post">
+        <div id="company">
+            <input id="companytext"type="text" name="company" value="{{profile.company}}" readonly=true>
+        </div>
+        <div id="email">
+            <input id="emailtext"type="text" name="email" value="{{profile.email}}" readonly=true>
+        </div>
+        <div id="description">
+            <i>Description</i>
+            <textarea rows=200 id='desctext'readonly=true maxlength=150 name=desc class="descriptiontext">{{profile.desc}}</textarea>
+        </div>
+    </form>
+</body>
+
+</html>
