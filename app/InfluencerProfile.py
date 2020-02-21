@@ -36,8 +36,8 @@ def create_from(profile):
         box-shadow: none;
     }
     </style>
-    <div class=clickbox>
-        <div class='nametext'>{{profile.first}}</div>
+    <div class=clickbox onclick="window.location.href='/viewinfluencerprofile?user={{profile.user}}'">
+        <div class='nametext'>{{profile.name}}</div>
         <div class='text'>
             <img style="width:1vw;height:1vw;" src="/static/images/Instagram_Logo.png">{{profile.instagram}}
             <img style="width:1vw;height:1vw;" src="/static/images/Twitter_Logo.png">{{profile.twitter}}
