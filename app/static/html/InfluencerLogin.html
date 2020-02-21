@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <h1 onclick="location.reload()">Flui</h1>
 <style>
     input{
@@ -48,8 +47,8 @@
     <div style="float:right;margin-right:15%;position: relative;top: 50%;transform: translateY(50%);">
         <div id="left" style="text-align:center">
             <form style="text-align:center"action="/logininfluencer" method="post">
-                <input type="text" name="user" onfocus="this.value=''" value="Username"><br>
-                <input id="secret-password" type="text" name="pass" onfocus="this.value=''; this.type = 'password'" value="Password">
+                <input type="text" name="user" placeholder="Username"><br>
+                <input style="margin-left: 26px;" id="secret-password" type="password" name="pass"  placeholder="Password">
 				<span toggle="#secret-password" class="fa fa-fw fa-eye field-icon toggle-password"></span><br>
                 <input class = "new" style="cursor:pointer"type="submit" value="Login">
             </form>

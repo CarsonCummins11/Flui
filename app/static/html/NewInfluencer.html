@@ -19,7 +19,25 @@
         background-color: #FFF;
         color: white;
         }
+        .field-icon {
+		float: right;
+		position: relative;
+		z-index: 2;
+		color: white;
+	}
 </style>
+<script>
+    $(".toggle-password").click(function() {
+        $(this).toggleClass("fa-eye fa-eye-slash");
+        var input = $($(this).attr("toggle"));
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        }
+        else {
+            input.attr("type", "password");
+        }
+    });
+</script>
 <div style="float:left;margin-left:15%;position: relative;top: 50%;transform: translateY(50%);">
     <div id="left" style="text-align:center">
         <div><img onclick='$("#center").load("/static/html/InfluencerLogin.html");'src="/static/images/Minimal_Camera.png"></img></div>
@@ -29,10 +47,11 @@
     <div style="float:right;margin-right:15%;position: relative;top: 50%;transform: translateY(20%);">
         <div id="left" style="text-align:center">
             <form style="text-align:center"action="/newinfluencer" method="post">
-                <input type="text" name="name" onfocus="this.value=''" value="Name"><br>
-                <input type="text" name="email" onfocus="this.value=''" value="Email"><br>
-                <input type="text" name="user" onfocus="this.value=''" value="Username"><br>
-                <input type="text" name="pass" onfocus="this.value=''" value="Password"><br>
+                <input type="text" name="name" placeholder="Name"><br>
+                <input type="text" name="email" placeholder="Email"><br>
+                <input type="text" name="user" placeholder="Username"><br>
+                <input id="secret-password" type="password" name="pass" placeholder="Password">
+                <span style="margin-right: -26px;" toggle="#secret-password" class="fa fa-fw fa-eye field-icon toggle-password"></span><br>
                 <input class="new" style="cursor:pointer"type="submit" value="Create">
             </form>
         </div>
