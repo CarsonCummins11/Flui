@@ -67,15 +67,46 @@
     }
     .infotext{
         font-style: italic;
-        position:absolute;
+        position: absolute;;
         display: none;
         bottom: 0;
         font-size: 2vw;
     }
+    .header-overlay {
+        position: fixed;
+        font-style: italic;
+        font-size: 300px;
+        text-align: center;
+        top: 25%;
+        left: 0;
+        width: 100%;
+        opacity: 1;
+    }
+    .down-arrow{
+        position:fixed;
+        top:90%;
+        text-align: center;
+        width: 100%;
+        font-size: 50px;
+        transform: rotate(90deg);
+        opacity:1;
+    }
+
+.dummy {
+  height: 130vh;
+}
+.dummy-bottom {
+  height: 70vh;
+}
+
     </style>
 </head>
 <body>
-    <h1 onclick="location.reload()">Flui</h1>
+    <div class = "down-arrow">&#10142</div>
+    <div class="header-overlay">Flui</div>
+    <div class='dummy'>
+
+    </div>
     <div id="info" class="infotext"></div>
     <div class = "table">
     <div class="row">
@@ -101,8 +132,30 @@
         </div>
       </div>
     </div>
+    <div class='dummy-bottom'>
+
+    </div>
 </body>
 <script>
+    $(window).scroll(function() {
+    var scrollTop = $(this).scrollTop();
+
+        $('.header-overlay').css({
+        opacity: function() {
+            var elementHeight = $(this).height(),
+            opacity = ((elementHeight - scrollTop) / elementHeight);
+            return opacity;
+        }
+    });
+    $('.down-arrow').css({
+        opacity: function() {
+            var elementHeight = $(this).height(),
+            opacity = ((elementHeight - scrollTop) / elementHeight);
+            return opacity;
+        }
+    });
+    
+});
     fade_time=600;
     $('#info').css("bottom",5);
     document.getElementById('what').addEventListener('mouseover', function() {
