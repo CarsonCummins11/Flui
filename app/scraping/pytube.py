@@ -9,8 +9,8 @@ def is404(url):
 	error_404 = soup.find(id="error-page-hh-illustration") #broad 404 error
 	error_404_channel = soup.find(class_="channel-empty-message banner-message") #channel 404 error
 	if error_404 != None or error_404_channel != None:
-		return True;
-	return False;
+		return True
+	return False
 
 #class that does all the scraping
 class Pytube:
@@ -28,7 +28,7 @@ class Pytube:
 		
 		user_obj = { #object of the yt user to be returned
 			"username": username,
-			"channel-name": None
+			"channel-name": None,
 			"subscribers": None,
 			"videos": None,
 			"total-views": None,
@@ -112,13 +112,14 @@ class Pytube:
 	
 	#returns all channels from a google search
 	def search_channels(self, youtuber):
-		if(self.exists(youtubers)) return self.youtubeuserurl + youtuber #if there's a youtube account directly matching your query, then return it
+		if(self.exists(youtubers)):
+			return self.youtubeuserurl + youtuber #if there's a youtube account directly matching your query, then return it
 		page = requests.get(self.youtubesearchurl + youtuber) #getting the html of the search page
 		self.soup = BeautifulSoup(page, 'html.parser') #beautifulsoup object for parsing page
 		channels = []
 		#go through all the channel results and add the ones that have a valid url
 		for channel in soup.find_all('a', class_='channel-link yt-simple-endpoint style-scope ytd-channel-renderer'):
-			if(requests.get(self.youtuberooturl + channel['href']) != self.youtube_404)
+			if(requests.get(self.youtuberooturl + channel['href']) != self.youtube_404):
 				channels.append(channel['href'])
 		return channels
 		
