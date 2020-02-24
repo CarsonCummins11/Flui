@@ -13,3 +13,4 @@ tweepy
 TwitterSearch
 instagram_private_api
 youtube-dl
+paypalrestsdk
