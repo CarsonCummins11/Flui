@@ -143,6 +143,10 @@ class Request:
 				<div class='outbox'style='text-align:center'><div class='textt'>{{request.budget}}</div></div>
 				<div class='outbox'style='text-align:center'><div class='textt'>{{request.contact}}</div></div>
 				<div class='outbox'style='text-align:center'><div class='textt'>{{request.description}}</div></div>
+				<form action="/submitad?r={{request.r}}" method="post">
+					<input name='link' class='outbox' style='text-align:center' type='text' placeholder='Link to ad'></input>
+					<input class='outbox' value='submit' type='submit' style='text-align:center'></input>
+				</form>
 			</div>
 			</body>
 			<div class="arrow" onclick="window.location.href = '/viewrequest?user={{request.user}}&r={{request.r+1}}'">&#9655</div>

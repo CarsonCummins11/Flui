@@ -1,7 +1,7 @@
 #routes.py
 #routes html requests to python functions
 from flask import render_template,request, session,redirect
-from app import app,db,User,AdvertiserProfile,InfluencerProfile,tweepy_bot
+from app import app,db,User,AdvertiserProfile,InfluencerProfile,tweepy_bot,payment
 from app.InfluencerProfile import Influencer
 from app.AdvertiserProfile import Advertiser
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -158,7 +158,7 @@ def adwithgroup():
     return render_template('buygroup.html')
 @app.route("/viewrequest")
 def viewrequest():
-    prof = db['influencers'].find_one({'user':request.args.get('user')})['request']#[int(request.args.get('r'))]
+    prof = db['influencers'].find_one({'user':request.args.get('user')})['request'][int(request.args.get('r'))]
     r= Request(
         budget=prof['budget'],
         link=prof['link'],
@@ -177,3 +177,11 @@ def viewadvertiserprofile():
 def viewinfluencerprofile():
     prof = db['influencers'].find_one({'user':request.args.get('user')})
     return render_template('StaticInfluencer.html',profile=prof)
+@app.route('/submitad',methods=['POST'])
+def submitad():
+    link = request.form['link']
+    db['influencers'].update({'user':current_user.username},{'$push':{'link':link}})
+    adnumber = request.args.get('r')
+    payment.paypal_payment(
+        #get user paypal and amount to be paid here
+    )
