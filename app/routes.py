@@ -150,7 +150,7 @@ def create_request(): #Creates a request object from a form submission
         contact=request.form['contact'],
         author=current_user.username
     )
-    db['influencers'].update({'user':current_user.username},{'$set':{'request':r.get_json()}})
+    db['influencers'].update({'user':current_user.username},{'$push':{'request':r.get_json()}})
     r.sendmail()
     return r.get_render_template()
 @app.route("/adwithgroup")
@@ -158,16 +158,16 @@ def adwithgroup():
     return render_template('buygroup.html')
 @app.route("/viewrequest")
 def viewrequest():
-    prof = db['influencers'].find_one({'user':request.args.get('user')})['request']
-    print(prof)
+    prof = db['influencers'].find_one({'user':request.args.get('user')})['request']#[int(request.args.get('r'))]
     r= Request(
         budget=prof['budget'],
         link=prof['link'],
         tags=prof['tags'],
         contact=prof['contact'],
-        author=prof['author']
+        author=prof['author'],
+        user=request.args.get('user'),
+        r=int(request.args.get('r'))
     )
-
     return r.get_render_template()
 @app.route("/viewadvertiserprofile")
 def viewadvertiserprofile():

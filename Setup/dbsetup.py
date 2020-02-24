@@ -44,7 +44,8 @@ with open('dummydata/influencers.txt') as f:
         'instagram':'No Instagram',
         'youtube':'No YouTube',
         'twitter':'No Twitter',
-        'tags':randomtags()}
+        'tags':randomtags(),
+        'request':[]}
         db['influencers'].insert_one(prof)
         printProgressBar(i,2100)
         i+=1

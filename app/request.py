@@ -111,6 +111,24 @@ class Request:
 				font-weight: 100;
 				margin-right:0;
 			}
+			.arrow{
+				position:absolute;
+				top:50%;
+				right:1%;
+				color: #707070be;
+				font-size:50px;
+				cursor:pointer;
+
+			}
+			.arrowleft{
+				transform: rotate(180deg);
+				position:absolute;
+				top:50%;
+				left:1%;
+				color: #707070be;
+				font-size:50px;
+				cursor:pointer;
+			}
 			</style>
 			</head>
 			<body>
@@ -127,6 +145,8 @@ class Request:
 				<div class='outbox'style='text-align:center'><div class='textt'>{{request.description}}</div></div>
 			</div>
 			</body>
+			<div class="arrow" onclick="window.location.href = '/viewrequest?user={{request.user}}&r={{request.r+1}}'">&#9655</div>
+			<div class="arrowleft" onclick="window.location.href = '/viewrequest?user={{request.user}}&r={{request.r-1}}'">&#9655</div>
 		</html>
 		'''
 		rtemplate = Environment(loader=BaseLoader).from_string(template) 

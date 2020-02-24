@@ -63,6 +63,7 @@ class Influencer:
         self.tw = tw #This has to be their twitter handle
         self.tags = tags
         self.engagement_ratio_tw = 0
+        self.request = []
     def to_dict(self):
         return {
             "name": self.name,
@@ -75,6 +76,7 @@ class Influencer:
             "yt": self.yt,
             "tw": self.tw, #This has to be their twitter handle
             "tags": self.tags,
-            "engagement_ratio": 0 #change to this later -> self.engagement_ratio
+            "engagement_ratio": 0, #change to this later -> self.engagement_ratio
+            "request":self.request
         }
 
