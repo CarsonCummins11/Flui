@@ -46,7 +46,6 @@ def create_from(profile):
     return rtemplate.render(profile=profile) #Returns rendered template(as a unicode string)
 def create_from_plain(profile):
     #Jinja Template for Advertiser as a string
-    print(profile)
     template='''
     <div class="clickbox">
         <div class='nametext'>{{profile.company}}</div>

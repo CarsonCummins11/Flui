@@ -6,19 +6,23 @@ import yagmail
 
 class Request:
 	#budget is an integer, media will be some multimedia object(needs to be implemented), description is a string, tags is an array of strings, author is a string
-	def __init__(self, budget, link, tags, contact, author):
+	def __init__(self, budget, link, tags, contact, author, user, r):
 		self.budget = budget
 		self.link = link
 		self.tags = tags
 		self.contact = contact
 		self.author = author
+		self.user = user
+		self.r = r
 	def get_json(self):
 		return {
 			'budget':self.budget,
 			'link':self.link,
 			'tags':self.tags,
 			'contact':self.contact,
-			'author':self.author
+			'author':self.author,
+			'user':self.user,
+			'r':self.r
 		}
 	#sends emails to relevant creators
 	def sendmail(self):
@@ -29,7 +33,7 @@ class Request:
 			db['influencers'].update({'user':influencer['user']},{'$set':{'request':self.get_json()}})
 	#Returns the request class as a jinja template
 	def get_render_template(self):
-		request = {'budget': self.budget, 'description': self.link, 'tags':self.tags, 'author': self.author,'contact':self.contact}
+		request = self.get_json()
 		advertiser=db['advertisers'].find_one({'user':self.author})
 		#Might want to change this template in the future, it's just a skeleton of viewing a request object
 		#Jinja Template for request as a string
@@ -129,6 +133,15 @@ class Request:
 				font-size:50px;
 				cursor:pointer;
 			}
+			.inp{
+				font-family: 'Montserrat', sans-serif;
+				font-weight: 100;
+				color:#707070;
+				font-size: 25%;
+				padding-left:0px;
+				width:100%;
+				boder:none;
+			}
 			</style>
 			</head>
 			<body>
@@ -144,8 +157,8 @@ class Request:
 				<div class='outbox'style='text-align:center'><div class='textt'>{{request.contact}}</div></div>
 				<div class='outbox'style='text-align:center'><div class='textt'>{{request.description}}</div></div>
 				<form action="/submitad?r={{request.r}}" method="post">
-					<input name='link' class='outbox' style='text-align:center' type='text' placeholder='Link to ad'></input>
-					<input class='outbox' value='submit' type='submit' style='text-align:center'></input>
+					<div class='outbox'style='text-align:center'><input name='link' class='inp' style='text-align:center' type='text' placeholder='Link to ad'></input></div>
+					<div class='outbox'style='text-align:center'><input class='inp' value='submit' type='submit' style='text-align:center'></input></div>
 				</form>
 			</div>
 			</body>

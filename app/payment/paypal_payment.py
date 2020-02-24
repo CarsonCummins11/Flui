@@ -1,3 +1,4 @@
+from paypalrestsdk import Payment
 import paypalrestsdk
 from app.scraping.authentication.auth import auth_data
 
@@ -32,7 +33,6 @@ payment = Payment({
 #NOT FINISHED
 if payment.create():
 	for link in payment.links:
-		if link.method == "REDIRECT':
+		if link.method == "REDIRECT":
 			redirect_url = (link.href)
-			
 	
