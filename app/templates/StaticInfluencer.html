@@ -26,7 +26,7 @@
 		color:white;
 		font-size:30%;
 	}
-    input{
+    .inp{
         font-family: 'Montserrat', sans-serif;
         color:#707070;
         border:0;
@@ -35,14 +35,7 @@
         font-weight: 100;
         padding: 0px;
         background: none;
-		text-align: "left";
-    }
-    input[type=submit]{
-        font-family: 'Montserrat', sans-serif;
-        color:#7B7B7B;
-        font-style: italic;
-        font-size: 1vw;
-        cursor: pointer;
+		text-align: left;
     }
     input[type=text]:focus:read-write{
         outline: 0px;
@@ -95,6 +88,8 @@
     }
     .media{
         float:right;
+        text-align: right;
+        display: block;
     }
     </style>
 </head>
@@ -105,32 +100,25 @@
     <span id="editTags"><span style="cursor:pointer;text-align:left" onclick="submitTags()"class="proflabel">(Edit Tags)</span></span>
     <span class = search onclick="window.location.href='/searchforinfluencers'">Search</span>
     </h1>
-    <form id="userprofile" action="/influencerprofilechange" method="post">
-        <span class="media">
-            <div id="insta">
-                <img style="width:45px;height:45px;" src="/static/images/Instagram_Logo.png">
-                <input id="instatext" type="text" name="instagram" value="{{profile.instagram}}" readonly=true>
-            </div>
-            <div id="twitter">
-                <img style="width:45px;height:45px;" src="/static/images/Twitter_Logo.png">
-                <input id="twittertext" type="text" name="twitter" value="{{profile.twitter}}" readonly=true>
-            </div>
-            <div id="youtube">
-                <img style="width:64px;height:45px;" src="/static/images/Youtube_Logo.png">
-                <input id="youtubetext" type="text" name="youtube" value="{{profile.youtube}}" readonly=true>
-            </div>
-            
-        </span>
-        <span id="company">
-            <input id="companytext"type="text" name="fname" value="{{profile.name}}" readonly=true>
-        </span><br>
-        <span id="email">
-            <input id="emailtext"type="text" name="email" value="{{profile.email}}" readonly=true>
-        </span><br>
-        <span style="float:left" id="description">
-            <i>Description</i>
-            <textarea rows=200 id='desctext'readonly=true maxlength=150 name=desc class="descriptiontext">{{profile.desc}}</textarea>
-        </span>
-    </form>
+    <div class="media">
+        <div id="insta" style="text-align: right;">
+            <img style="width:45px;height:45px;" src="/static/images/Instagram_Logo.png">
+            <span class = "inp"style="text-align: right;">{{profile.instagram}}</span>
+        </div>
+        <div id="twitter">
+            <img style="width:45px;height:45px;" src="/static/images/Twitter_Logo.png">
+            <span class = "inp"style="text-align: right;">{{profile.twitter}}</span>
+        </div>
+        <div id="youtube">
+            <img style="width:64px;height:45px;" src="/static/images/Youtube_Logo.png">
+            <span class = "inp"style="text-align: right;">{{profile.youtube}}</span>
+        </div> 
+    </div>
+    <div class="inp">{{profile.name}}</div>
+    <div class="inp">{{profile.email}}</div>
+    <span style="float:left" id="description">
+        <i>Description</i>
+        <div class="descriptiontext">{{profile.desc}}</div>
+    </span>
 </body>
 </html>
