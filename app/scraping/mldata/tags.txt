@@ -5,7 +5,6 @@ Hybrid
 Luxury
 Minivans
 Motorcycle
-Off-road
 Performance
 Sedan
 SUV
@@ -15,7 +14,7 @@ Beauty
 Body
 Face
 Hair
-Make-up
+Makeup
 Perfumes
 Shaving
 Skin
@@ -58,14 +57,12 @@ Sports
 Tech
 Family
 Babies
-Daycare
 Elders
 Parenting
 teens
 Food
 Drink
 American
-Barbecues
 Bars
 Beer
 Chinese
@@ -75,7 +72,6 @@ Coffee
 Cooking
 Desserts
 baking
-Foodie
 Liquor
 Vegan
 Vegetarian
@@ -105,9 +101,7 @@ Needlework
 Painting
 Paranormal
 Theater
-Sci-fi
 fantasy
-Scrapbooking
 Screenwriting
 Shopping
 Stamps
@@ -115,7 +109,7 @@ Coins
 Garden
 Appliances
 Gardening
-Home repair
+Home
 decorating
 Landscaping
 Construction
@@ -126,8 +120,8 @@ Conservative
 Legal
 Liberal
 Nonpartisan
-Dads
-Moms
+dad
+Mom
 Newlyweds
 Veterans
 Action
@@ -153,7 +147,7 @@ Indie
 Jazz
 Metal
 Pop
-R&B
+blues
 Reggae
 Rock
 Finance
@@ -198,9 +192,8 @@ Paintball
 Poker
 Motorcycles
 Rodeo
-Scuba diving
+Scuba
 Soccer
-ping-pong
 Volleyball
 Fashion
 Jewelry
@@ -228,8 +221,7 @@ Africa
 Airplanes
 Asia
 Australia
-Bed and breakfasts
-Business travel
+Business
 Canada
 Caribbean
 Cruises

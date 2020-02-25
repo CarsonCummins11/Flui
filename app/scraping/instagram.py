@@ -29,7 +29,7 @@ class InstagramBot:
         text = text.replace('one or more people','')
         return text
 
-    def store_data(self, username):
+    def get_data(self, username):
         posts = self.api.username_feed(username)
         i = 0
         results = {}
@@ -45,7 +45,4 @@ class InstagramBot:
                     results['capt'+str(i)] = post['caption']['text']
                     results['img'+str(i)] = self.make_ml_friendly(alt)
                 i+=1
-        print(results)
-        json.dump(results, open("mldata/instadata.json", 'w+'))
-b = InstagramBot()
-b.store_data('carson.p.cummins')
+        return results

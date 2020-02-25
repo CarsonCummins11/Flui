@@ -1,21 +1,12 @@
 import json
 import tweepy
 from TwitterSearch import *
-from app.scraping.authentication.auth import auth_data
+from authentication.auth import auth_data
 
 data_file = "app/scraping/mldata/twdata.json"
 likes_weight = 1
 retweet_weight = 1.5
 follower_threshold = 1
-
-#Gets the tweets for a twitter user
-#api = tweepy api
-#user = string of a user's username
-def get_tweets(api, user):
-	statuses =  api.user_timeline(screen_name=user, count=30)
-	for status in statuses:
-		status = status._json
-	return statuses
 
 #class for the twitter bot
 class TweepyBot:
@@ -63,11 +54,16 @@ class TweepyBot:
 				}
                 count+=1
         influencer.engagement_ratio_tw = sum(engagement_scores) / len(engagement_scores)
-        #{k: v for k, v in sorted(self.twdata.items(), key=lambda item: item[1])} #sorts by engagement
+        self.twdata = {k: v for k, v in sorted(self.twdata.items(), key=lambda item: item[1])} #sorts by engagement
         with open(data_file, 'w') as f:
             f.write(json.dumps(self.twdata))
         self.twdata.clear() #for ram
-
+    def get_tweets(self,user):
+        statuses =  self.api.user_timeline(screen_name=user, count=1)
+        ret = []
+        for status in statuses:
+            ret.append(status._json['text'])
+        return ret
     #searches tweets with a given str array of keywords 
     #also dumps tweet data to mldata/twdata.json
     def search(self, keywords):
@@ -84,7 +80,7 @@ class TweepyBot:
                         'engagement_score': ((likes_weight * tweet['favorite_count']) + (retweet_weight * tweet['retweet_count']) / tweet['user']['followers_count'])
                     }
                     count+=1
-        #{k: v for k, v in sorted(self.twdata.items(), key=lambda item: item[1])} #sorts by engagement
+        self.twdata = {k: v for k, v in sorted(self.twdata.items(), key=lambda item: item[1])} #sorts by engagement
         with open(data_file, 'w') as f:
             f.write(json.dumps(self.twdata))
         self.twdata.clear() #for ram
