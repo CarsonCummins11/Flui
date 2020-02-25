@@ -1,5 +1,5 @@
 #pytube object for scraping youtube
-from bs4 import BeauitfulSoup
+from bs4 import BeautifulSoup
 import requests
 
 #returns true if the page of the url is one of youtube's 2 404 pages
@@ -109,7 +109,7 @@ class Pytube:
 		user_obj['engagement-ratio'] = engagement_ratio_total / len(user_obj['videos'])
 		
 		return user_obj
-	
+	'''
 	#returns all channels from a google search
 	def search_channels(self, youtuber):
 		if(self.exists(youtubers)):
@@ -122,4 +122,4 @@ class Pytube:
 			if(requests.get(self.youtuberooturl + channel['href']) != self.youtube_404):
 				channels.append(channel['href'])
 		return channels
-		
+	'''

@@ -2,6 +2,7 @@ from gensim.test.utils import common_texts
 from gensim.models import Word2Vec, Phrases
 import json
 from app.scraping.twitter import TweepyBot
+from nltk.tokenize import word_tokenize
 
 #searches using most common words in english as keywords
 def build_with_generic_keys():
@@ -16,19 +17,29 @@ def build(keywords):
         f = tweet.replace("\n", " ")
         temp = [] 
             # tokenize the tweet into words 
-        for j in tweet.split(): 
+        for j in word_tokenize(tweet): 
             temp.append(j.lower()) 
         data.append(temp)
     #train the model
-    model = Word2Vec(data,size=100, window=5, min_count=1, workers=4)
+    model = Word2Vec(data,size=100, window=5, min_count=3, workers=4)
     model.save("word2vec.model")
 
 #call this to tag an array of tweets
 def tag(tweets):
     model = Word2Vec.load("word2vec.model")
+    data = []
+    for tweet in tweets:
+        f = tweet.replace("\n", " ")
+        temp = [] 
+            # tokenize the tweet into words 
+        for j in tweet.split(): 
+            temp.append(j.lower()) 
+        data.append(temp)
+    model.build_vocab(data, update=True)
+    model.train(data, total_examples=model.corpus_count, epochs=model.iter)
     probs = {}
     for tweet in tweets:
-        words = tweet.split()
+        words = word_tokenize(tweet)
         for word in words:
             avgsim = 0
             tags = open('app/scraping/mldata/tags.txt')
