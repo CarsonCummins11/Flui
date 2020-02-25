@@ -10,7 +10,6 @@ import pickle
 from app.request import Request
 from jinja2 import Environment, BaseLoader
 from urllib.parse import unquote
-
 @app.route("/")
 def main(): #returns the home page on start
     return render_template('home.html')
