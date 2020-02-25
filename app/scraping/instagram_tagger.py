@@ -16,5 +16,3 @@ class Insta_Tagger:
         for sent in sents:
             data+=word_tokenize(sent)
         return self.tagger.tag(data)
-tg = Insta_Tagger()
-print(tg.tag('carson.p.cummins'))

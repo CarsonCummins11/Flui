@@ -13,5 +13,3 @@ class YT_Tagger:
         for sent in sents:
             data+=word_tokenize(sent)
         return self.tagger.tag(data)
-tg = YT_Tagger()
-print(tg.tag('https://www.youtube.com/watch?v=6z7GQewK-Ks'))
