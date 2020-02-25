@@ -1,15 +1,11 @@
 #scraping bot for instagram
 #uncomment this when running with python3 -m flask run(running the whole app)
 #from app.scraping.authentication.auth import auth_data
-from app.scraping.authentication.auth import auth_data #this is for local testing with the command python3 instagram.py(testing just this script)
+from authentication.auth import auth_data #this is for local testing with the command python3 instagram.py(testing just this script)
 from instagram_private_api import Client, ClientCompatPatch, ClientError, ClientLoginError
 import json
 from lxml import html
 import requests
-from io import BytesIO
-from PIL import Image
-import pickle
-import base64
 class InstagramBot:
     #Log into instagram and init api object with auth data
     def __init__(self):
@@ -28,22 +24,28 @@ class InstagramBot:
             #ratios.append(post['like_count'] / info['follower_count'])
         #self.engagement_score = sum(ratios) / len(ratios)
             v = 1+1
+    def make_ml_friendly(self,text):
+        text = text.replace('Image may contain: ','')
+        text = text.replace('one or more people','')
+        return text
+
     def store_data(self, username):
         posts = self.api.username_feed(username)
         i = 0
         results = {}
         for post in posts['items']:
-            results['postInfo'+str(i)] = post['caption']["media_id"]
-            post_url = 'https://www.instagram.com/p/' + post['code']
-            page = requests.get(post_url)
-            tree = html.fromstring(page.content)
-            img_url = tree.xpath('/html/head/meta[11]/@content')[0]
-            response = requests.get(img_url)
-            img = Image.open(BytesIO(response.content))
-            stri = base64.b64encode(response.content).decode('utf-8')
-            # results['desc'] = description
-            results['capt'+str(i)] = post['caption']['text']
-            results['img'+str(i)] = stri
-            # print(results)
-            i+=1
+            if(post['caption']):
+                results['postInfo'+str(i)] = post['caption']["media_id"]
+                post_url = 'https://www.instagram.com/p/' + post['code']
+                info = requests.get(post_url).text
+                if not 'accessibility_caption":"' in info:
+                    print('no alt')
+                else:
+                    alt = (info.split('accessibility_caption":"'))[1].split('"')[0]
+                    results['capt'+str(i)] = post['caption']['text']
+                    results['img'+str(i)] = self.make_ml_friendly(alt)
+                i+=1
+        print(results)
         json.dump(results, open("mldata/instadata.json", 'w+'))
+b = InstagramBot()
+b.store_data('carson.p.cummins')

@@ -22,11 +22,11 @@ def build(keywords):
         data.append(temp)
     #train the model
     model = Word2Vec(data,size=100, window=5, min_count=3, workers=4)
-    model.save("word2vec.model")
+    model.save("twitter_word2vec.model")
 
 #call this to tag an array of tweets
 def tag(tweets):
-    model = Word2Vec.load("word2vec.model")
+    model = Word2Vec.load("twitter_word2vec.model")
     data = []
     for tweet in tweets:
         f = tweet.replace("\n", " ")
@@ -37,6 +37,7 @@ def tag(tweets):
         data.append(temp)
     model.build_vocab(data, update=True)
     model.train(data, total_examples=model.corpus_count, epochs=model.iter)
+    model.save("twitter_word2vec.model")
     probs = {}
     for tweet in tweets:
         words = word_tokenize(tweet)

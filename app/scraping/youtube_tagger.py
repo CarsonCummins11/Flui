@@ -11,14 +11,15 @@ def tokenize(cap):
 def build(cap):
     data = tokenize(cap)
     model = Word2Vec(data,size=100, window=5, min_count=3, workers=4)
-    model.save("word2vec.model")
+    model.save("youtube_word2vec.model")
 
 #call this to tag a caption string
 def tag(cap):
-    model = Word2Vec.load("word2vec.model")
+    model = Word2Vec.load("youtube_word2vec.model")
     data = tokenize(cap)
     model.build_vocab(data, update=True)
     model.train(data, total_examples=model.corpus_count, epochs=model.iter)
+    model = Word2Vec.save("youtube_word2vec.model")
     probs = {}
     for sent in data:
         for word in sent:
