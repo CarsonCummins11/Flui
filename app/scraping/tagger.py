@@ -26,12 +26,8 @@ class Tagger:
         for tag in sims.keys():
             sims[tag] = sims[tag][0]/sims[tag][1]
         sims={k: v for k, v in sorted(sims.items(), key=lambda item: item[1])}
-        count = 0
         tags = []
         for k in sims.keys():
             tags.append(k)
-            if(count>4):
-                break
-            count+=1
-        return tags
+        return tags[-4:]
     
