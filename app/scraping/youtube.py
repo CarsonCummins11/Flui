@@ -1,5 +1,5 @@
 #from app.scraping.authentication.auth import auth_data
-#from pytube import Pytube
+from pytube import Pytube
 import requests
 import youtube_dl
 import re
@@ -9,12 +9,12 @@ import re
 
 class YoutubeBot:
 	def __init__(self):
-		#self.pyt = Pytube()
+		self.pyt = Pytube()
 		print('made')
 		
 	#gets the engagement score
 	def get_engagement_score(self, youtuber=None, id=None):
-		return self.pyt.user(youtube=youtuber,id=id)['engagement-score']
+		return self.pyt.user(username=youtuber,id=id)['engagement-score']
 	def get_captions(self,url):
 		ydl = youtube_dl.YoutubeDL({'writesubtitles': True, 'allsubtitles': True, 'writeautomaticsub': True})
 		res = ydl.extract_info(url, download=False)
@@ -26,3 +26,5 @@ class YoutubeBot:
 		else:
 			print('Youtube Video does not have any english captions')
 			return ''
+		def get_user_info(self, youtuber=None, id=None):
+			return self.pyt.user(username=youtuber,id=id)

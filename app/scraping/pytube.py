@@ -4,21 +4,16 @@ import requests
 
 #returns true if the page of the url is one of youtube's 2 404 pages
 def is404(url):
-	page = requests.get(url) #sets the page
-	soup = BeautifulSoup(page, 'html.parser')
-	error_404 = soup.find(id="error-page-hh-illustration") #broad 404 error
-	error_404_channel = soup.find(class_="channel-empty-message banner-message") #channel 404 error
-	if error_404 != None or error_404_channel != None:
-		return True
-	return False
+	return requests.get(url).status_code==404 #sets the page
+	
 
 #class that does all the scraping
 class Pytube:
 	#set the youtube urls
 	def __init__(self):
 		self.youtuberoot = "https://youtube.com/"
-		self.youtubeuser = self.youtubeuser + "user/"
-		self.youtubeid = self.youtubechannel + "channel/"
+		self.youtubeuser = self.youtuberoot+"user/"
+		self.youtubechannel = self.youtuberoot+"channel/"
 		self.youtubesearchurl = "https://www.youtube.com/results?search_query="
 	
 	#gets a user from a username or id
@@ -28,17 +23,17 @@ class Pytube:
 		
 		user_obj = { #object of the yt user to be returned
 			"username": username,
-			"channel-name": None,
-			"subscribers": None,
-			"videos": None,
-			"total-views": None,
-			"total-votes": None,
-			"engagement-ratio": None
+			"channel-name": '',
+			"subscribers": '',
+			"videos": '',
+			"total-views": '',
+			"total-votes": '',
+			"engagement-ratio": ''
 		}
 		
 		#make sure the channel exists
-		u_exists = is404(self.youtubeuser + username)
-		id_exists = is404(self.youtubechannel + id)
+		u_exists = not is404(self.youtubeuser + username)
+		id_exists = not is404(self.youtubechannel + id)
 		
 		#set the root and root_url depending on if the username or id isn't None
 		if u_exists:
@@ -53,11 +48,11 @@ class Pytube:
 			return "Unable to find user or id"
 		
 		#creates the bs4 object for the video page
-		videos = requests.get(root + "videos/")
+		videos = requests.get(root_url + "videos/")
 
 		#set's the two pages needed for scraping user info
-		soup_root = BeautifulSoup(root, 'html.parser')
-		soup_videos = BeautifulSoup(videos, 'html.parser')
+		soup_root = BeautifulSoup(root.text, 'html.parser')
+		soup_videos = BeautifulSoup(videos.text, 'html.parser')
 		
 		#setting the channel name, subscribers and username
 		user_obj['channel-name'] = soup_root.find(class_="style-scope ytd-channel-name")
