@@ -194,7 +194,7 @@ def submitinfluencer():
 @app.route('/gosubmitinfluencer',methods=['POST'])
 def gosubmitinfluencer():
     form = request.form.to_dict(flat=False)
-    inf = db['influencers'].find_one({'email':form['email']})
+    inf = db['influencers'].find_one({'email':request.form['email']})
     if(inf is not None):
         newtags=inf['tags']
         for tag in form['tags']:
@@ -216,5 +216,5 @@ def gosubmitinfluencer():
         )
         db['influencers'].insert_one(new_influencer.to_dict())
         yag = yagmail.SMTP('carson@flui.co', 'Luv4soccer.1')
-        yag.send(form['email'],'Flui Sponsorship',"What's up"+form['name']+"!\n One of your followers just sponsored you to join the Flui advertising network - an advertising platform focused on smaller influencers. That's really cool. To log in, go to https://flui.co and use this email for your username and "+passw+" as your password.\n-Carson Cummins\nFounder,Flui")
+        yag.send(form['email'],'Flui Sponsorship',["What's up "+request.form['name']+"!\n\n One of your followers just sponsored you to join the Flui advertising network - an advertising platform focused on smaller influencers. That's really cool. To log in, go to https://flui.co and use this email for your username and "+passw+" as your password.\n\n-Carson Cummins\n\nFounder,Flui"])
     return redirect('/submitinfluencer')
