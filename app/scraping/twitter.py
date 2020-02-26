@@ -1,7 +1,7 @@
 import json
 import tweepy
 from TwitterSearch import *
-from authentication.auth import auth_data
+from app.scraping.authentication.auth import auth_data
 
 data_file = "app/scraping/mldata/twdata.json"
 likes_weight = 1

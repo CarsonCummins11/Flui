@@ -10,6 +10,8 @@ import pickle
 from app.request import Request
 from jinja2 import Environment, BaseLoader
 from urllib.parse import unquote
+import secrets
+import yagmail
 @app.route("/")
 def main(): #returns the home page on start
     return render_template('home.html')
@@ -186,3 +188,33 @@ def submitad():
     payment.paypal_payment(
         #get user paypal and amount to be paid here
     )
+@app.route('/submitinfluencer')
+def submitinfluencer():
+    return render_template('submit.html')
+@app.route('/gosubmitinfluencer',methods=['POST'])
+def gosubmitinfluencer():
+    form = request.form.to_dict(flat=False)
+    inf = db['influencers'].find_one({'email':form['email']})
+    if(inf is not None):
+        newtags=inf['tags']
+        for tag in form['tags']:
+            if not tag in newtags:
+                newtags+=','+tag
+    else:
+        passw = secrets.token_urlsafe(32)
+        new_influencer = Influencer(
+            name = request.form['name'], #NewInfluencer has the tag as 'name', but when you inspect it's still fname?
+            username = request.form['email'],
+            password = passw, #generates hash in __init__()
+            email = request.form['email'],
+            desc = '',
+            img = '',
+            insta = '',
+            yt = '',
+            tw = '',
+            tags = ','.join(form['tags'])
+        )
+        db['influencers'].insert_one(new_influencer.to_dict())
+        yag = yagmail.SMTP('carson@flui.co', 'Luv4soccer.1')
+        yag.send(form['email'],'Flui Sponsorship',"What's up"+form['name']+"!\n One of your followers just sponsored you to join the Flui advertising network - an advertising platform focused on smaller influencers. That's really cool. To log in, go to https://flui.co and use this email for your username and "+passw+" as your password.\n-Carson Cummins\nFounder,Flui")
+    return redirect('/submitinfluencer')

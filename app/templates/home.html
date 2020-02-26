@@ -56,6 +56,17 @@
     img{
         cursor: pointer;
     }
+    .submitinfluencer{
+        font-family: 'Montserrat', sans-serif;
+        font-style: italic;
+        position:absolute;
+        bottom:30px;
+        text-align:center;
+        float:center;
+        width:100%;
+        height:50px;
+        background-color: #212121;
+    }
     </style>
 </head>
 <body id=center>
@@ -74,5 +85,6 @@
             <div><button class="btn new" onclick='$("#center").load("/static/html/NewAdvertiser.html");'>New Profile</button></div>
         </div>
     </div>
+    <div class = submitinfluencer><div onclick="window.location.href = '/submitinfluencer'" style="margin-top: 15px;cursor: pointer;">Submit Influencer</div></div>
 </body>
 </html>

@@ -1,5 +1,5 @@
-from twitter import TweepyBot
-from tagger import Tagger
+from app.scraping.twitter import TweepyBot
+from app.scraping.tagger import Tagger
 from nltk.tokenize import sent_tokenize,word_tokenize
 class TW_Tagger:
     def __init__(self):
