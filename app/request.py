@@ -6,7 +6,7 @@ import yagmail
 
 class Request:
 	#budget is an integer, media will be some multimedia object(needs to be implemented), description is a string, tags is an array of strings, author is a string
-	def __init__(self, budget, link, tags, contact, author, user, r):
+	def __init__(self, budget, link, tags, contact, author, user='', r=0):
 		self.budget = budget
 		self.link = link
 		self.tags = tags
