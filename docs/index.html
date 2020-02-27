@@ -100,13 +100,12 @@
     tr td{
         position:relative;
         text-align: center;
-        display: flex;
+        display: table-cell;
         margin: auto;
     }
     .inner{
         position:absolute;
-        top:50%;
-        transform: translate(-50%);
+        display:table-cell;
         width:100%;
         left:0;
         height:100%;
@@ -114,8 +113,6 @@
         border-radius: 40px;
         background-color: #212121;
         transform: translateZ(0); 
-        margin: auto; /* Important */ 
-        vertical-align: center; 
         padding-bottom: 20px;
         
     }
@@ -202,7 +199,7 @@
         $('#what').focus();
         $('#what').css('filter','none');
         $('#whatt').stop().animate({height:heigh+growth,width:wid+growth},fade_time)
-        $('#info').css("top",$('#who').offset().top);
+        $('#info').css("top",$('#who').offset().top+24);
         $('#info').css("left",$('#who').offset().left+growth);
         $('#info').css("right",5);
         $('#info').fadeIn(fade_time);
@@ -216,7 +213,7 @@
     document.getElementById('who').addEventListener('mouseenter', function() {
         $('#who').focus();
         $('#who').css('filter','none');
-        $('#info').css("top",$('#why').offset().top);
+        $('#info').css("top",$('#why').offset().top+24);
         $('#whoo').stop().animate({height:heigh+growth,width:wid+growth},fade_time)
         $('#info').css("left",$('#why').offset().left+growth);
         $('#info').css("right",5);
@@ -232,7 +229,7 @@
         $('#why').focus();
         $('#why').css('filter','none');
         $('#whyy').stop().animate({height:heigh+growth,width:wid+growth},fade_time)
-        $('#info').css("top",$('#what').offset().top);
+        $('#info').css("top",$('#what').offset().top+24);
         $('#info').css("left",$('#what').offset().left);
         $('#info').css("right",($(window).width() - ($('#who').offset().left + $('#who').outerWidth())));
         $('#info').fadeIn(fade_time);
@@ -246,7 +243,7 @@
     document.getElementById('how').addEventListener('mouseenter', function() {
         $('#how').focus();
         $('#how').css('filter','none');
-        $('#info').css("top",$('#contact').offset().top);
+        $('#info').css("top",$('#contact').offset().top+24);
         $('#howw').stop().animate({height:heigh+growth,width:wid+growth},fade_time)
         $('#info').css("left",$('#contact').offset().left+70);
         $('#info').css("right",5);
@@ -261,7 +258,7 @@
     document.getElementById('contact').addEventListener('mouseenter', function() {
         $('#contact').focus();
         $('#contact').css('filter','none');
-        $('#info').css("top",$('#how').offset().top);
+        $('#info').css("top",$('#how').offset().top+24);
         $('#info').css("left",$('#how').offset().left);
         $('#contactt').stop().animate({height:heigh+growth,width:wid+growth},fade_time);
         $('#info').css("right",($(window).width() - ($('#how').offset().left + $('#how').outerWidth())));
@@ -277,7 +274,7 @@
         $('#new').focus();
         $('#new').css('filter','none');
         $('#neww').stop().animate({height:heigh+growth,width:wid+growth},fade_time)
-        $('#info').css("top",$('#how').offset().top);
+        $('#info').css("top",$('#how').offset().top+24);
         $('#info').css("left",$('#how').offset().left);
         $('#info').css("right",($(window).width() - ($('#contact').offset().left + $('#contact').outerWidth())));
         $('#info').fadeIn(fade_time);
