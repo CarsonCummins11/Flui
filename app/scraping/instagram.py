@@ -1,7 +1,7 @@
 #scraping bot for instagram
 #uncomment this when running with python3 -m flask run(running the whole app)
 #from app.scraping.authentication.auth import auth_data
-from app.scraping.authentication.auth import auth_data #this is for local testing with the command python3 instagram.py(testing just this script)
+from authentication.auth import auth_data #this is for local testing with the command python3 instagram.py(testing just this script)
 from instagram_private_api import Client, ClientCompatPatch, ClientError, ClientLoginError
 import json
 from lxml import html
@@ -21,9 +21,12 @@ class InstagramBot:
         
         ratios = []
         for post in posts['items']:
-            #ratios.append(post['like_count'] / info['follower_count'])
-        #self.engagement_score = sum(ratios) / len(ratios)
+            ratios.append(post['like_count'] / info['user']['follower_count'])
+            self.engagement_score = sum(ratios) / len(ratios)
             v = 1+1
+        self.engagement_score = round(self.engagement_score, 4)
+        return self.engagement_score
+
     def make_ml_friendly(self,text):
         text = text.replace('Image may contain: ','')
         text = text.replace('one or more people','')
