@@ -97,10 +97,11 @@
         transform: rotate(90deg);
         opacity:1;
     }
-    td{
+    tr td{
         position:relative;
         text-align: center;
-
+        display: flex;
+        margin: auto;
     }
     .inner{
         position:absolute;
@@ -112,7 +113,9 @@
         border: 1px solid white;
         border-radius: 40px;
         background-color: #212121;
-        transform: translateZ(0);
+        transform: translateZ(0); 
+        margin: auto; /* Important */ 
+        vertical-align: center; 
         
     }
     .inner:hover{
