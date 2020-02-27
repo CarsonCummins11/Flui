@@ -33,23 +33,23 @@
         cursor: default;
     
     }
-    .table{
-        position:relative;
+    table{
+        width:100%;
+        table-layout:fixed;
     }
     .column {
         font-style: italic;
         float: left;
         width: 28%;
         font-size: 3vw;
-        border: 1px solid white;
         padding-top: 30px;
         padding-bottom: 30px;
-        border-radius: 40px;
         margin: 2vw;
         -webkit-user-select: none;       
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
+        border:none;
     }
     .row{
         margin:auto;
@@ -64,6 +64,11 @@
     }
     .column:focus{
         outline:0;
+        filter:none;
+        -webkit-filter: none;
+        -moz-filter: none;
+        -o-filter: none;
+        -ms-filter: none;
     }
     .infotext{
         font-style: italic;
@@ -71,6 +76,7 @@
         display: none;
         bottom: 0;
         font-size: 2vw;
+        z-index: 5;
     }
     .header-overlay {
         position: fixed;
@@ -91,12 +97,32 @@
         transform: rotate(90deg);
         opacity:1;
     }
+    td{
+        position:relative;
+        text-align: center;
 
+    }
+    .inner{
+        position:absolute;
+        top:50%;
+        transform: translate(-50%);
+        width:100%;
+        left:0;
+        height:100%;
+        border: 1px solid white;
+        border-radius: 40px;
+        background-color: #212121;
+        transform: translateZ(0);
+        
+    }
+    .inner:hover{
+        z-index: 5;
+    }
 .dummy {
   height: 130vh;
 }
 .dummy-bottom {
-  height: 70vh;
+  height: 35vh;
 }
 .foot-style{
     text-align:center;
@@ -113,29 +139,31 @@
 
     </div>
     <div id="info" class="infotext"></div>
-    <div class = "table">
-    <div class="row">
-        <div id="what" tabindex="0" class="column">
-          What
-        </div>
-        <div id="who" tabindex="1" class="column" >
-          Who
-        </div>
-        <div id="why"tabindex="2" class="column" >
-            Why
-        </div>
-      </div>
-      <div class="row">
-        <div id="how"tabindex="3" class="column">
-          How
-        </div>
-        <div id="contact"tabindex="4" class="column">
-          Contact
-        </div>
-        <div id="new"tabindex="5" class="column">
-            New
-        </div>
-      </div>
+    <div style="text-align:center">
+    <table class = table>
+    <tr class="row">
+        <td id="what" class="column">
+          <span id="whatt"class = inner>What</span>
+        </td>
+        <td id="who" class="column" >
+          <span id="whoo" class = inner>Who</span>
+        </td>
+        <td id="why"class="column" >
+            <span id="whyy" class = inner>Why</span>
+        </td>
+      </tr>
+      <tr class="row">
+        <td id="how"class="column">
+          <span id="howw" class = inner>How</span>
+        </td>
+        <td id="contact"class="column">
+          <span id="contactt"class = inner>Contact</span>
+        </td>
+        <td id="new"class="column">
+            <span id="neww"class = inner>New</span>
+        </td>
+    </tr>
+</table>
     </div>
     <div class='dummy-bottom'>
         
@@ -165,63 +193,99 @@
     
 });
     fade_time=600;
+    wid = $('#what').width();
+    heigh = $('#what').outerHeight();
+    growth = 70;
     $('#info').css("bottom",5);
-    document.getElementById('what').addEventListener('mouseover', function() {
-        $('#info').css("display","none");
+    document.getElementById('what').addEventListener('mouseenter', function() {
         $('#what').focus();
+        $('#what').css('filter','none');
+        $('#whatt').stop().animate({height:heigh+growth,width:wid+growth},fade_time)
         $('#info').css("top",$('#who').offset().top);
-        $('#info').css("left",$('#who').offset().left);
+        $('#info').css("left",$('#who').offset().left+growth);
         $('#info').css("right",5);
         $('#info').fadeIn(fade_time);
         $('#info').html("Flui connects advertisers to groups of similar influencers. It allows small time influencers to get brand deals that are typically reserved for those with a larger audience, and allows advertisers to reach high engagement, niche markets. Flui will fix social media marketing.");
     });
-    document.getElementById('who').addEventListener('mouseover', function() {
-        $('#info').css("display","none");
+    document.getElementById('what').addEventListener('mouseleave', function() {
+        $('#whatt').stop().animate({height:heigh,width:wid},fade_time);
+        $('#info').css('display','none');
+        $('#what').css('filter','blur(4px)');
+    });
+    document.getElementById('who').addEventListener('mouseenter', function() {
         $('#who').focus();
+        $('#who').css('filter','none');
         $('#info').css("top",$('#why').offset().top);
-        $('#info').css("left",$('#why').offset().left);
+        $('#whoo').stop().animate({height:heigh+growth,width:wid+growth},fade_time)
+        $('#info').css("left",$('#why').offset().left+growth);
         $('#info').css("right",5);
         $('#info').fadeIn(fade_time);
         $('#info').html("Flui was created by a group of Portland teenagers with one goal: fixing social media. We want to help small influencers focus on what matters: creativity, and advertisers find audiences that will be receptive, rather than annoyed, by their advertisements.");
     });
-    document.getElementById('why').addEventListener('mouseover', function() {
-        $('#info').css("display","none");
+    document.getElementById('who').addEventListener('mouseleave', function() {
+        $('#whoo').stop().animate({height:heigh,width:wid},fade_time)
+        $('#info').css('display','none');
+        $('#who').css('filter','blur(4px)');
+    });
+    document.getElementById('why').addEventListener('mouseenter', function() {
         $('#why').focus();
+        $('#why').css('filter','none');
+        $('#whyy').stop().animate({height:heigh+growth,width:wid+growth},fade_time)
         $('#info').css("top",$('#what').offset().top);
         $('#info').css("left",$('#what').offset().left);
         $('#info').css("right",($(window).width() - ($('#who').offset().left + $('#who').outerWidth())));
         $('#info').fadeIn(fade_time);
-        $('#info').html("Social media is broken. The small time influencers are forced to work inhumane hours to make just enough revenue to live. Some don't even have the ability to monetize. Flui is here to fix that.");
+        $('#info').html("Social media is broken. Small time influencers are forced to work inhumane hours to make just enough revenue to live. Some don't even have the ability to monetize. Flui is here to fix that.");
     });
-    document.getElementById('how').addEventListener('mouseover', function() {
-        $('#info').css("display","none");
+    document.getElementById('why').addEventListener('mouseleave', function() {
+        $('#whyy').stop().animate({height:heigh,width:wid},fade_time)
+        $('#info').css('display','none');
+        $('#why').css('filter','blur(4px)');
+    });
+    document.getElementById('how').addEventListener('mouseenter', function() {
         $('#how').focus();
+        $('#how').css('filter','none');
         $('#info').css("top",$('#contact').offset().top);
-        $('#info').css("left",$('#contact').offset().left);
+        $('#howw').stop().animate({height:heigh+growth,width:wid+growth},fade_time)
+        $('#info').css("left",$('#contact').offset().left+70);
         $('#info').css("right",5);
         $('#info').fadeIn(fade_time);
         $('#info').html("Flui uses industry standard machine learning to build groups of influencers tailored exactly to match the requests of advertisers. Flui's custom algorithm takes away the stress of finding an influencer to run your ad.");
     });
-    document.getElementById('contact').addEventListener('mouseover', function() {
-        $('#info').css("display","none");
+    document.getElementById('how').addEventListener('mouseleave', function() {
+        $('#howw').stop().animate({height:heigh,width:wid},fade_time)
+        $('#info').css('display','none');
+        $('#how').css('filter','blur(4px)');
+    });
+    document.getElementById('contact').addEventListener('mouseenter', function() {
         $('#contact').focus();
+        $('#contact').css('filter','none');
         $('#info').css("top",$('#how').offset().top);
         $('#info').css("left",$('#how').offset().left);
+        $('#contactt').stop().animate({height:heigh+growth,width:wid+growth},fade_time);
         $('#info').css("right",($(window).width() - ($('#how').offset().left + $('#how').outerWidth())));
         $('#info').fadeIn(fade_time);
         $('#info').html("Our founder can be contacted by email at carson@flui.co. You can find us on Instagram at flui.co, and Twitter at flui_co");
     });
-    document.getElementById('new').addEventListener('mouseover', function() {
-        $('#info').css("display","none");
+    document.getElementById('contact').addEventListener('mouseleave', function() {
+        $('#contactt').stop().animate({height:heigh,width:wid},fade_time)
+        $('#info').css('display','none');
+        $('#contact').css('filter','blur(4px)');
+    });
+    document.getElementById('new').addEventListener('mouseenter', function() {
         $('#new').focus();
+        $('#new').css('filter','none');
+        $('#neww').stop().animate({height:heigh+growth,width:wid+growth},fade_time)
         $('#info').css("top",$('#how').offset().top);
         $('#info').css("left",$('#how').offset().left);
         $('#info').css("right",($(window).width() - ($('#contact').offset().left + $('#contact').outerWidth())));
         $('#info').fadeIn(fade_time);
         $('#info').html("Flui development is well underway, and will launch March 5th.");
     });
-    $('body').click(function(){
-        $('#info').css("display","none")
+    document.getElementById('new').addEventListener('mouseleave', function() {
+        $('#neww').stop().animate({height:heigh,width:wid},fade_time)
+        $('#info').css('display','none');
+        $('#new').css('filter','blur(4px)');
     });
 </script>
 </html>
