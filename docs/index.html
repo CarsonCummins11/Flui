@@ -116,6 +116,7 @@
         transform: translateZ(0); 
         margin: auto; /* Important */ 
         vertical-align: center; 
+        padding-bottom: 20px;
         
     }
     .inner:hover{
@@ -171,9 +172,6 @@
     <div class='dummy-bottom'>
         
     </div>
-    <div class = "foot-style" onclick="window.location.href = '/blog.html'">
-    View Blog Here
-    </div>
 </body>
 <script>
     $(window).scroll(function() {
@@ -223,7 +221,7 @@
         $('#info').css("left",$('#why').offset().left+growth);
         $('#info').css("right",5);
         $('#info').fadeIn(fade_time);
-        $('#info').html("Flui was created by a group of Portland teenagers with one goal: fixing social media. We want to help small influencers focus on what matters: creativity, and advertisers find audiences that will be receptive, rather than annoyed, by their advertisements.");
+        $('#info').html("Flui was created in Portland with one goal: fixing social media. We want to help small influencers focus on what matters: creativity, and advertisers find audiences that will be receptive, rather than annoyed, by their advertisements.");
     });
     document.getElementById('who').addEventListener('mouseleave', function() {
         $('#whoo').stop().animate({height:heigh,width:wid},fade_time)
