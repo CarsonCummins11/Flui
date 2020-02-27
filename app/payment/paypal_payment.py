@@ -2,6 +2,7 @@ from paypalrestsdk import Payment
 import paypalrestsdk
 from app.scraping.authentication.auth import auth_data
 def pay():
+	approvalURL = ""
 	paypalrestsdk.configure({
 		'mode': 'sandbox', #change to live when not testing
 		'client_id': auth_data['paypal_auth']['client_id'],
@@ -33,9 +34,10 @@ def pay():
 	if payment.create():
 		for link in payment.links:
 			if link.method == "REDIRECT":
-				redirect_url = (link.href)
+				approvalURL = (link.href)
 	else:
 		print("Error making payment.")
 		print(payment.error)
 	print("bullshit")
 	print(payment)
+	return approvalURL

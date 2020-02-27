@@ -154,8 +154,7 @@ def create_request(): #Creates a request object from a form submission
     )
     db['influencers'].update({'user':current_user.username},{'$push':{'request':r.get_json()}})
     r.sendmail()
-    paypal_payment.pay()
-    return redirect('/advertiserprofile')
+    return redirect(paypal_payment.pay())
 @app.route("/adwithgroup")
 def adwithgroup():
     return render_template('buygroup.html')
