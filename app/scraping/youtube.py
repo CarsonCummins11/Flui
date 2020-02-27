@@ -1,5 +1,5 @@
 #from app.scraping.authentication.auth import auth_data
-from pytube import Pytube
+from app.scraping.pytube import Pytube
 import requests
 import youtube_dl
 import re
@@ -10,7 +10,6 @@ import re
 class YoutubeBot:
 	def __init__(self):
 		self.pyt = Pytube()
-		print('made')
 		
 	#gets the engagement score
 	def get_engagement_score(self, youtuber=None, id=None):

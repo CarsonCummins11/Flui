@@ -1,5 +1,5 @@
-from instagram import InstagramBot
-from tagger import Tagger
+from app.scraping.instagram import InstagramBot
+from app.scraping.tagger import Tagger
 from nltk.tokenize import sent_tokenize,word_tokenize
 class Insta_Tagger:
     def __init__(self):
