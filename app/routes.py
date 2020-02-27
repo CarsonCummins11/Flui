@@ -218,3 +218,6 @@ def gosubmitinfluencer():
         yag = yagmail.SMTP('carson@flui.co', 'Luv4soccer.1')
         yag.send(form['email'],'Flui Sponsorship',["What's up "+request.form['name']+"!\n\n One of your followers just sponsored you to join the Flui advertising network - an advertising platform focused on smaller influencers. That's really cool. To log in, go to https://flui.co and use this email for your username and "+passw+" as your password.\n\n-Carson Cummins\n\nFounder,Flui"])
     return redirect('/submitinfluencer')
+@app.route('/makepayment',methods=['POST'])
+def makepayment():
+	payment.paypal_payment.pay()
