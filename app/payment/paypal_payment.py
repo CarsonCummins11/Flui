@@ -37,4 +37,5 @@ def pay():
 	else:
 		print("Error making payment.")
 		print(payment.error)
+	print("bullshit")
 	print(payment)

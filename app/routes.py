@@ -4,6 +4,7 @@ from flask import render_template,request, session,redirect
 from app import app,db,User,AdvertiserProfile,InfluencerProfile,tweepy_bot,payment
 from app.InfluencerProfile import Influencer
 from app.AdvertiserProfile import Advertiser
+from app.payment import paypal_payment
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user, login_user, login_required
 import pickle
@@ -153,6 +154,7 @@ def create_request(): #Creates a request object from a form submission
     )
     db['influencers'].update({'user':current_user.username},{'$push':{'request':r.get_json()}})
     r.sendmail()
+    paypal_payment.pay()
     return redirect('/advertiserprofile')
 @app.route("/adwithgroup")
 def adwithgroup():
@@ -185,9 +187,6 @@ def submitad():
     link = request.form['link']
     db['influencers'].update({'user':current_user.username},{'$push':{'link':link}})
     adnumber = request.args.get('r')
-    payment.paypal_payment(
-        #get user paypal and amount to be paid here
-    )
 @app.route('/submitinfluencer')
 def submitinfluencer():
     return render_template('submit.html')
@@ -218,6 +217,3 @@ def gosubmitinfluencer():
         yag = yagmail.SMTP('carson@flui.co', 'Luv4soccer.1')
         yag.send(form['email'],'Flui Sponsorship',["What's up "+request.form['name']+"!\n\n One of your followers just sponsored you to join the Flui advertising network - an advertising platform focused on smaller influencers. That's really cool. To log in, go to https://flui.co and use this email for your username and "+passw+" as your password.\n\n-Carson Cummins\n\nFounder,Flui"])
     return redirect('/submitinfluencer')
-@app.route('/makepayment',methods=['POST'])
-def makepayment():
-	payment.paypal_payment.pay()
