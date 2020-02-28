@@ -15,6 +15,7 @@ def create_from(profile):
         color:#707070;
         font-size: 100%;
         padding-left:8px;
+        font-style:italic;
     }
     .text{
         font-family: 'Montserrat', sans-serif;
@@ -27,9 +28,9 @@ def create_from(profile):
         display:inline-block;
         text-align:left;
         border-radius:25px;
-        box-shadow: 0px 3px 7px DarkGrey;
         cursor:pointer;
         margin-top:20px;
+        background-color:white;
     }
     .clickbox:focus, .clickbox:active, .clickbox.active, .clickbox:focus:active {
         -webkit-box-shadow: none;

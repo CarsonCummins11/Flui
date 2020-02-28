@@ -14,6 +14,7 @@ def create_from(profile):
         font-weight: 100;
         color:#707070;
         font-size: 100%;
+        font-style:italic;
         padding-left:8px;
     }
     .text{
@@ -27,10 +28,10 @@ def create_from(profile):
         display:inline-block;
         text-align:left;
         border-radius:25px;
-        box-shadow: 0px 3px 7px DarkGrey;
         cursor:pointer;
         margin-top:20px;
         width:120%;
+        background-color:white;
     }
     .clickbox:focus, .clickbox:active, .clickbox.active, .clickbox:focus:active {
         -webkit-box-shadow: none;
