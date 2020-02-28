@@ -84,11 +84,11 @@ class Pytube:
 				s_pos += 1
 			likes = int(videopage[f_pos:s_pos].replace('"', '').replace('\\', '').replace("likeCount:", ''))
 			
-			f_pos = videopage.find('"dislikeCount')
+			f_pos = videopage.find('"dislikeCount') + len('"dislikeCount')
 			s_pos = f_pos
 			while videopage[s_pos] != ',':
 				s_pos += 1
-			dislikes = int(videopage[f_pos:s_pos].replace('"', '').replace('\\', '').replace("dislikeCount:", ''))
+			dislikes = int(videopage[f_pos:s_pos].replace('"', '').replace('\\', '').replace("dislikeCount:", ''))#why does this fail like 25% of the time
 			
 			#Getting Title
 			f_pos = videopage.find('"videoTitle')
