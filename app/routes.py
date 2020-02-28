@@ -45,10 +45,11 @@ def newinfluencer(): #Creates a new influencer with blank information from the r
 def newadvertiser(): #Creates a new advertiser
     if db['advertisers'].find_one({'user':request.form['user']}) is None and db['influencers'].find_one({'user':request.form['user']}) is None:
         new_advertiser = Advertiser(
+            company=request.form['company'],
             username = request.form['user'],
             password = request.form['pass'], #generates hash in __init__()
             desc = '',
-            email = '',
+            email = 'No Email',
             img = ''
         )
         db['advertisers'].insert_one(new_advertiser.to_dict()) #Adds the profile to db, needs to be a dict

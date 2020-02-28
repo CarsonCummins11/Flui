@@ -57,17 +57,19 @@ def create_from_plain(profile):
     return rtemplate.render(profile=profile) #Returns rendered template(as a unicode string)
 
 class Advertiser():
-    def __init__(self, username, password, desc, email, img): #when initializing just Influencer(name="name") and you can leave the others blank
+    def __init__(self,company, username, password, desc, email, img): #when initializing just Influencer(name="name") and you can leave the others blank
         self.username = username
         self.password = generate_password_hash(password)
         self.desc = desc
         self.email = email
         self.img = img
+        self.company = company
     def to_dict(self):
         return {
             "user": self.username,
             "pass": self.password, #hashed in __init__() of course
             "description": self.desc,
             "email": self.email,
-            "img": self.img
+            "img": self.img,
+            "company":self.company
         }
