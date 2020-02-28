@@ -44,6 +44,8 @@ class Request:
 			<style>
 			body{
 				font-size:123px;
+				background-image: url("/static/images/adback.png");
+            	background-position: center center;
 			}
 			.nametext{
 				font-family: 'Montserrat', sans-serif;
@@ -72,6 +74,7 @@ class Request:
 				cursor:pointer;
 				margin-top:-80px;
 				width:120%;
+				background-color:white;
 			}
 			.clickbox:focus, .clickbox:active, .clickbox.active, .clickbox:focus:active {
 				-webkit-box-shadow: none;
