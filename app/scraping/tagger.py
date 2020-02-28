@@ -30,4 +30,3 @@ class Tagger:
         for k in sims.keys():
             tags.append(k)
         return tags[-4:]
-    
