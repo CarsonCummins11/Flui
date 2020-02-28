@@ -1,7 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>Flui</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="A platform to save social media. Flui uses artificial intelligence to help small creators and advertisers connect in meaningful, profitable ways. Let's save social media.">
+    <meta name="keywords" content="Flui,social media,artificial intelligence,advertising,advertisements,influencers,creators,YouTube,Twitter,Instagram,Portland,Startup">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript">
+        if (screen.width <= 699) {
+        document.location = "mobile.html";
+        }
+        </script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <style>
@@ -21,123 +30,261 @@
         margin: auto;
         color:white;
         background-color: #212121;
+        cursor: default;
     
     }
-    .table{
-        position:relative;
+    table{
+        width:100%;
+        table-layout:fixed;
     }
     .column {
         font-style: italic;
         float: left;
         width: 28%;
         font-size: 3vw;
-        border: 1px solid white;
         padding-top: 30px;
         padding-bottom: 30px;
-        border-radius: 40px;
         margin: 2vw;
+        -webkit-user-select: none;       
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        border:none;
     }
     .row{
         margin:auto;
         text-align: center;
     }
     .column:not(:focus){
-        -webkit-filter: blur(5px);
-        -moz-filter: blur(5px);
-        -o-filter: blur(5px);
-        -ms-filter: blur(5px);
-        filter: blur(5px);
+        -webkit-filter: blur(4px);
+        -moz-filter: blur(4px);
+        -o-filter: blur(4px);
+        -ms-filter: blur(4px);
+        filter: blur(4px);
     }
     .column:focus{
         outline:0;
+        filter:none;
+        -webkit-filter: none;
+        -moz-filter: none;
+        -o-filter: none;
+        -ms-filter: none;
     }
     .infotext{
         font-style: italic;
-        position:absolute;
-        visibility: hidden;
+        position: absolute;;
+        display: none;
         bottom: 0;
         font-size: 2vw;
+        z-index: 5;
     }
+    .header-overlay {
+        position: fixed;
+        font-style: italic;
+        font-size: 300px;
+        text-align: center;
+        top: 25%;
+        left: 0;
+        width: 100%;
+        opacity: 1;
+    }
+    .down-arrow{
+        position:fixed;
+        top:90%;
+        text-align: center;
+        width: 100%;
+        font-size: 50px;
+        transform: rotate(90deg);
+        opacity:1;
+    }
+    tr td{
+        position:relative;
+        text-align: center;
+        display: table-cell;
+        margin: auto;
+    }
+    .inner{
+        position:absolute;
+        display:table-cell;
+        width:100%;
+        left:0;
+        height:100%;
+        border: 1px solid white;
+        border-radius: 40px;
+        background-color: #212121;
+        transform: translateZ(0); 
+        padding-bottom: 20px;
+        
+    }
+    .inner:hover{
+        z-index: 5;
+    }
+.dummy {
+  height: 130vh;
+}
+.dummy-bottom {
+  height: 35vh;
+}
+.foot-style{
+    text-align:center;
+    color:gray;
+    cursor: pointer;
+}
+
     </style>
 </head>
 <body>
-    <h1 onclick="window.location.href = '/'">Flui</h1>
+    <div class = "down-arrow">&#10142</div>
+    <div class="header-overlay">Flui</div>
+    <div class='dummy'>
+
+    </div>
     <div id="info" class="infotext"></div>
-    <div class = "table">
-    <div class="row">
-        <div id="what" tabindex="0" class="column">
-          What
-        </div>
-        <div id="who" tabindex="1" class="column" >
-          Who
-        </div>
-        <div id="why"tabindex="2" class="column" >
-            Why
-        </div>
-      </div>
-      
-      <div class="row">
-        <div id="how"tabindex="3" class="column">
-          How
-        </div>
-        <div id="contact"tabindex="4" class="column">
-          Contact
-        </div>
-        <div id="new"tabindex="5" class="column">
-            New
-        </div>
-      </div>
+    <div style="text-align:center">
+    <table class = table>
+    <tr class="row">
+        <td id="what" class="column">
+          <span id="whatt"class = inner>What</span>
+        </td>
+        <td id="who" class="column" >
+          <span id="whoo" class = inner>Who</span>
+        </td>
+        <td id="why"class="column" >
+            <span id="whyy" class = inner>Why</span>
+        </td>
+      </tr>
+      <tr class="row">
+        <td id="how"class="column">
+          <span id="howw" class = inner>How</span>
+        </td>
+        <td id="contact"class="column">
+          <span id="contactt"class = inner>Contact</span>
+        </td>
+        <td id="new"class="column">
+            <span id="neww"class = inner>New</span>
+        </td>
+    </tr>
+</table>
+    </div>
+    <div class='dummy-bottom'>
+        
     </div>
 </body>
 <script>
+    window.onresize = function(){ location.reload(); }
+    $(window).scroll(function() {
+    var scrollTop = $(this).scrollTop();
+
+        $('.header-overlay').css({
+        opacity: function() {
+            var elementHeight = $(this).height(),
+            opacity = ((elementHeight - scrollTop) / elementHeight);
+            return opacity;
+        }
+    });
+    $('.down-arrow').css({
+        opacity: function() {
+            var elementHeight = $(this).height(),
+            opacity = ((elementHeight - scrollTop) / elementHeight);
+            return opacity;
+        }
+    });
+    
+});
+    fade_time=800;
+    wid = $('#what').width();
+    heigh = $('#what').outerHeight();
+    growth = 70;
     $('#info').css("bottom",5);
-    document.getElementById('what').addEventListener('mouseover', function() {
+    document.getElementById('what').addEventListener('mouseenter', function() {
         $('#what').focus();
-        $('#info').css("top",$('#who').offset().top);
-        $('#info').css("left",$('#who').offset().left);
+        $('#what').css('filter','none');
+        $('#whatt').stop().animate({height:heigh+growth,width:wid+growth},fade_time)
+        $('#info').css("top",$('#who').offset().top+24);
+        $('#info').css("left",$('#who').offset().left+growth);
         $('#info').css("right",5);
-        $('#info').css("visibility","visible");
+        $('#info').fadeIn(fade_time);
         $('#info').html("Flui connects advertisers to groups of similar influencers. It allows small time influencers to get brand deals that are typically reserved for those with a larger audience, and allows advertisers to reach high engagement, niche markets. Flui will fix social media marketing.");
     });
-    document.getElementById('who').addEventListener('mouseover', function() {
-        $('#who').focus();
-        $('#info').css("top",$('#why').offset().top);
-        $('#info').css("left",$('#why').offset().left);
-        $('#info').css("right",5);
-        $('#info').css("visibility","visible");
-        $('#info').html("Flui was created by a group of Portland teenagers with one goal: fixing social media. We want to help small influencers focus on what matters: creativity, and advertisers find audiences that will be receptive, rather than annoyed, by their advertisements.");
+    document.getElementById('what').addEventListener('mouseleave', function() {
+        $('#whatt').stop().animate({height:heigh,width:wid},fade_time);
+        $('#info').css('display','none');
+        $('#what').css('filter','blur(4px)');
     });
-    document.getElementById('why').addEventListener('mouseover', function() {
+    document.getElementById('who').addEventListener('mouseenter', function() {
+        $('#who').focus();
+        $('#who').css('filter','none');
+        $('#info').css("top",$('#why').offset().top+24);
+        $('#whoo').stop().animate({height:heigh+growth,width:wid+growth},fade_time)
+        $('#info').css("left",$('#why').offset().left+growth);
+        $('#info').css("right",5);
+        $('#info').fadeIn(fade_time);
+        $('#info').html("Flui was created in Portland with one goal: fixing social media. We want to help small influencers focus on what matters: creativity, and advertisers find audiences that will be receptive, rather than annoyed, by their advertisements.");
+    });
+    document.getElementById('who').addEventListener('mouseleave', function() {
+        $('#whoo').stop().animate({height:heigh,width:wid},fade_time)
+        $('#info').css('display','none');
+        $('#who').css('filter','blur(4px)');
+    });
+    document.getElementById('why').addEventListener('mouseenter', function() {
         $('#why').focus();
-        $('#info').css("top",$('#what').offset().top);
+        $('#why').css('filter','none');
+        $('#whyy').stop().animate({height:heigh+growth,width:wid+growth},fade_time)
+        $('#info').css("top",$('#what').offset().top+24);
         $('#info').css("left",$('#what').offset().left);
         $('#info').css("right",($(window).width() - ($('#who').offset().left + $('#who').outerWidth())));
-        $('#info').css("visibility","visible");
-        $('#info').html("Social media is broken. The small time influencers are forced to work inhumane hours to make just enough revenue to live. Some don't even have the ability to monetize. Flui is here to fix that.");
+        $('#info').fadeIn(fade_time);
+        $('#info').html("Social media is broken. Small time influencers are forced to work inhumane hours to make just enough revenue to live. Some don't even have the ability to monetize. Flui is here to fix that.");
     });
-    document.getElementById('how').addEventListener('mouseover', function() {
+    document.getElementById('why').addEventListener('mouseleave', function() {
+        $('#whyy').stop().animate({height:heigh,width:wid},fade_time)
+        $('#info').css('display','none');
+        $('#why').css('filter','blur(4px)');
+    });
+    document.getElementById('how').addEventListener('mouseenter', function() {
         $('#how').focus();
-        $('#info').css("top",$('#contact').offset().top);
-        $('#info').css("left",$('#contact').offset().left);
+        $('#how').css('filter','none');
+        $('#info').css("top",$('#contact').offset().top+24);
+        $('#howw').stop().animate({height:heigh+growth,width:wid+growth},fade_time)
+        $('#info').css("left",$('#contact').offset().left+70);
         $('#info').css("right",5);
-        $('#info').css("visibility","visible");
+        $('#info').fadeIn(fade_time);
         $('#info').html("Flui uses industry standard machine learning to build groups of influencers tailored exactly to match the requests of advertisers. Flui's custom algorithm takes away the stress of finding an influencer to run your ad.");
     });
-    document.getElementById('contact').addEventListener('mouseover', function() {
+    document.getElementById('how').addEventListener('mouseleave', function() {
+        $('#howw').stop().animate({height:heigh,width:wid},fade_time)
+        $('#info').css('display','none');
+        $('#how').css('filter','blur(4px)');
+    });
+    document.getElementById('contact').addEventListener('mouseenter', function() {
         $('#contact').focus();
-        $('#info').css("top",$('#how').offset().top);
+        $('#contact').css('filter','none');
+        $('#info').css("top",$('#how').offset().top+24);
         $('#info').css("left",$('#how').offset().left);
+        $('#contactt').stop().animate({height:heigh+growth,width:wid+growth},fade_time);
         $('#info').css("right",($(window).width() - ($('#how').offset().left + $('#how').outerWidth())));
-        $('#info').css("visibility","visible");
+        $('#info').fadeIn(fade_time);
         $('#info').html("Our founder can be contacted by email at carson@flui.co. You can find us on Instagram at flui.co, and Twitter at flui_co");
     });
-    document.getElementById('new').addEventListener('mouseover', function() {
+    document.getElementById('contact').addEventListener('mouseleave', function() {
+        $('#contactt').stop().animate({height:heigh,width:wid},fade_time)
+        $('#info').css('display','none');
+        $('#contact').css('filter','blur(4px)');
+    });
+    document.getElementById('new').addEventListener('mouseenter', function() {
         $('#new').focus();
-        $('#info').css("top",$('#how').offset().top);
+        $('#new').css('filter','none');
+        $('#neww').stop().animate({height:heigh+growth,width:wid+growth},fade_time)
+        $('#info').css("top",$('#how').offset().top+24);
         $('#info').css("left",$('#how').offset().left);
         $('#info').css("right",($(window).width() - ($('#contact').offset().left + $('#contact').outerWidth())));
-        $('#info').css("visibility","visible");
-        $('#info').html("Flui development is well underway, and will launch soon. Stay ready to save social media.");
+        $('#info').fadeIn(fade_time);
+        $('#info').html("Flui development is well underway, and will launch March 5th.");
+    });
+    document.getElementById('new').addEventListener('mouseleave', function() {
+        $('#neww').stop().animate({height:heigh,width:wid},fade_time)
+        $('#info').css('display','none');
+        $('#new').css('filter','blur(4px)');
     });
 </script>
 </html>
