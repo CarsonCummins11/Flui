@@ -1,9 +1,8 @@
 #pytube object for scraping youtube
 from bs4 import BeautifulSoup
 import requests
-import re
 
-#returns true if the page of the url is one of youtube's 2 404 pages
+#returns true if the page of the url is one of youtube's 2 404 page
 def is404(url):
 	page = requests.get(url).text #sets the page
 	soup = BeautifulSoup(page, 'html.parser')
@@ -69,7 +68,6 @@ class Pytube:
 		#get all the videos in the channels video tab
 		video_elms = soup_videos.find_all('h3', class_="yt-lockup-title")
 		videos = []
-		r = re.compile('\\\"likeCount\\\":[1-9]+')
 		
 		#iterate over the videos
 		for v in video_elms:
@@ -78,22 +76,51 @@ class Pytube:
 			#creates the bs4 object for the videos page
 			videopage = requests.get(v_url).text
 			soup_videopage = BeautifulSoup(videopage, 'html.parser')
-			
-			print(r.search(videopage, 0, len(videopage)))
-			
+		
 			#get's the likes
-			likes = int(r.search(videopage))
-			dislikes = int(soup_videopage.find_all('ytd-toggle-button-renderer')[1].find('yt-formatted-string', id="text", class_="style-scope ytd-toggle-button-renderer style-text").text)
+			f_pos = videopage.find('"likeCount')
+			s_pos = f_pos
+			while videopage[s_pos] != ',':
+				s_pos += 1
+			likes = int(videopage[f_pos:s_pos].replace('"', '').replace('\\', '').replace("likeCount:", ''))
+			
+			f_pos = videopage.find('"dislikeCount') + len('"dislikeCount')
+			s_pos = f_pos
+			while videopage[s_pos] != ',':
+				s_pos += 1
+			dislikes = int(videopage[f_pos:s_pos].replace('"', '').replace('\\', '').replace("dislikeCount:", ''))#why does this fail like 25% of the time
+			
+			#Getting Title
+			f_pos = videopage.find('"videoTitle')
+			s_pos = f_pos
+			while videopage[s_pos] != ',':
+				s_pos += 1
+			title = videopage[f_pos + 14:s_pos].replace("}",'').replace('"','').replace('\\','')
+			
+			#get's views
+			f_pos = videopage.find('<div class="watch-view-count">') + 30
+			s_pos = f_pos
+			while videopage[s_pos] != 'v':
+				s_pos += 1
+			views = int(videopage[f_pos:s_pos])
+			
+			#get's subscribers
+			sub_str = 'yt-subscriber-count" title="1" aria-label="1" tabindex="0">'
+			f_pos = videopage.find(sub_str) + len(sub_str)
+			s_pos = f_pos
+			while videopage[s_pos] != '<':
+				s_pos += 1
+			subscribers = int(videopage[f_pos:s_pos])
 			
 			#appends an object to the videos array with the data
 			videos.append({
-				"title": v.find(id="video-title").text,
-				"views": int(v.find(id='metadata-line').find_all('span')[0].text[0:1]),
+				"title": title,
+				"views": views,
 				"url": v_url,
 				"likes": likes,
 				"dislikes": dislikes,
 				"total-votes": likes + dislikes,
-				"engagement-ratio": (likes + dislikes) / int(v.find(id='metadata-line').find_all('span')[0].text[0:1])
+				"engagement-ratio": (likes + dislikes) / subscribers
 			})
 		
 		user_obj['videos'] = videos
