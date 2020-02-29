@@ -151,6 +151,3 @@ class Pytube:
 			if requests.get(self.youtuberooturl + channel['href']) != self.youtube_404:
 				channels.append(channel['href'])
 		return channels
-
-pyt = Pytube()
-print(pyt.user(id="UC_laWT7O377Ktxa2JnDuQnw"))

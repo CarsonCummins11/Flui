@@ -13,6 +13,3 @@ class TW_Tagger:
         for sent in sents:
             data+=word_tokenize(sent)
         return self.tagger.tag(data)
-        
-tg = TW_Tagger()
-print(tg.tag('elonmusk'))

@@ -1,7 +1,7 @@
 #routes.py
 #routes html requests to python functions
 from flask import render_template,request, session,redirect
-from app import app,db,User,AdvertiserProfile,InfluencerProfile,tweepy_bot,payment
+from app import app,db,User,AdvertiserProfile,InfluencerProfile,payment
 from app.InfluencerProfile import Influencer
 from app.AdvertiserProfile import Advertiser
 from app.payment import paypal_payment
@@ -13,6 +13,8 @@ from jinja2 import Environment, BaseLoader
 from urllib.parse import unquote
 import secrets
 import yagmail
+from app.scraping import scraping_workflow
+ml = scraping_workflow.WorkflowController()
 @app.route("/")
 def main(): #returns the home page on start
     return render_template('home.html')
@@ -101,6 +103,13 @@ def influencerprofilechange(): #Changes the influencer based on a request form
     db['influencers'].update({'user':current_user.username},{'$set':{"name":request.form['fname'],
     "desc":request.form['desc'],"email":request.form['email'],"instagram":request.form['instagram'],
     "youtube":request.form['youtube'],"twitter":request.form['twitter']}})
+    if db['influencers'].find_one({'user':current_user.username})['twitter']!='':
+        ml.tagTWUser(current_user.username)
+    if db['influencers'].find_one({'user':current_user.username})['instagram']!='':
+        ml.tagInstaUser(current_user.username)
+    if db['influencers'].find_one({'user':current_user.username})['youtube']!='':
+        ml.tagYTUser(current_user.username)
+    
     return redirect('/influencerprofile')
 @app.route("/searchforinfluencers")
 def searchforinfluencers(): #Returns the search form for influencers

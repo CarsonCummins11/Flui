@@ -1,5 +1,5 @@
-from youtube import YoutubeBot
-from tagger import Tagger
+from app.scraping.youtube import YoutubeBot
+from app.scraping.tagger import Tagger
 from nltk.tokenize import sent_tokenize,word_tokenize
 class YT_Tagger:
     def __init__(self):
