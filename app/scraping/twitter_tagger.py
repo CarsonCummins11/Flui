@@ -13,3 +13,4 @@ class TW_Tagger:
         for sent in sents:
             data+=word_tokenize(sent)
         return self.tagger.tag(data)
+print(TW_Tagger().tag('jack'))

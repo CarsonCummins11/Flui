@@ -2,5 +2,5 @@
 __pycache__/
 app/__pycache__/
 app/scraping/authentication/
-tagger.model
+*.pkl
 */__pycache__/

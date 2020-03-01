@@ -59,7 +59,7 @@ class TweepyBot:
             f.write(json.dumps(self.twdata))
         self.twdata.clear() #for ram
     def get_tweets(self,user):
-        statuses =  self.api.user_timeline(screen_name=user, count=1)
+        statuses =  self.api.user_timeline(screen_name=user, count=100)
         ret = []
         for status in statuses:
             ret.append(status._json['text'])

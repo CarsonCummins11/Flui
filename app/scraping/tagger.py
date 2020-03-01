@@ -1,32 +1,60 @@
-import gensim.downloader as api
 from os import path
-from gensim.models.word2vec import Word2Vec
+from wikipedia2vec import Wikipedia2Vec
+import numpy as np
+def cossim(vec1,vec2):
+        a = np.array(vec1)
+        b = np.array(vec2)
+        # manually compute cosine similarity
+        dot = np.dot(a, b)
+        norma = np.linalg.norm(a)
+        normb = np.linalg.norm(b)
+        return dot / (norma * normb)
 class Tagger:
     def __init__(self):
-        if path.exists('tagger.model'):
+        if path.exists('wiki_tagger.pkl'):
             print('model already made')
-            self.model = Word2Vec.load('tagger.model')
+            self.model=Wikipedia2Vec.load('wiki_tagger.pkl')
         else:
-            data = api.load("text8")
-            print('building model')
-            self.model = Word2Vec(data,size=100, window=5, min_count=3, workers=4)
-            self.model.save('tagger.model')
+            print('no model found')
     def tag(self,words):
-        #generate average similarities to each tag
-        sims = {}
-        for word in words:
-            if word in self.model.wv.vocab:
-                tags = open("app/scraping/mldata/tags.txt")
-                for tag in tags:
-                    tag = tag.replace('\n','').lower()
-                    if tag in sims:
-                        sims[tag] = [sims[tag][0]+self.model.similarity(word,tag),sims[tag][1]+1]
+        tags = [k.replace('\n','') for k in open('app/scraping/mldata/tags.txt','r').readlines()]
+        text = ' '+' '.join(words)+' '
+        counts = {}
+        for item in self.model.dictionary:
+            try:
+                if ' '+item.text.lower()+' ' in text.lower():
+                    if item.text in counts:
+                        counts[item.text]+=1
                     else:
-                        sims[tag] = [self.model.similarity(word,tag),1]
-        for tag in sims.keys():
-            sims[tag] = sims[tag][0]/sims[tag][1]
-        sims={k: v for k, v in sorted(sims.items(), key=lambda item: item[1])}
-        tags = []
-        for k in sims.keys():
-            tags.append(k)
-        return tags[-4:]
+                        counts[item.text]=1
+            except:
+                if ' '+item.title.lower()+' ' in text.lower():
+                    if item.title in counts:
+                        counts[item.title]+=1
+                    else:
+                        counts[item.title]=1
+        print(counts)
+        sims = {}
+        for tag in tags:
+            tagvec = []
+            try:
+                tagvec = self.model.get_word_vector(tag.lower()).tolist()
+            except:
+                tagvec = self.model.get_entity_vector(tag.lower()).tolist()
+            for item in counts:
+                vector=[]
+                try:
+                    vector = self.model.get_word_vector(item).tolist()
+                except:
+                    vector = self.model.get_entity_vector(item).tolist()
+                try:
+                    sims[tag] += counts[item]*cossim(vector,tagvec)
+                except:
+                    sims[tag] = counts[item]*cossim(vector,tagvec)
+        count = 0
+        for k in counts:
+            count+=counts[k]
+        for k in sims:
+            sims[k]/=count
+        sims = {k: v for k, v in sorted(sims.items(), key=lambda item: item[1])}
+        return list(sims.keys())[-4:]

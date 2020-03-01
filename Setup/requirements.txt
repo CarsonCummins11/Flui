@@ -14,3 +14,5 @@ TwitterSearch
 instagram_private_api
 youtube-dl
 paypalrestsdk
+wikipedia2Vec
+numpy
