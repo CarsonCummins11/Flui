@@ -22,40 +22,34 @@
         return this;
     }
     function resetemail(){
-        $('#userprofile').submit();
         $('#emailtext').prop("readonly", true);
         $('body').focus();
         $('#ec').html('<span id="emailchange" class="change" onclick="changemail()">Change</span>');
 
     }
     function resetcompany(){
-        $('#userprofile').submit();
         $('#companytext').prop("readonly", true);
         $('body').focus();
         $('#cc').html('<span id="companychange" class="change" onclick="changecompany()">Change</span>');
     }
     function resetdesc(){
-        $('#userprofile').submit();
         $('#desctext').prop("readonly", true);
         $('body').focus();
         $('#dc').html('<span id="descchange" class="change" onclick="changedesc()">Change</span>');
     }
     function resetinsta(){
-        $('#userprofile').submit();
         $('#instatext').prop("readonly", true);
         $('body').focus();
         $('#ic').html('<span id="instachange" class="change" onclick="changinsta()">Change</span>');
 
     }
     function resettwitter(){
-        $('#userprofile').submit();
         $('#twittertext').prop("readonly", true);
         $('body').focus();
         $('#tc').html('<span id="twitterchange" class="change" onclick="changtwitter()">Change</span>');
 
     }
     function resetyoutube(){
-        $('#userprofile').submit();
         $('#youtubetext').prop("readonly", true);
         $('body').focus();
         $('#yc').html('<span id="youtubechange" class="change" onclick="changeyoutube()">Change</span>');
@@ -63,32 +57,32 @@
     }
     function changedesc(){
         $('#desctext').prop('readonly',false);
-        $('#dc').html('<input onclick="resetdesc()" type="submit" value="Save Changes">');
+        $('#dc').html('<input onsubmit="resetdesc()" type="submit" value="Save Changes">');
         $('#desctext').focus();
     }
     function changemail(){
         $('#emailtext').prop('readonly',false);
-        $('#ec').html('<input onclick="resetemail()" type="submit" value="Save Changes">');
+        $('#ec').html('<input onsubmit="resetemail()" type="submit" value="Save Changes">');
         $('#emailtext').focus();
     }
     function changecompany(){
         $('#companytext').prop('readonly',false)
-        $('#cc').html('<input onclick="resetcompany()" type="submit" value="Save Changes">')
+        $('#cc').html('<input onsubmit="resetcompany()" type="submit" value="Save Changes">')
         $('#companytext').focus();
     }
     function changeinsta(){
         $('#instatext').prop('readonly',false)
-        $('#ic').html('<input onclick="resetinsta()" type="submit" value="Save Changes">')
+        $('#ic').html('<input onsubmit="resetinsta()" type="submit" value="Save Changes">')
         $('#instatext').focus();
     }
     function changeyoutube(){
         $('#youtubetext').prop('readonly',false)
-        $('#yc').html('<input onclick="resetyoutube()" type="submit" value="Save Changes">')
+        $('#yc').html('<input onsubmit="resetyoutube()" type="submit" value="Save Changes">')
         $('#youtubetext').focus();
     }
     function changetwitter(){
         $('#twittertext').prop('readonly',false)
-        $('#tc').html('<input onclick="resettwitter()" type="submit" value="Save Changes">')
+        $('#tc').html('<input onsubmit="resettwitter()" type="submit" value="Save Changes">')
         $('#twittertext').focus();
     }
 	function resetTags(key){
