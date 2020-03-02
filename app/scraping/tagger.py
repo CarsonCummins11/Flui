@@ -1,6 +1,7 @@
 from os import path
 from wikipedia2vec import Wikipedia2Vec
 import numpy as np
+#donwload model file from http://wikipedia2vec.s3.amazonaws.com/models/en/2018-04-20/enwiki_20180420_300d.pkl.bz2
 def cossim(vec1,vec2):
         a = np.array(vec1)
         b = np.array(vec2)
@@ -24,15 +25,11 @@ class Tagger:
             try:
                 if ' '+item.text.lower()+' ' in text.lower():
                     if item.text in counts:
-                        counts[item.text]+=1
-                    else:
-                        counts[item.text]=1
+                        counts[item.text]=text.lower().count(' '+item.text.lower()+' ')
             except:
                 if ' '+item.title.lower()+' ' in text.lower():
                     if item.title in counts:
-                        counts[item.title]+=1
-                    else:
-                        counts[item.title]=1
+                        counts[item.text]=text.lower().count(' '+item.title.lower()+' ')
         print(counts)
         sims = {}
         for tag in tags:
