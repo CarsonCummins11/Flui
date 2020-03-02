@@ -87,6 +87,7 @@
 <script> //Hey shouldn't we not have these hard coded and have them linked to like influencer_search.js
 //Search function for influencers
 function search(term){
+    $('#searcharea').html('Loading...');
     $.ajax({
         type: 'POST',
         url: '/influencersearch',

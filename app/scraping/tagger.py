@@ -24,7 +24,6 @@ class Tagger:
         for item in self.model.dictionary:
             try:
                 if ' '+item.text.lower()+' ' in text.lower():
-                    print('found')
                     counts[item.text]=text.lower().count(' '+item.text.lower()+' ')
             except:
                 if ' '+item.title.lower()+' ' in text.lower():
@@ -37,7 +36,14 @@ class Tagger:
             try:
                 tagvec = self.model.get_word_vector(tag.lower()).tolist()
             except:
-                tagvec = self.model.get_entity_vector(tag.lower()).tolist()
+                try:
+                    tagvec = self.model.get_entity_vector(tag).tolist()
+                except: 
+                    try:
+                        tagvec = self.model.get_entity_vector(tag.lower()).tolist()
+                    except:
+                        print(tag)
+
             for item in counts:
                 vector=[]
                 try:
