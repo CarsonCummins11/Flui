@@ -27,6 +27,18 @@
 	}
     </style>
     <script>
+        function checkstrength(){
+            pas = $('#secret-password').val()
+            var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+            var mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+            if(strongRegex.test(pas)) {
+                $('#secret-password').css("background-color","rgba(30, 255, 0, 0.493)")
+                    } else if(mediumRegex.test(pas)) {
+                        $('#secret-password').css("background-color","rgba(255, 238, 0, 0.493)")
+                    } else {
+                        $('#secret-password').css("background-color","#ff080052")
+                    }
+        }
         $(".toggle-password").click(function() {
             $(this).toggleClass("fa-eye fa-eye-slash");
             var input = $($(this).attr("toggle"));
@@ -43,7 +55,7 @@
             <form style="text-align:center"action="/newadvertiser" method="post">
                 <input type="text" name="company" placeholder="Company"><br>
                 <input type="text" name="user" placeholder="Username"><br>
-                <input  id="secret-password" type="password" name="pass" placeholder="Password">
+                <input  id="secret-password" onkeypress="checkstrength()" type="password" name="pass" placeholder="Password">
                 <span style="margin-right: -26px;" toggle="#secret-password" class="fa fa-fw fa-eye field-icon toggle-password"></span><br>
                 <input class="new" style="cursor:pointer"type="submit" value="Create">
             </form>
