@@ -14,6 +14,8 @@ from urllib.parse import unquote
 import secrets
 import yagmail
 from app.scraping import scraping_workflow
+from app.scraping.tagger import Tagger
+searchtagger = Tagger()
 ml = scraping_workflow.WorkflowController()
 @app.route("/")
 def main(): #returns the home page on start
@@ -114,9 +116,9 @@ def influencerprofilechange(): #Changes the influencer based on a request form
 @app.route("/searchforinfluencers")
 def searchforinfluencers(): #Returns the search form for influencers
     return render_template('InfluencerSearch.html')
-@app.route("/searchforadvertisers")
+@app.route("/searchforcollab")
 def searchforadvertisers(): #Returns the search form for advertisers 
-    return render_template('AdvertiserSearch.html')
+    return render_template('CollabSearch.html')
 @app.route('/getinfluencertags')
 def getinfluencertags(): #returns the tags of an influencer
     return db['influencers'].find_one({'user':current_user.username})['tags']
@@ -145,8 +147,11 @@ def advertisersearch(): #Creates an array of advertisers that match a tag and re
     return ret if len(ret)>0 else 'no matches for that term:(' #Returns the results
 @app.route("/influencersearch", methods=['POST'])
 def influencersearch(): #Creates an array of influencers that match a tag and returns it
+    print('search term: '+str(request.get_json()['term'].split(' ')))
+    term = ' '.join(searchtagger.tag(request.get_json()['term'].split(' ')))
+    print('generated term: '+term)
     db['influencers'].create_index([('tags','text')])
-    results = db['influencers'].find({'$text': { '$search': request.get_json()['term'] } })
+    results = db['influencers'].find({'$text': { '$search': term } })
     ret = {}
     i = 0
     for k in results:

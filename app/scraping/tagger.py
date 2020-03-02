@@ -24,8 +24,8 @@ class Tagger:
         for item in self.model.dictionary:
             try:
                 if ' '+item.text.lower()+' ' in text.lower():
-                    if item.text in counts:
-                        counts[item.text]=text.lower().count(' '+item.text.lower()+' ')
+                    print('found')
+                    counts[item.text]=text.lower().count(' '+item.text.lower()+' ')
             except:
                 if ' '+item.title.lower()+' ' in text.lower():
                     if item.title in counts:
