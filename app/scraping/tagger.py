@@ -5,7 +5,6 @@ import numpy as np
 def cossim(vec1,vec2):
         a = np.array(vec1)
         b = np.array(vec2)
-        # manually compute cosine similarity
         dot = np.dot(a, b)
         norma = np.linalg.norm(a)
         normb = np.linalg.norm(b)

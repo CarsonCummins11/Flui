@@ -178,6 +178,11 @@
         opacity: function() {
             var elementHeight = $(this).height(),
             opacity = ((elementHeight - scrollTop) / elementHeight);
+            if(opacity<.1){
+                $('.header-overlay').prop('onclick',function(){})
+                $('.header-overlay').css('cursor','default')
+
+            }
             return opacity;
         }
     });
