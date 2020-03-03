@@ -134,7 +134,7 @@
 </head>
 <body>
     <div class = "down-arrow">&#10142</div>
-    <div class="header-overlay" style="cursor:pointer" onclick="window.location.href = '/'">Flui</div>
+    <div class="header-overlay" style="cursor:pointer">Flui</div>
     <div class='dummy'>
 
     </div>
@@ -173,19 +173,22 @@
     window.onresize = function(){ location.reload(); }
     $(window).scroll(function() {
     var scrollTop = $(this).scrollTop();
-
+        var opacity = 0;
         $('.header-overlay').css({
         opacity: function() {
             var elementHeight = $(this).height(),
             opacity = ((elementHeight - scrollTop) / elementHeight);
-            if(opacity<.1){
-                $('.header-overlay').prop('onclick',function(){})
-                $('.header-overlay').css('cursor','default')
-
-            }
             return opacity;
         }
+        
     });
+    if($('.header-overlay').css("opacity")<.1){
+                $('.header-overlay').unbind('click');
+                $('.header-overlay').css('cursor','default');
+    }else{
+                $('.header-overlay').click(function(){window.location.href='/'});
+                $('.header-overlay').css('cursor','pointer');
+    }
     $('.down-arrow').css({
         opacity: function() {
             var elementHeight = $(this).height(),
