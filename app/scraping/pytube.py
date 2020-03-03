@@ -9,8 +9,8 @@ def is404(url):
 	error_404 = soup.find(id="error-page-hh-illustration") #broad 404 error
 	error_404_channel = soup.find(class_="channel-empty-message banner-message") #channel 404 error
 	if error_404 != None or error_404_channel != None:
-		return False;
-	return True;
+		return False
+	return True
 
 #class that does all the scraping
 class Pytube:
@@ -72,7 +72,7 @@ class Pytube:
 		#iterate over the videos
 		for v in video_elms:
 			v_url = "https://youtube.com" + v.find('a')['href']
-			
+
 			#creates the bs4 object for the videos page
 			videopage = requests.get(v_url).text
 			soup_videopage = BeautifulSoup(videopage, 'html.parser')
@@ -82,14 +82,18 @@ class Pytube:
 			s_pos = f_pos
 			while videopage[s_pos] != ',':
 				s_pos += 1
-			likes = int(videopage[f_pos:s_pos].replace('"', '').replace('\\', '').replace("likeCount:", ''))
-			
-			f_pos = videopage.find('"dislikeCount') + len('"dislikeCount')
+			if not videopage[f_pos:s_pos] == '':
+				likes = int(videopage[f_pos:s_pos].replace('"', '').replace('\\', '').replace("likeCount:", ''))
+			else: likes = None
+
+			f_pos = videopage.find('"dislikeCount')
 			s_pos = f_pos
 			while videopage[s_pos] != ',':
 				s_pos += 1
-			dislikes = int(videopage[f_pos:s_pos].replace('"', '').replace('\\', '').replace("dislikeCount:", ''))#why does this fail like 25% of the time
-			
+			if not videopage[f_pos:s_pos] == '':
+				dislikes = int(videopage[f_pos:s_pos].replace('"', '').replace('\\', '').replace("dislikeCount:", ''))
+			else: dislikes = None
+
 			#Getting Title
 			f_pos = videopage.find('"videoTitle')
 			s_pos = f_pos
@@ -100,18 +104,23 @@ class Pytube:
 			#get's views
 			f_pos = videopage.find('<div class="watch-view-count">') + 30
 			s_pos = f_pos
-			while videopage[s_pos] != 'v':
+			while videopage[s_pos] != ' ':
 				s_pos += 1
-			views = int(videopage[f_pos:s_pos])
-			
+			if not videopage[f_pos:s_pos] == '' and not videopage[f_pos:s_pos] == '"':
+				views = int(videopage[f_pos:s_pos])
+			else: views = None
+
 			#get's subscribers
 			sub_str = 'yt-subscriber-count" title="1" aria-label="1" tabindex="0">'
 			f_pos = videopage.find(sub_str) + len(sub_str)
 			s_pos = f_pos
 			while videopage[s_pos] != '<':
 				s_pos += 1
-			subscribers = int(videopage[f_pos:s_pos])
-			
+			if not videopage[f_pos:s_pos].replace('">', '') == '':
+				subscribers = int(videopage[f_pos:s_pos].replace('">', ''))
+			else: 
+				subsribers = None
+
 			#appends an object to the videos array with the data
 			videos.append({
 				"title": title,
@@ -119,8 +128,8 @@ class Pytube:
 				"url": v_url,
 				"likes": likes,
 				"dislikes": dislikes,
-				"total-votes": likes + dislikes,
-				"engagement-ratio": (likes + dislikes) / subscribers
+				"total-votes": None if likes == None or dislikes == None else likes + dislikes,
+				"engagement-ratio": None if likes == None or dislikes == None else (likes + dislikes) / subscribers
 			})
 		
 		user_obj['videos'] = videos
@@ -130,24 +139,30 @@ class Pytube:
 		total_votes = 0
 		engagement_ratio_total = 0
 		for v in user_obj['videos']:
-			total_views += v['views']
-			total_votes += v['total-votes']
-			engagement_ratio_total += v['engagement-ratio']
+			if not v['views'] == None:
+				total_views += v['views']
+			if not v['total-votes'] == None:
+				total_votes += v['total-votes']
+			if not v['engagement-ratio'] == None:
+				engagement_ratio_total += v['engagement-ratio']
 		
 		#engagement score
-		user_obj['engagement-ratio'] = engagement_ratio_total / len(user_obj['videos'])
+		user_obj['engagement-ratio'] = engagement_ratio_total / len(videos)#user_obj['videos'])
 		
 		return user_obj
 	
 	#returns all channels from a google search
 	def search_channels(self, youtuber):
-		if self.exists(youtubers):
-			return self.youtubeuserurl + youtuber #if there's a youtube account directly matching your query, then return it
+		if is404(youtuber):
+			return self.youtubeuser + youtuber #if there's a youtube account directly matching your query, then return it
 		page = requests.get(self.youtubesearchurl + youtuber) #getting the html of the search page
 		self.soup = BeautifulSoup(page, 'html.parser') #beautifulsoup object for parsing page
 		channels = []
 		#go through all the channel results and add the ones that have a valid url
-		for channel in soup.find_all('a', class_='channel-link yt-simple-endpoint style-scope ytd-channel-renderer'):
-			if requests.get(self.youtuberooturl + channel['href']) != self.youtube_404:
+		for channel in self.soup.find_all('a', class_='channel-link yt-simple-endpoint style-scope ytd-channel-renderer'):
+			if not is404(self.youtuberoot + channel['href']):
 				channels.append(channel['href'])
 		return channels
+
+pyt = Pytube()
+print(pyt.user(id="UCX85x9P7nh7jViRYOxSPCLw"))
