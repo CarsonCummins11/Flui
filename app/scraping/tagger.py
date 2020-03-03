@@ -60,4 +60,10 @@ class Tagger:
         for k in sims:
             sims[k]/=count
         sims = {k: v for k, v in sorted(sims.items(), key=lambda item: item[1])}
-        return list(sims.keys())[-4:]
+        ret_top4 = list(sims.keys())[-4:]
+        ret = []
+        for k in ret_top4:
+            print(sims[k])
+            if(sims[k]>.7):
+                ret.append(k)
+        return ret

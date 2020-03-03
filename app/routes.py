@@ -1,6 +1,6 @@
 #routes.py
 #routes html requests to python functions
-from flask import render_template,request, session,redirect
+from flask import render_template,request, session,redirect,escape
 from app import app,db,User,AdvertiserProfile,InfluencerProfile,payment
 from app.InfluencerProfile import Influencer
 from app.AdvertiserProfile import Advertiser
@@ -27,10 +27,10 @@ def about(): #returns the about page
 def newinfluencer(): #Creates a new influencer with blank information from the request form
     if db['influencers'].find_one({'user':request.form['user']}) is None and db['advertisers'].find_one({'user':request.form['user']}) is None:
         new_influencer = Influencer(
-            name = request.form['name'], #NewInfluencer has the tag as 'name', but when you inspect it's still fname?
+            name = escape(request.form['name']), #NewInfluencer has the tag as 'name', but when you inspect it's still fname?
             username = request.form['user'],
             password = request.form['pass'], #generates hash in __init__()
-            email = request.form['email'],
+            email = escape(request.form['email']),
             desc = '',
             img = '',
             insta = '',
@@ -49,7 +49,7 @@ def newinfluencer(): #Creates a new influencer with blank information from the r
 def newadvertiser(): #Creates a new advertiser
     if db['advertisers'].find_one({'user':request.form['user']}) is None and db['influencers'].find_one({'user':request.form['user']}) is None:
         new_advertiser = Advertiser(
-            company=request.form['company'],
+            company=escape(request.form['company']),
             username = request.form['user'],
             password = request.form['pass'], #generates hash in __init__()
             desc = '',
@@ -98,13 +98,13 @@ def influencerprofile(): #If the user isn't null, then return a rendered templat
     return render_template('InfluencerProfile.html',profile=profile)
 @app.route("/advertiserprofilechange",methods=['POST'])
 def advertiserprofilechange(): #Changes the current user based on a request form
-    db['advertisers'].update({'user':current_user.username},{'$set':{"company":request.form['company'],"desc":request.form['desc'],"email":request.form['email']}})
+    db['advertisers'].update({'user':current_user.username},{'$set':{"company":escape(request.form['company']),"desc":escape(request.form['desc']),"email":escape(request.form['email'])}})
     return redirect('/advertiserprofile')
 @app.route("/influencerprofilechange",methods=['POST'])
 def influencerprofilechange(): #Changes the influencer based on a request form
-    db['influencers'].update({'user':current_user.username},{'$set':{"name":request.form['fname'],
-    "desc":request.form['desc'],"email":request.form['email'],"instagram":request.form['instagram'],
-    "youtube":request.form['youtube'],"twitter":request.form['twitter']}})
+    db['influencers'].update({'user':current_user.username},{'$set':{"name":escape(request.form['fname']),
+    "desc":escape(request.form['desc']),"email":escape(request.form['email']),"instagram":escape(request.form['instagram']),
+    "youtube":escape(request.form['youtube']),"twitter":escape(request.form['twitter'])}})
     if db['influencers'].find_one({'user':current_user.username})['twitter']!='':
         ml.tagTWUser(current_user.username)
     if db['influencers'].find_one({'user':current_user.username})['instagram']!='':
@@ -231,3 +231,9 @@ def gosubmitinfluencer():
         yag = yagmail.SMTP('carson@flui.co', 'Luv4soccer.1')
         yag.send(form['email'],'Flui Sponsorship',["What's up "+request.form['name']+"!\n\n One of your followers just sponsored you to join the Flui advertising network - an advertising platform focused on smaller influencers. That's really cool. To log in, go to https://flui.co and use this email for your username and "+passw+" as your password.\n\n-Carson Cummins\n\nFounder,Flui"])
     return redirect('/submitinfluencer')
+@app.errorhandler(404)
+def notfound(e):
+    return render_template('notfound.html'),404
+@app.errorhandler(500)
+def errhand(e):
+    return render_template('notfound.html'),500
