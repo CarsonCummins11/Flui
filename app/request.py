@@ -27,15 +27,17 @@ class Request:
 	#sends emails to relevant creators
 	def sendmail(self):
 		request = {'budget': self.budget, 'description': self.link, 'tags':self.tags, 'author': self.author}
+		yag = yagmail.SMTP('carson@flui.co', 'Luv4soccer.1')
 		db['influencers'].create_index([('tags','text')])
 		results = db['influencers'].find({'$text': { '$search': self.tags } })
 		for influencer in results:
+			company = db['advertisers'].find_one({'user':self.author})
+			yag.send(influencer['email'],'Re: Ad with '+company,'Hi '+influencer['name']+',\nOur partner '+company+' was wondering if you would be willing to run an ad for them? Their request can be found at your account on Flui, which you should have access to from a prior email. We\'re super excited to work with you.\nThanks,\nCarson Cummins\nFounder, Flui')
 			db['influencers'].update({'user':influencer['user']},{'$set':{'request':self.get_json()}})
 	#Returns the request class as a jinja template
 	def get_render_template(self):
 		request = self.get_json()
 		advertiser=db['advertisers'].find_one({'user':self.author})
-		#Might want to change this template in the future, it's just a skeleton of viewing a request object
 		#Jinja Template for request as a string
 		template = '''
 		<html>

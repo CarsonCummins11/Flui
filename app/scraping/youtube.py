@@ -25,5 +25,6 @@ class YoutubeBot:
 		else:
 			print('Youtube Video does not have any english captions')
 			return ''
-		def get_user_info(self, youtuber=None, id=None):
-			return self.pyt.user(username=youtuber,id=id)
+	def get_user_info(self, youtuber=None, id=None):
+		return self.pyt.user(username=youtuber,id=id)
+	

@@ -12,6 +12,17 @@ def is404(url):
 		return False
 	return True
 
+def string_to_int(string):
+	print(string)
+	string = string.replace(',','')
+	multipliers = {'K':1000, 'M':1000000, 'B':1000000000}
+	if string[-1].isdigit(): # check if no suffix
+		return int(string)
+	mult = multipliers[string[-1]] # look up suffix to get multiplier
+     # convert number to float, multiply by multiplier, then make int
+	return int(float(string[:-1]) * mult)
+def idFromUsername(username):
+	print('uhhh')
 #class that does all the scraping
 class Pytube:
 	#set the youtube urls
@@ -25,7 +36,9 @@ class Pytube:
 	def user(self, username=None, id=None):
 		root = None #root channel bs4 object
 		root_url = None #url of the channel
-		
+		if(username is not None):
+			id = idFromUsername(username)
+			username = None
 		user_obj = { #object of the yt user to be returned
 			"username": username,
 			"channel-name": None,
@@ -63,7 +76,7 @@ class Pytube:
 		user_obj['channel-name'] = soup_root.find('a', class_="spf-link branded-page-header-title-link yt-uix-sessionlink").text
 		if username == None:
 			user_obj['username'] = user_obj['channel-name'].replace(' ', '')
-		user_obj['subscribers'] = int(soup_root.find('span', class_="yt-subscription-button-subscriber-count-branded-horizontal subscribed yt-uix-tooltip").text)
+		user_obj['subscribers'] = string_to_int(soup_root.find('span', class_="yt-subscription-button-subscriber-count-branded-horizontal subscribed yt-uix-tooltip").text)
 		
 		#get all the videos in the channels video tab
 		video_elms = soup_videos.find_all('h3', class_="yt-lockup-title")
@@ -71,6 +84,7 @@ class Pytube:
 		
 		#iterate over the videos
 		for v in video_elms:
+			print('in video elms')
 			v_url = "https://youtube.com" + v.find('a')['href']
 
 			#creates the bs4 object for the videos page
@@ -83,7 +97,7 @@ class Pytube:
 			while videopage[s_pos] != ',':
 				s_pos += 1
 			if not videopage[f_pos:s_pos] == '':
-				likes = int(videopage[f_pos:s_pos].replace('"', '').replace('\\', '').replace("likeCount:", ''))
+				likes = string_to_int(videopage[f_pos:s_pos].replace('"', '').replace('\\', '').replace("likeCount:", ''))
 			else: likes = None
 
 			f_pos = videopage.find('"dislikeCount')
@@ -107,17 +121,18 @@ class Pytube:
 			while videopage[s_pos] != ' ':
 				s_pos += 1
 			if not videopage[f_pos:s_pos] == '' and not videopage[f_pos:s_pos] == '"':
-				views = int(videopage[f_pos:s_pos])
+				views = string_to_int(videopage[f_pos:s_pos])
 			else: views = None
 
 			#get's subscribers
 			sub_str = 'yt-subscriber-count" title="1" aria-label="1" tabindex="0">'
 			f_pos = videopage.find(sub_str) + len(sub_str)
 			s_pos = f_pos
+			subscribers=None
 			while videopage[s_pos] != '<':
 				s_pos += 1
 			if not videopage[f_pos:s_pos].replace('">', '') == '':
-				subscribers = int(videopage[f_pos:s_pos].replace('">', ''))
+				subscribers = string_to_int(videopage[f_pos:s_pos].replace('">', ''))
 			else: 
 				subsribers = None
 
@@ -129,7 +144,7 @@ class Pytube:
 				"likes": likes,
 				"dislikes": dislikes,
 				"total-votes": None if likes == None or dislikes == None else likes + dislikes,
-				"engagement-ratio": None if likes == None or dislikes == None else (likes + dislikes) / subscribers
+				"engagement-ratio": None if likes == None or dislikes == None or subscribers==None else (likes + dislikes) / subscribers
 			})
 		
 		user_obj['videos'] = videos
@@ -147,7 +162,7 @@ class Pytube:
 				engagement_ratio_total += v['engagement-ratio']
 		
 		#engagement score
-		user_obj['engagement-ratio'] = engagement_ratio_total / len(videos)#user_obj['videos'])
+		user_obj['engagement-ratio'] = engagement_ratio_total / len(user_obj['videos'])
 		
 		return user_obj
 	
