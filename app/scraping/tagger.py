@@ -1,6 +1,8 @@
 from os import path
 from wikipedia2vec import Wikipedia2Vec
 import numpy as np
+import re
+import string
 #donwload model file from http://wikipedia2vec.s3.amazonaws.com/models/en/2018-04-20/enwiki_20180420_300d.pkl.bz2
 def cossim(vec1,vec2):
         a = np.array(vec1)
@@ -17,6 +19,9 @@ class Tagger:
         else:
             print('no model found')
     def tag(self,words):
+        regex = re.compile('[%s]' % re.escape(string.punctuation))
+        words = [regex.sub('',word) for word in words]
+        filtered_words = [word for word in words if word not in ["like","a","about","after","all","also","an","and","any","as","at","back","be","because","but","by","can","come","could","do","even","first","for","from","get","give","go","good","have","he","her","him","his","how","I","if","in","into","it","its","just","know","like","look","make","me","most","my","new","no","not","now","of","on","one","only","or","other","our","out","over","say","see","she","so","some","take","than","that","the","their","them","then","there","these","they","think","this","time","to","two","up","us","use","want","way","we","well","what","when","which","who","will","with","would","you","your"]]
         tags = [k.replace('\n','') for k in open('app/scraping/mldata/tags.txt','r').readlines()]
         text = ' '+' '.join(words)+' '
         counts = {}
@@ -62,7 +67,7 @@ class Tagger:
         ret_top4 = list(sims.keys())[-4:]
         ret = []
         for k in ret_top4:
-            print(sims[k])
-            if(sims[k]>.7):
+            print(str(sims[k])+':'+k)
+            if(sims[k]>.5):
                 ret.append(k)
         return ret
