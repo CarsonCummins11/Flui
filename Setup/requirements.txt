@@ -16,3 +16,4 @@ youtube-dl
 paypalrestsdk
 wikipedia2Vec
 numpy
+lxml
