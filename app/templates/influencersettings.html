@@ -1,0 +1,96 @@
+<!--
+	Profile for an Influencer
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    
+    <style>
+    body{
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 100;
+        color:#707070;
+        background-color: white;
+        font-size: 3vw;
+        overflow-x: hidden;
+    }
+    h1{
+        font-family: 'Montserrat', sans-serif;
+        color:white;
+        font-style:italic;
+        text-align:left;
+        background:#212121;
+        font-size: 70px;
+        margin-top: -10px;
+        margin-right:-10px;
+        margin-left:-10px;
+        margin-bottom: 0px;
+        padding: -5px;
+        font-weight:100;
+        box-shadow: 0px 12px 17px  #707070;
+    }
+    .proflabel{
+        font-size:30%;
+        padding:0;
+        font-weight: 100;
+        margin:-15px;
+        margin-right: 0;
+    }
+    .search{
+        cursor:pointer;
+        float:right;
+        font-size:56%;
+        margin-right:30px;
+        margin-top:20px;
+        white-space: pre;
+        
+    }
+    .menu{
+        float:left;
+        width:25%;
+        border-radius: 25px;
+        box-shadow: 3px 0px 4px gray;
+        text-align: center;
+        line-height:22vh;
+
+    }
+    .menu-item{
+        cursor:pointer;
+        transition: all .5s ease-in-out;
+        border-bottom:2px solid #707070;
+        margin-left:20px;
+        margin-right:20px;
+    }
+    .menu-item:hover{
+        transform: scale(1.1);
+    }
+    .right{
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 100;
+        float: right;
+        width:70%;
+    }
+    </style>
+</head>
+<body>
+    <h1>
+    <span style="cursor:pointer" onclick="window.location.href = '/'">Flui</span>
+    <span class="proflabel">Influencer Settings</span>
+    <span class = search onclick="window.location.href='/influencerprofile'">Profile</span>
+    </h1>
+    <div class="right" id="right"></div>
+    <div class = "menu">
+        <div class="menu-item" onclick='$("#right").load("/static/html/account_settings.html");'>Account</div>
+        <div class="menu-item" onclick='$("#right").load("/static/html/tag_settings.html");'>Tags</div>
+        <div class="menu-item" onclick='$("#right").load("/static/html/help_settings.html");'>Help</div>
+        <div class="menu-item" style="border-bottom: none;" onclick='$("#right").load("/static/html/credits_settings.html");'>Credits</div>
+    </div>
+</body>
+<script>
+    $("#right").load("/static/html/account_settings.html");
+</script>
+</html>

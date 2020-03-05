@@ -9,6 +9,9 @@ db = client['matcher']
 def randomtags():
     tags = [ line for line in open('dummydata/tags.txt')]
     return random.choice(tags)+','+random.choice(tags)+','+random.choice(tags)+','+random.choice(tags)
+def randomvotes():
+    tags = [ line for line in open('dummydata/tags.txt')]
+    return {random.choice(tags):7,random.choice(tags):3,random.choice(tags):8,random.choice(tags):14}
 # Print iterations progress
 def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
@@ -46,7 +49,8 @@ with open('dummydata/influencers.txt') as f:
         'twitter':'No Twitter',
         'tags':randomtags(),
         'request':[],
-        'link':[]}
+        'link':[],
+        'votes':randomvotes()}
         db['influencers'].insert_one(prof)
         printProgressBar(i,2100)
         i+=1

@@ -52,7 +52,7 @@ def create_from(profile):
 
 class Influencer:
     #insta, yt, tw, etc can be usernames used in the apis
-    def __init__(self, name, username, password, desc, email, img, insta, yt, tw, tags): #when initializing just Influencer(name="name") and you can leave the others blank
+    def __init__(self, name, username, password, desc, email, img, insta, yt, tw, tags,votes): #when initializing just Influencer(name="name") and you can leave the others blank
         self.name = name
         self.username = username
         self.password = generate_password_hash(password)
@@ -66,6 +66,7 @@ class Influencer:
         self.engagement_ratio_tw = 0
         self.request = []
         self.link=[]
+        self.votes = votes
     def to_dict(self):
         return {
             "name": self.name,
@@ -80,6 +81,7 @@ class Influencer:
             "tags": self.tags,
             "engagement_ratio": 0, #change to this later -> self.engagement_ratio
             "request":self.request,
-            "link":self.link
+            "link":self.link,
+            "votes":self.votes
         }
 

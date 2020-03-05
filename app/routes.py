@@ -1,12 +1,12 @@
 #routes.py
 #routes html requests to python functions
-from flask import render_template,request, session,redirect,escape
+from flask import render_template,request, session,redirect,escape,jsonify
 from app import app,db,User,AdvertiserProfile,InfluencerProfile,payment
 from app.InfluencerProfile import Influencer
 from app.AdvertiserProfile import Advertiser
 from app.payment import paypal_payment
 from werkzeug.security import generate_password_hash,check_password_hash
-from flask_login import current_user, login_user, login_required
+from flask_login import current_user, login_user, login_required,logout_user
 import pickle
 from app.request import Request
 from jinja2 import Environment, BaseLoader
@@ -36,7 +36,8 @@ def newinfluencer(): #Creates a new influencer with blank information from the r
             insta = '',
             yt = '',
             tw = '',
-            tags = ''
+            tags = '',
+            votes={}
         )
         db['influencers'].insert_one(new_influencer.to_dict()) #Adds the profile to db, needs to be a dict
         use = User.User(username=new_influencer.username) #Sets the user to the newly created user
@@ -87,20 +88,24 @@ def loginadvertiser(): #Logs an advertiser in
         return redirect('/advertiserprofile')
     return redirect('/')
 @app.route("/advertiserprofile")
+@login_required
 def advertiserprofile(): #If the user isn't null, then return a rendered template(using Jinja), this is used in rendering to browser
     print(current_user)
     profile = db['advertisers'].find_one({'user':current_user.username})
     print(profile)
     return render_template('AdvertiserProfile.html',profile=profile) 
 @app.route("/influencerprofile")
+@login_required
 def influencerprofile(): #If the user isn't null, then return a rendered template(using Jinja), this is used in rendering to browser
     profile = db['influencers'].find_one({'user':current_user.username})
     return render_template('InfluencerProfile.html',profile=profile)
 @app.route("/advertiserprofilechange",methods=['POST'])
+@login_required
 def advertiserprofilechange(): #Changes the current user based on a request form
     db['advertisers'].update({'user':current_user.username},{'$set':{"company":escape(request.form['company']),"desc":escape(request.form['desc']),"email":escape(request.form['email'])}})
     return redirect('/advertiserprofile')
 @app.route("/influencerprofilechange",methods=['POST'])
+@login_required
 def influencerprofilechange(): #Changes the influencer based on a request form
     db['influencers'].update({'user':current_user.username},{'$set':{"name":escape(request.form['fname']),
     "desc":escape(request.form['desc']),"email":escape(request.form['email']),"instagram":escape(request.form['instagram']),
@@ -114,28 +119,15 @@ def influencerprofilechange(): #Changes the influencer based on a request form
     
     return redirect('/influencerprofile')
 @app.route("/searchforinfluencers")
+@login_required
 def searchforinfluencers(): #Returns the search form for influencers
     return render_template('InfluencerSearch.html')
 @app.route("/searchforcollab")
+@login_required
 def searchforadvertisers(): #Returns the search form for advertisers 
     return render_template('CollabSearch.html')
-@app.route('/getinfluencertags')
-def getinfluencertags(): #returns the tags of an influencer
-    return db['influencers'].find_one({'user':current_user.username})['tags']
-@app.route('/getadvertisertags')
-def getadvertisertags(): #returns the tags of an advertiser
-    return db['advertisers'].find_one({'user':current_user.username})['tags']
-@app.route('/submitinfluencertags',methods=['POST'])
-def submitinfluencertags(): #Get's tags from the form, parses to json, and sets the influencers tags
-    tags=request.get_json()['tags']
-    db['influencers'].update({'user':current_user.username},{'$set':{'tags':tags}})
-    return 'good'
-@app.route('/submitadvertisertags',methods=['POST'])
-def submitadvertisertags():#Get's tags from the form, parses to json, and sets the advertisers tags
-    tags=request.get_json()['tags']
-    db['advertisers'].update({'user':current_user.username},{'$set':{'tags':tags}})
-    return 'good'
 @app.route("/advertisersearch", methods=['POST'])
+@login_required
 def advertisersearch(): #Creates an array of advertisers that match a tag and returns it
     db['advertisers'].create_index([('tags', 'text')])
     results = db['advertisers'].find({ '$text': { '$search': request.get_json()['term'] } }) #find all advertisers with a tag
@@ -146,12 +138,25 @@ def advertisersearch(): #Creates an array of advertisers that match a tag and re
         i+=1
     return ret if len(ret)>0 else 'no matches for that term:(' #Returns the results
 @app.route("/influencersearch", methods=['POST'])
+@login_required
 def influencersearch(): #Creates an array of influencers that match a tag and returns it
     print('search term: '+str(request.get_json()['term'].split(' ')))
-    term = ' '.join(searchtagger.tag(request.get_json()['term'].split(' ')))
+    terms = (searchtagger.tag(request.get_json()['term'].split(' '))['plain'])
+    term = ' '.join(terms)
     print('generated term: '+term)
     db['influencers'].create_index([('tags','text')])
     results = db['influencers'].find({'$text': { '$search': term } })
+    def countofterms(val):
+        count = 0
+        for k in terms:
+            if k in val['tags']:
+                count+=1
+        
+        if count>1:
+            print(val['name'])
+        return count
+    results = list(results)
+    results.sort(key=countofterms,reverse=True)
     ret = {}
     i = 0
     for k in results:
@@ -159,6 +164,7 @@ def influencersearch(): #Creates an array of influencers that match a tag and re
         i+=1
     return ret if len(ret)>0 else 'no matches for term:(' #Returns the results
 @app.route("/createrequest", methods=['POST'])
+@login_required
 def create_request(): #Creates a request object from a form submission
     r = Request(
         budget=request.form['budget'],
@@ -171,9 +177,11 @@ def create_request(): #Creates a request object from a form submission
     r.sendmail()
     return redirect(paypal_payment.pay())
 @app.route("/adwithgroup")
+@login_required
 def adwithgroup():
     return render_template('buygroup.html')
 @app.route("/viewrequest")
+@login_required
 def viewrequest():
     prof = db['influencers'].find_one({'user':request.args.get('user')})['request']
     if type(prof) is not dict:
@@ -208,11 +216,30 @@ def submitinfluencer():
 def gosubmitinfluencer():
     form = request.form.to_dict(flat=False)
     inf = db['influencers'].find_one({'email':request.form['email']})
+    def buildvotes(t):
+        ret = {}
+        for k in t:
+            ret[k] = 1
+        return ret
+    def combine_vote_tables(t_new,t_cur):
+        ret = {}
+        for k in t_new:
+            if k in t_cur.keys():
+                ret[k] = t_new[k]+t_cur[k]
+            else:
+                ret[k] = t_new[k]
+        return ret
     if(inf is not None):
         newtags=inf['tags']
+        tags_votes_cur = inf['votes']
         for tag in form['tags']:
             if not tag in newtags:
                 newtags+=','+tag
+            else:
+                tags_votes_cur['tag']+=1
+        db['influencers'].update({'email':request.form['email']},{'$set':{'tags':newtags}})
+        db['influencers'].update({'email':request.form['email']},{'$set':{'votes':tags_votes_cur}})
+                
     else:
         passw = secrets.token_urlsafe(32)
         new_influencer = Influencer(
@@ -225,7 +252,8 @@ def gosubmitinfluencer():
             insta = '',
             yt = '',
             tw = '',
-            tags = ','.join(form['tags'])
+            tags = ','.join(request.form['tags']),
+            votes=buildvotes(request.form['tags'])
         )
         db['influencers'].insert_one(new_influencer.to_dict())
         yag = yagmail.SMTP('carson@flui.co', 'Luv4soccer.1')
@@ -237,3 +265,20 @@ def notfound(e):
 @app.errorhandler(500)
 def errhand(e):
     return render_template('notfound.html'),500
+@app.route('/influencersettings')
+@login_required
+def influencersettings():
+    return render_template('influencersettings.html')
+@app.route('/tagsvoting',methods=['GET'])
+@login_required
+def tagsvoting():
+    return jsonify(db['influencers'].find_one({'user':current_user.username})['votes'])
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect('/')
+@app.route('/resetpassword')
+def resetpassword():
+    #TODO
+    return redirect('/')

@@ -7,6 +7,7 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <script>
     $.fn.textWidth = function(_text, _font){//get width of text with font.  usage: $("div").textWidth();
         var fakeEl = $('<span>').hide().appendTo(document.body).text(_text || this.val() || this.text()).css({font: _font || this.css('font'), whiteSpace: "pre"}),
@@ -84,24 +85,6 @@
         $('#twittertext').prop('readonly',false)
         $('#tc').html('<input onsubmit="resettwitter()" type="submit" value="Save Changes">')
         $('#twittertext').focus();
-    }
-	function resetTags(key){
-		if(key.keycode == 13 || key.which == 13){
-			tags = $("#stuff").val();
-			$("#editTags").html('<span style="cursor:pointer;text-align:left" onclick="submitTags()"class="proflabel">(Edit Tags)</span>');
-			$.ajax({
-                type: 'POST',
-                url: '/submitinfluencertags',
-                data: JSON.stringify({ 'tags' : tags }), //Creates a string of a json object from submited tags
-                contentType: 'application/json',
-            });
-		}
-	}
-	//Submits tags for the influencer to be identified with
-    function submitTags(){
-        $.get( "/getinfluencertags", function( data ) {
-			$("#editTags").html("<input id='stuff' onkeypress='resetTags(event)' class=inputTags  type='text' value='"+data+"'>");
-        });
     }
     </script>
     <style>
@@ -200,7 +183,7 @@
     <h1>
     <span style="cursor:pointer" onclick="window.location.href = '/'">Flui</span>
     <span class="proflabel">Influencer Profile</span>
-    <span id="editTags"><span style="cursor:pointer;text-align:left" onclick="submitTags()"class="proflabel">(Edit Tags)</span></span>
+    <span class=search onclick="window.location.href='/influencersettings'"><i class="las la-bars"></i></span>
     <span class = search onclick="window.location.href='/searchforcollab'">Collab Search</span>
     <span class = search onclick="window.location.href='/viewrequest?user={{profile.user}}&r=0'">Ads  |</span>
     </h1>
