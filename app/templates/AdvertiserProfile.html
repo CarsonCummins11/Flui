@@ -22,6 +22,12 @@
         }).trigger('input');
         return this;
     }
+    
+    function resetimage(){
+        console.log('Console logging');
+        $('#imagecontent').attr("src", "/static/images/Youtube_Logo.png");
+        $('#ic').html('<span id="imagechange" class="change" onclick="changeimage()">Change</span>');
+    }
     function resetemail(){
         $('#emailtext').prop("readonly", true);
         $('body').focus();
@@ -49,8 +55,8 @@
         $('#emailtext').focus();
     }
     function changecompany(){
-        $('#companytext').prop('readonly',false)
-        $('#cc').html('<input onsubmit="resetcompany()" type="submit" value="Save Changes">')
+        $('#companytext').prop('readonly',false);
+        $('#cc').html('<input onsubmit="resetcompany()" type="submit" value="Save Changes">');
         $('#companytext').focus();
     }
     </script>
@@ -148,6 +154,12 @@
     <span class = search onclick="window.location.href='/searchforinfluencers'">Search</span>
     </h1>
     <form id="userprofile" name="userprofile"action="/advertiserprofilechange" method="post">
+        <div id="image">
+            <img id="imagecontent" style="width:20;height:20;" src="/static/images/default_profile_image.png">
+            <span id='ic'>
+                <span id="imagechange" class="change" onclick="changeimage()">Change</span>
+            </span>
+        </div>
         <div id="company">
             <input id="companytext"type="text" name="company" value="{{profile.company}}" readonly=true>
             <span id='cc'><span id="companychange" class="change" onclick="changecompany()">Change</span></span>
