@@ -3,6 +3,7 @@ from flask import Flask, render_template
 from jinja2 import Environment, BaseLoader
 from app import app,db,User,AdvertiserProfile
 import yagmail
+from app.scraping import tagger
 
 class Request:
 	#budget is an integer, media will be some multimedia object(needs to be implemented), description is a string, tags is an array of strings, author is a string
@@ -26,10 +27,19 @@ class Request:
 		}
 	#sends emails to relevant creators
 	def sendmail(self):
-		request = {'budget': self.budget, 'description': self.link, 'tags':self.tags, 'author': self.author}
+		t = tagger.Tagger()
+		request = {'budget': self.budget, 'description': self.link, 'tags': ' '.join(t.tag(self.tags)), 'author': self.author}
 		yag = yagmail.SMTP('carson@flui.co', 'Luv4soccer.1')
 		db['influencers'].create_index([('tags','text')])
-		results = db['influencers'].find({'$text': { '$search': self.tags } })
+		results = db['influencers'].find({'$text': { '$search': request['tags'] } })
+		def countofterms(val):
+			count = 0
+			for k in self.tags:
+				if k in val['votes'].keys():
+					count+=val['votes'][k]
+			return count
+		results = list(results)
+		results.sort(key=countofterms,reverse=True)
 		for influencer in results:
 			company = db['advertisers'].find_one({'user':self.author})
 			yag.send(influencer['email'],'Re: Ad with '+company,'Hi '+influencer['name']+',\nOur partner '+company+' was wondering if you would be willing to run an ad for them? Their request can be found at your account on Flui, which you should have access to from a prior email. We\'re super excited to work with you.\nThanks,\nCarson Cummins\nFounder, Flui')
