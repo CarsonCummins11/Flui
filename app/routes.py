@@ -252,8 +252,8 @@ def gosubmitinfluencer():
             insta = '',
             yt = '',
             tw = '',
-            tags = ','.join(request.form['tags']),
-            votes=buildvotes(request.form['tags'])
+            tags = ','.join(form['tags']),
+            votes=buildvotes(form['tags'])
         )
         db['influencers'].insert_one(new_influencer.to_dict())
         yag = yagmail.SMTP('carson@flui.co', 'Luv4soccer.1')
@@ -279,6 +279,25 @@ def logout():
     logout_user()
     return redirect('/')
 @app.route('/resetpassword')
+@login_required
 def resetpassword():
-    #TODO
+    def generate_password_reset():
+        reset_key = secrets.token_urlsafe(32)
+        db['influencers'].update({'user':current_user.username},{'$set':{'reset_key':reset_key}})
+        return 'https://flui.co/reset_pw?key='+reset_key
+    use = db['influencers'].find_one({'user':current_user.username})
+    yag = yagmail.SMTP('carson@flui.co', 'Luv4soccer.1')
+    yag.send(use['email'],'Password reset',["Hey  "+use['name']+",\n\n I heard you needed to reset your password so I'm sending along this link to help you do that:\n"+generate_password_reset()+"\n\n-Carson Cummins\n\nFounder,Flui"])
     return redirect('/')
+@app.route('/reset_pw',methods=['GET','POST'])
+def reset_pw():
+    if request.method == 'POST':
+        if(db['influencers'].find_one({'reset_key':request.args.get('key')}) is not None):
+            db['influencers'].update({'reset_key':request.args.get('key')},{'pass':generate_password_hash(request.form['pass'])})
+    else:
+        return '''
+        <form action="/reset_pw" method="post">
+        <input type="text" name="pass" placeholder="New password">
+        <input type="submit" value="Set">
+        </form>
+        '''
