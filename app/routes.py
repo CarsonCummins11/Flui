@@ -47,12 +47,11 @@ def newinfluencer(): #Creates a new influencer with blank information from the r
         return 'That username is in use'
 @app.route('/uploadimage',methods=['POST'])
 def updateimage():
-    print(request.get_json())
     if db['advertisers'].find_one({'user':current_user.username}) is None:
-        db['influencers'].update({'user',current_user.username},{'$set':{'img':request.get_json()['img']}}) 
+        db['influencers'].update({'user':current_user.username},{'$set':{'img':str(request.get_json()['img'])}}) 
         return 'good'
     else:
-        db['advertisers'].update({'user',current_user.username},{'$set':{'img':request.get_json()['img']}}) 
+        db['advertisers'].update({'user':current_user.username},{'$set':{'img':str(request.get_json()['img'])}}) 
         return 'good'
 @app.route("/newadvertiser",methods=['POST'])
 def newadvertiser(): #Creates a new advertiser

@@ -23,7 +23,7 @@
         return this;
     }
     
-    function getDataUri(url, callback) {
+    function getDataUri(url,callback) {
         var image = new Image();
 
         image.onload = function () {
@@ -44,13 +44,15 @@
     function resetimage(){
         console.log('Console logging 2');
         console.log($('#fileinput')[0].files[0]);
-        k = getDataUri(URL.createObjectURL($('#fileinput')[0].files[0]), function(dataUri) {$('#imagecontent').attr("src", dataUri);});
+        getDataUri(URL.createObjectURL($('#fileinput')[0].files[0]), function(dataUri) {$('#imagecontent').attr("src", dataUri)      
+        dat = JSON.stringify({'img':dataUri});
         $.ajax({
             url:'/uploadimage',
             type:'POST',
-            data: JSON.stringify({'img':k}),
+            data: dat,
             contentType:'application/json; charset=UTF-8',
             success:function(data){console.log('fuck yea')}
+        });
         });
         $('#ic').html('<span id="imagechange" class="change" onclick="changeimage()">Change</span>');
     }
