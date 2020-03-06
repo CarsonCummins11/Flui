@@ -14,12 +14,13 @@ def combine_vote_tables(t_new,t_cur):
     return ret
 
 class WorkflowController:
-    twwork=[]
-    instawork=[]
-    ytwork=[]
-    twthread = False
-    ytthread=False
-    instathread=False
+    def __init__(self):
+        self.twwork=[]
+        self.instawork=[]
+        self.ytwork=[]
+        self.twthread = False
+        self.ytthread=False
+        self.instathread=False
     def dotwwork(self):
         twtag = twitter_tagger.TW_tagger()
         while True:
@@ -75,19 +76,19 @@ class WorkflowController:
                 tags_votes = combine_vote_tables(tags_votes,tags_votes_cur)
                 db['influencers'].update({'user':user},{'$set':{'votes':tags_votes}})
     def tagTWUser(self,user):
-        twwork.append(user)
+        self.twwork.append(user)
         if(self.twthread==False):
-            threading.start_new_thread(self.dotwwork)
+            threading.Thread(self.dotwwork).start()
             self.twthread=True
     def tagYTUser(self,user):
-        ytwork.append(user)
+        self.ytwork.append(user)
         if(self.ytthread==False):
-            threading.start_new_thread(self.doytwork)
+            threading.Thread(target=self.doytwork).start()
             self.ytthread=True
     def tagInstaUser(self,user):
-        instawork.append(user)
+        self.instawork.append(user)
         if(self.instathread==False):
-            threading.start_new_thread(self.doinstawork)
+            threading.Thread(self.doinstawork).start()
             self.instathread=True
         
 

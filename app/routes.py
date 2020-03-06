@@ -150,9 +150,6 @@ def influencersearch(): #Creates an array of influencers that match a tag and re
         for k in terms:
             if k in val['votes'].keys():
                 count+=val['votes'][k]
-        
-        if count>1:
-            print(val['name'])
         return count
     results = list(results)
     results.sort(key=countofterms,reverse=True)
