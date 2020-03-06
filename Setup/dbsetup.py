@@ -5,7 +5,8 @@ import random
 
 client = MongoClient()
 db = client['matcher']
-
+db['advertisers'].delete_many({})
+db['influencers'].delete_many({})
 def randomtags():
     tags = [ line for line in open('dummydata/tags.txt')]
     return random.choice(tags)+','+random.choice(tags)+','+random.choice(tags)+','+random.choice(tags)
