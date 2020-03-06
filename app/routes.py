@@ -121,11 +121,10 @@ def influencerprofilechange(): #Changes the influencer based on a request form
 @app.route("/searchforinfluencers")
 @login_required
 def searchforinfluencers(): #Returns the search form for influencers
-    return render_template('InfluencerSearch.html')
-@app.route("/searchforcollab")
-@login_required
-def searchforadvertisers(): #Returns the search form for advertisers 
-    return render_template('CollabSearch.html')
+    if(db['advertisers'].find_one({'user':current_user.username}) is not None):
+        return render_template('InfluencerSearch.html')
+    else:
+        return render_template('CollabSearch.html')
 @app.route("/advertisersearch", methods=['POST'])
 @login_required
 def advertisersearch(): #Creates an array of advertisers that match a tag and returns it
@@ -149,8 +148,8 @@ def influencersearch(): #Creates an array of influencers that match a tag and re
     def countofterms(val):
         count = 0
         for k in terms:
-            if k in val['tags']:
-                count+=1
+            if k in val['votes'].keys():
+                count+=val['votes'][k]
         
         if count>1:
             print(val['name'])

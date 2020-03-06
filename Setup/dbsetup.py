@@ -9,9 +9,9 @@ db = client['matcher']
 def randomtags():
     tags = [ line for line in open('dummydata/tags.txt')]
     return random.choice(tags)+','+random.choice(tags)+','+random.choice(tags)+','+random.choice(tags)
-def randomvotes():
+def randomvotes(mytags):
     tags = [ line for line in open('dummydata/tags.txt')]
-    return {random.choice(tags):7,random.choice(tags):3,random.choice(tags):8,random.choice(tags):14}
+    return {mytags[0]:7,mytags[1]:3,mytags[2]:8,mytags[3]:14}
 # Print iterations progress
 def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
@@ -38,6 +38,7 @@ with open('dummydata/companies.txt') as f:
 #Loops over 'influencers.txt' and creates profiles for each
 with open('dummydata/influencers.txt') as f:
     for row in f:
+        tagg = randomtags()
         prof = {'name':row[:-1],
         'user':row[:-1],
         'pass':generate_password_hash('p'), #generates password hash from entered password
@@ -47,10 +48,10 @@ with open('dummydata/influencers.txt') as f:
         'instagram':'No Instagram',
         'youtube':'No YouTube',
         'twitter':'No Twitter',
-        'tags':randomtags(),
+        'tags':tagg,
         'request':[],
         'link':[],
-        'votes':randomvotes()}
+        'votes':randomvotes(tagg)}
         db['influencers'].insert_one(prof)
         printProgressBar(i,2100)
         i+=1

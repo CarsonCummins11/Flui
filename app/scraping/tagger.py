@@ -62,9 +62,9 @@ class Tagger:
                     sims[tag] = counts[item]*cossim(vector,tagvec)
         sims = {k: v for k, v in sorted(sims.items(), key=lambda item: item[1])}
         klist = list(sims.keys())[-4:]
-        total = sum(counts.items())
+        total = sum(counts.values())
         ret = {}
         for k in klist:
             ret[k] = (sims[k]/total)*100
         returnable = {'verbose': ret,'plain':klist}
-        return ret
+        return returnable
