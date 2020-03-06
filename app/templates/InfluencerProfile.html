@@ -79,6 +79,37 @@
         $('#yc').html('<span id="youtubechange" class="change" onclick="changeyoutube()">Change</span>');
 
     }
+    function getDataUri(url,callback) {
+        var image = new Image();
+
+        image.onload = function () {
+            var canvas = document.createElement('canvas');
+            canvas.width = this.naturalWidth; // or 'width' if you want a special/scaled size
+            canvas.height = this.naturalHeight; // or 'height' if you want a special/scaled size
+
+            canvas.getContext('2d').drawImage(this, 0, 0);
+
+            // Get raw image data
+            callback(canvas.toDataURL('image/png'));
+
+        };
+
+        image.src = url;
+    }
+    function resetimage(){
+        console.log($('#fileinput')[0].files[0]);
+        getDataUri(URL.createObjectURL($('#fileinput')[0].files[0]), function(dataUri) {$('#imagecontent').attr("src", dataUri)      
+        dat = JSON.stringify({'img':dataUri});
+        $.ajax({
+            url:'/uploadimage',
+            type:'POST',
+            data: dat,
+            contentType:'application/json; charset=UTF-8',
+            success:function(data){console.log('fuck yea')}
+        });
+        });
+        $('#ic').html('<span id="imagechange" class="change" onclick="changeimage()">Change</span>');
+    }
     function changedesc(){
         $('#desctext').prop('readonly',false);
         $('#dc').html('<input onsubmit="resetdesc()" type="submit" value="Save Changes">');
@@ -104,6 +135,10 @@
         $('#youtubetext').prop('readonly',false)
         $('#yc').html('<input onsubmit="resetyoutube()" type="submit" value="Save Changes">')
         $('#youtubetext').focus();
+    }
+    function changeimage(){
+        console.log('Console logging 1');
+        $('#ic').html('<span class="pickfile" aria-hidden="true"><input id="fileinput" type="file" accept="image/png, image/jpeg" multiple=false></span><div class="subimage" onclick="resetimage()">Update profile picture</div>');
     }
     function changetwitter(){
 		var provider = new firebase.auth.TwitterAuthProvider();
@@ -158,6 +193,22 @@
         padding: 0px;
         background: none;
 		text-align: "left";
+    }
+    .pickfile{
+        font-family: 'Montserrat', sans-serif;
+        color:#7B7B7B;
+        font-style: italic;
+        font-size: 1vw;
+        cursor: pointer;
+        background:white;
+    }
+    .subimage{
+        font-family: 'Montserrat', sans-serif;
+        color:#7B7B7B;
+        font-style: italic;
+        font-size: 1vw;
+        cursor: pointer;
+        background:white;
     }
     input[type=submit]{
         font-family: 'Montserrat', sans-serif;
@@ -230,6 +281,12 @@
     <span class = search onclick="window.location.href='/viewrequest?user={{profile.user}}&r=0'">Ads  |</span>
     </h1>
     <form id="userprofile" action="/influencerprofilechange" method="post">
+        <div id="image">
+            <img id="imagecontent" style="width:20;height:20;" src="{{profile.img}}">
+            <span id='ic'>
+                <span id="imagechange" class="change" onclick="changeimage()">Change</span>
+            </span>
+        </div>
         <span class="media">
             <div id="insta">
                 <img style="width:45px;height:45px;" src="/static/images/Instagram_Logo.png">
