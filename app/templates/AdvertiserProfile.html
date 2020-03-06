@@ -23,9 +23,35 @@
         return this;
     }
     
+    function getDataUri(url, callback) {
+        var image = new Image();
+
+        image.onload = function () {
+            var canvas = document.createElement('canvas');
+            canvas.width = this.naturalWidth; // or 'width' if you want a special/scaled size
+            canvas.height = this.naturalHeight; // or 'height' if you want a special/scaled size
+
+            canvas.getContext('2d').drawImage(this, 0, 0);
+
+            // Get raw image data
+            callback(canvas.toDataURL('image/png'));
+
+        };
+
+        image.src = url;
+    }
+
     function resetimage(){
-        console.log('Console logging');
-        $('#imagecontent').attr("src", "/static/images/Youtube_Logo.png");
+        console.log('Console logging 2');
+        console.log($('#fileinput')[0].files[0]);
+        k = getDataUri(URL.createObjectURL($('#fileinput')[0].files[0]), function(dataUri) {$('#imagecontent').attr("src", dataUri);});
+        $.ajax({
+            url:'/uploadimage',
+            type:'POST',
+            data: JSON.stringify({'img':k}),
+            contentType:'application/json; charset=UTF-8',
+            success:function(data){console.log('fuck yea')}
+        });
         $('#ic').html('<span id="imagechange" class="change" onclick="changeimage()">Change</span>');
     }
     function resetemail(){
@@ -51,13 +77,17 @@
     }
     function changemail(){
         $('#emailtext').prop('readonly',false);
-        $('#ec').html('<input onsubmit="resetemail()" type="submit" value="Save Changes">');
+        $('#ec').html('<input onclick="resetemail()" type="submit" value="Save Changes">');
         $('#emailtext').focus();
     }
     function changecompany(){
         $('#companytext').prop('readonly',false);
-        $('#cc').html('<input onsubmit="resetcompany()" type="submit" value="Save Changes">');
+        $('#cc').html('<input onclick="resetcompany()" type="submit" value="Save Changes">');
         $('#companytext').focus();
+    }
+    function changeimage(){
+        console.log('Console logging 1');
+        $('#ic').html('<span class="pickfile" aria-hidden="true"><input id="fileinput" type="file" accept="image/png, image/jpeg" multiple=false></span><div class="subimage" onclick="resetimage()">Update profile picture</div>');
     }
     </script>
     <style>
@@ -91,6 +121,22 @@
         background: none;
     }
     input[type=submit]{
+        font-family: 'Montserrat', sans-serif;
+        color:#7B7B7B;
+        font-style: italic;
+        font-size: 1vw;
+        cursor: pointer;
+        background:white;
+    }
+    .pickfile{
+        font-family: 'Montserrat', sans-serif;
+        color:#7B7B7B;
+        font-style: italic;
+        font-size: 1vw;
+        cursor: pointer;
+        background:white;
+    }
+    .subimage{
         font-family: 'Montserrat', sans-serif;
         color:#7B7B7B;
         font-style: italic;
@@ -153,9 +199,9 @@
     <span class="proflabel">Advertiser Profile</span>
     <span class = search onclick="window.location.href='/searchforinfluencers'">Search</span>
     </h1>
-    <form id="userprofile" name="userprofile"action="/advertiserprofilechange" method="post">
+    <form id="userprofile" name="userprofile"action="/advertiserprofilechange" method="post" onsubmit="return false">
         <div id="image">
-            <img id="imagecontent" style="width:20;height:20;" src="/static/images/default_profile_image.png">
+            <img id="imagecontent" style="width:20;height:20;" src="{{profile.img}}">
             <span id='ic'>
                 <span id="imagechange" class="change" onclick="changeimage()">Change</span>
             </span>

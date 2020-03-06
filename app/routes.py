@@ -32,7 +32,7 @@ def newinfluencer(): #Creates a new influencer with blank information from the r
             password = request.form['pass'], #generates hash in __init__()
             email = escape(request.form['email']),
             desc = '',
-            img = '',
+            img = '/static/images/default_profile_image.png',
             insta = '',
             yt = '',
             tw = '',
@@ -45,7 +45,15 @@ def newinfluencer(): #Creates a new influencer with blank information from the r
         return redirect('/influencerprofile') #Redirects to their profile
     else:
         return 'That username is in use'
-    
+@app.route('/uploadimage',methods=['POST'])
+def updateimage():
+    print(request.get_json())
+    if db['advertisers'].find_one({'user':current_user.username}) is None:
+        db['influencers'].update({'user',current_user.username},{'$set':{'img':request.get_json()['img']}}) 
+        return 'good'
+    else:
+        db['advertisers'].update({'user',current_user.username},{'$set':{'img':request.get_json()['img']}}) 
+        return 'good'
 @app.route("/newadvertiser",methods=['POST'])
 def newadvertiser(): #Creates a new advertiser
     if db['advertisers'].find_one({'user':request.form['user']}) is None and db['influencers'].find_one({'user':request.form['user']}) is None:
@@ -55,7 +63,7 @@ def newadvertiser(): #Creates a new advertiser
             password = request.form['pass'], #generates hash in __init__()
             desc = '',
             email = 'No Email',
-            img = ''
+            img = '/static/images/default_profile_image.png'
         )
         db['advertisers'].insert_one(new_advertiser.to_dict()) #Adds the profile to db, needs to be a dict
         use = User.User(username=new_advertiser.username) #Sets the user to the newly created user

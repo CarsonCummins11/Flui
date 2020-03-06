@@ -30,7 +30,7 @@ with open('dummydata/companies.txt') as f:
         'pass':generate_password_hash('p'),
         'desc':'No Description',
         'email':'No Email',
-        'image':'',
+        'image':'/static/images/default_profile_image.png',
         'tags':randomtags()}
         db['advertisers'].insert_one(prof)
         printProgressBar(i,2100)
@@ -44,7 +44,7 @@ with open('dummydata/influencers.txt') as f:
         'pass':generate_password_hash('p'), #generates password hash from entered password
         'desc':'No Description',
         'email':'No Email',
-        'image':'', #file path?
+        'image':'/static/images/default_profile_image.png',
         'instagram':'No Instagram',
         'youtube':'No YouTube',
         'twitter':'No Twitter',
