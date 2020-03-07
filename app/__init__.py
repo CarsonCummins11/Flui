@@ -10,5 +10,5 @@ db = client['matcher']
 app = Flask(__name__, static_url_path='/static')#Instane of a Flask class, uses __name__ since we're using a single module
 login=LoginManager(app) #init LoginManager configured with the flask app(must use flask app)
 app.config['SECRET_KEY'] = os.urandom(20).hex() #secret for the app, used for authentication of sessions
-
+stripe.api_key = 'sk_test_qhOvLb2jELYRKVHB3mnJEXH000v3goeqCr'
 from app import routes

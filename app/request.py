@@ -7,7 +7,7 @@ from app.scraping import tagger
 
 class Request:
 	#budget is an integer, media will be some multimedia object(needs to be implemented), description is a string, tags is an array of strings, author is a string
-	def __init__(self, budget, link, tags, contact, author, user='', r=0):
+	def __init__(self, budget, link, tags, contact, author,session,user='', r=0):
 		self.budget = budget
 		self.link = link
 		self.tags = tags
@@ -15,6 +15,7 @@ class Request:
 		self.author = author
 		self.user = user
 		self.r = r
+		self.session=session
 	def get_json(self):
 		return {
 			'budget':self.budget,
@@ -23,7 +24,8 @@ class Request:
 			'contact':self.contact,
 			'author':self.author,
 			'user':self.user,
-			'r':self.r
+			'r':self.r,
+			'session':self.session
 		}
 	#sends emails to relevant creators
 	def sendmail(self):

@@ -4,7 +4,7 @@ from flask import render_template,request, session,redirect,escape,jsonify
 from app import app,db,User,AdvertiserProfile,InfluencerProfile,payment
 from app.InfluencerProfile import Influencer
 from app.AdvertiserProfile import Advertiser
-from app.payment import paypal_payment
+from app.payment import stripe_payment,fulfiller
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user, login_user, login_required,logout_user
 import pickle
@@ -15,10 +15,12 @@ import secrets
 import yagmail
 from app.scraping import scraping_workflow
 from app.scraping.tagger import Tagger
+from app.scraping.authentication import auth
 searchtagger = Tagger()
 ml = scraping_workflow.WorkflowController()
 @app.route("/")
-def main(): #returns the home page on start
+def main(): 
+    #returns the home page on start
     return render_template('home.html')
 @app.route("/about")
 def about(): #returns the about page
@@ -87,6 +89,7 @@ def logininfluencer(): #login method for an influencer, if login fails, either i
     return redirect('/')
 @app.route("/loginadvertiser",methods=['POST'])
 def loginadvertiser(): #Logs an advertiser in
+    fulfiller.do_fulfillment()#fulfills any standing advertiser requests
     prof = db['advertisers'].find_one({"user":request.form['user']}) #find's an advertiser from db
     if prof is None:
         return redirect('/')
@@ -169,16 +172,28 @@ def influencersearch(): #Creates an array of influencers that match a tag and re
 @app.route("/createrequest", methods=['POST'])
 @login_required
 def create_request(): #Creates a request object from a form submission
+    sess = stripe_payment.payment(request.form['budget'])
     r = Request(
         budget=request.form['budget'],
         link=request.form['note'],
         tags=unquote(request.args.get('tags')),
         contact=request.form['contact'],
-        author=current_user.username
+        author=current_user.username,
+        session =sess
     )
-    db['influencers'].update({'user':current_user.username},{'$push':{'request':r.get_json()}})
-    r.sendmail()
-    return redirect(paypal_payment.pay())
+    db['advertisers'].update({'user':current_user.username},{'$set':{'pending_request':r.get_json()}})
+    authorize={'public_key':auth.auth_data['stripe_auth']['public'],'CHECKOUT_SESSION_ID':sess}
+    return render_template('''
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+    var stripe = Stripe('{{authori.public_key}}');
+    stripe.redirectToCheckout({
+        sessionId: '{{authori.CHECKOUT_SESSION_ID}}'
+    }).then(function (result) {
+        alert("I'm really sorry but we can't complete payment at this time");
+    });
+    </script>
+    ''',authori=authorize)
 @app.route("/adwithgroup")
 @login_required
 def adwithgroup():
@@ -304,3 +319,9 @@ def reset_pw():
         <input type="submit" value="Set">
         </form>
         '''
+@app.route('/success')
+def success():
+    return render_template('payment_success.html')
+@app.route('cancel')
+def cancel():
+    return  render_template('payment_cancel.html')

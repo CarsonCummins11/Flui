@@ -51,7 +51,7 @@
             type:'POST',
             data: dat,
             contentType:'application/json; charset=UTF-8',
-            success:function(data){console.log('fuck yea')}
+            success:function(data){console.log('k')}
         });
         });
         $('#ic').html('<span id="imagechange" class="change" onclick="changeimage()">Change</span>');
@@ -88,7 +88,6 @@
         $('#companytext').focus();
     }
     function changeimage(){
-        console.log('Console logging 1');
         $('#ic').html('<span class="pickfile" aria-hidden="true"><input id="fileinput" type="file" accept="image/png, image/jpeg" multiple=false></span><div class="subimage" onclick="resetimage()">Update profile picture</div>');
     }
     </script>
@@ -201,13 +200,13 @@
     <span class="proflabel">Advertiser Profile</span>
     <span class = search onclick="window.location.href='/searchforinfluencers'">Search</span>
     </h1>
+    <div id="image">
+        <img id="imagecontent" style="width:20;height:20;" src="{{profile.img}}">
+        <span id='ic'>
+            <span id="imagechange" class="change" onclick="changeimage()">Change</span>
+        </span>
+    </div>
     <form id="userprofile" name="userprofile"action="/advertiserprofilechange" method="post" onsubmit="return false">
-        <div id="image">
-            <img id="imagecontent" style="width:20;height:20;" src="{{profile.img}}">
-            <span id='ic'>
-                <span id="imagechange" class="change" onclick="changeimage()">Change</span>
-            </span>
-        </div>
         <div id="company">
             <input id="companytext"type="text" name="company" value="{{profile.company}}" readonly=true>
             <span id='cc'><span id="companychange" class="change" onclick="changecompany()">Change</span></span>
