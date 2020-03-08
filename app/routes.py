@@ -322,6 +322,6 @@ def reset_pw():
 @app.route('/success')
 def success():
     return render_template('payment_success.html')
-@app.route('cancel')
+@app.route('/cancel')
 def cancel():
     return  render_template('payment_cancel.html')
