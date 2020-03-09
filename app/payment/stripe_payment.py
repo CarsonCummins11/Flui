@@ -1,3 +1,5 @@
+#Commenting this out for testing, there isn't a 'stripe_auth' in the version of the auth file I was testing with
+"""
 from paypalrestsdk import Payment
 from app.scraping.authentication import auth
 import stripe
@@ -17,3 +19,4 @@ def payment(amount):
     cancel_url='/cancel'
   )
   return session
+"""
