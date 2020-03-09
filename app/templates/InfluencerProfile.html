@@ -160,7 +160,7 @@
 		  // The firebase.auth.AuthCredential type that was used.
 		  var credential = error.credential;
 		  // ...
-		});
+        });
     }
     </script>
     <style>
@@ -235,6 +235,13 @@
         resize: none;
         overflow:hidden;
     }
+    /*
+    h1:after {
+        display: block;
+        clear: both;
+        visibility: hidden;
+    }
+    */
     h1{
         font-family: 'Montserrat', sans-serif;
         color:white;
@@ -249,6 +256,9 @@
         padding: -5px;
         font-weight:100;
         box-shadow: 0px 12px 17px  #707070;
+        width: 102%;
+
+        display: inline-block;
     }
     .proflabel{
         font-size:30%;
@@ -269,6 +279,27 @@
     .media{
         float:right;
     }
+    #notif-body{
+        background:white;
+        float:right;
+        min-height: 300px;
+        min-width: 200px;
+        /*margin-top: 15px;*/
+        margin-top: -400px;
+        margin-right: 13px;
+        box-shadow: 0px 12px 17px  #707070;
+        overflow: auto;
+    }
+    #arrow-up {
+        width: 0; 
+        height: 0; 
+        border-left: 13px solid transparent;
+        border-right: 13px solid transparent;        
+        border-bottom: 13px solid white;
+
+        margin-left: 87px;
+        margin-top: -12px;
+    }
     </style>
 </head>
 <body>
@@ -276,10 +307,14 @@
     <span style="cursor:pointer" onclick="window.location.href = '/'">Flui</span>
     <span class="proflabel">Influencer Profile</span>
     <span class=search onclick="window.location.href='/influencersettings'"><i class="las la-bars"></i></span>
-    <span id="notifbell" class = search onclick="window.location.href='/notifications'"> <img src='/static/images/notificationbell.jpg' width="50px" height="50px"></span>
+    <span id="notifbell" class = search onclick="notif_bar()"> <img src='/static/images/notificationbell.jpg' width="50px" height="50px"></span>
     <span class = search onclick="window.location.href='/searchforinfluencers'">Collab Search</span>
     <span class = search onclick="window.location.href='/viewrequest?user={{profile.user}}&r=0'">Ads  |</span>
     </h1>
+    <div class="notif-page" id="notif-body">
+        <div class="notif-page" id="arrow-up"></div>
+        
+    </div>
     <form id="userprofile" action="/influencerprofilechange" method="post">
         <div id="image">
             <img id="imagecontent" style="width:20;height:20;" src="{{profile.img}}">
@@ -289,7 +324,7 @@
         </div>
         <span class="media">
             <div id="insta">
-                <img style="width:45px;height:45px;" src="/static/images/Instagram_Logo.png">
+                <img style="width:45px;height:45px" src="/static/images/Instagram_Logo.png">
                 <input id="instatext" type="text" name="instagram" value="{{profile.instagram}}" readonly=true>
                 <span id='ic'><span id="instachange" class="change" onclick="changeinsta()">Change</span></span>
             </div>
@@ -321,6 +356,7 @@
     </form>
 </body>
 <script>
+    var notifs_open = false;
 	//Sizing code for emailtext, companytext, instatext, twittertext, youtubetext
     $('#emailtext').autoresize({padding:0,minWidth:40});
     $('#companytext').autoresize({padding:0,minWidth:40});
@@ -343,5 +379,18 @@
         $("textarea").height( $("textarea")[0].scrollHeight);
         console.log(key);
     });
+    function notif_bar(){
+        if(!notifs_open){
+            $("#notif-body").animate({
+                marginTop: '10px'
+            }, { duration: 400});
+            notifs_open = true;
+        }else{
+            $("#notif-body").animate({
+                marginTop: '-400px'
+            }, { duration: 400});
+            notifs_open = false;
+        }
+    };
 </script>
 </html>
