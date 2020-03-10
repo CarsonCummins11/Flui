@@ -88,7 +88,8 @@
         $('#companytext').focus();
     }
     function changeimage(){
-        $('#ic').html('<span class="pickfile" aria-hidden="true"><input id="fileinput" type="file" accept="image/png, image/jpeg" multiple=false></span><div class="subimage" onclick="resetimage()">Update profile picture</div>');
+        console.log('Console logging 1');
+        $('#ic').html('<input id="fileinput" type="file" accept="image/png, image/jpeg" multiple=false></input><span class="subimage" onclick="resetimage()">| Update profile picture</span>');
     }
     </script>
     <style>
@@ -192,6 +193,13 @@
         margin-right:30px;
         margin-top:20px;
     }
+    #imagecontent{
+        border-radius: 20px;
+    }
+    #fileinput{
+        font-size: 1vw;
+        max-width:16vw;
+    }
     </style>
 </head>
 <body>
@@ -200,8 +208,9 @@
     <span class="proflabel">Advertiser Profile</span>
     <span class = search onclick="window.location.href='/searchforinfluencers'">Search</span>
     </h1>
+    <br style="line-height: 15px;">
     <div id="image">
-        <img id="imagecontent" style="width:20;height:20;" src="{{profile.img}}">
+        <img id="imagecontent" style="width:150px;height:150px;" src="{{profile.img}}">
         <span id='ic'>
             <span id="imagechange" class="change" onclick="changeimage()">Change</span>
         </span>

@@ -14,11 +14,11 @@ def randomvotes(mytags):
     tags = [ line for line in open('dummydata/tags.txt')]
     return {mytags[0]:7,mytags[1]:3,mytags[2]:8,mytags[3]:14}
 # Print iterations progress
-def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
+def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '-', printEnd = "\r"):
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filledLength = int(length * iteration // total)
     bar = fill * filledLength + '-' * (length - filledLength)
-    print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end = printEnd)
+    # print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end = printEnd)
     # Print New Line on Complete
     if iteration == total: 
         print()
