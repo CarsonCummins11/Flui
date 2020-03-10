@@ -1,7 +1,7 @@
 #Class for a request object
 from flask import Flask, render_template
 from jinja2 import Environment, BaseLoader
-from app import app,db,User,AdvertiserProfile
+from app import app,db,User,AdvertiserProfile,InfluencerProfile
 import yagmail
 from app.scraping import tagger
 
@@ -42,7 +42,12 @@ class Request:
 			return count
 		results = list(results)
 		results.sort(key=countofterms,reverse=True)
+		budget_used = 0
 		for influencer in results:
+			infcost = InfluencerProfile.Influencer.from_dict(influencer).findCost()
+			budget_used+=infcost
+			if(budget_used>self.budget):
+				break
 			company = db['advertisers'].find_one({'user':self.author})
 			yag.send(influencer['email'],'Re: Ad with '+company,'Hi '+influencer['name']+',\nOur partner '+company+' was wondering if you would be willing to run an ad for them? Their request can be found at your account on Flui, which you should have access to from a prior email. We\'re super excited to work with you.\nThanks,\nCarson Cummins\nFounder, Flui')
 			db['influencers'].update({'user':influencer['user']},{'$set':{'request':self.get_json()}})
