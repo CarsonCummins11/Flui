@@ -84,4 +84,10 @@ class Influencer:
             "link":self.link,
             "votes":self.votes
         }
+    def findCost(self):
+        #TODO make this calculate the cost of an influencer based on engagement ratios
+        print('FUNCTION NOT COMPLETED')
+    @staticmethod
+    def from_dict(dicti):
+        return Influencer(name=dicti['name'],username=dicti['user'],password='', desc=dicti['desc'], email=dicti['email'], img=dicti['img'], insta=dicti['insta'], yt=dicti['yt'], tw=dicti['tw'], tags=dicti['tags'],votes=dicti['votes'])
 

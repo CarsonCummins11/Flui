@@ -188,18 +188,8 @@ def create_request(): #Creates a request object from a form submission
         session =sess
     )
     db['advertisers'].update({'user':current_user.username},{'$set':{'pending_request':r.get_json()}})
-    authorize={'public_key':auth.auth_data['stripe_auth']['public'],'CHECKOUT_SESSION_ID':sess}
-    return render_template('''
-    <script src="https://js.stripe.com/v3/"></script>
-    <script>
-    var stripe = Stripe('{{authori.public_key}}');
-    stripe.redirectToCheckout({
-        sessionId: '{{authori.CHECKOUT_SESSION_ID}}'
-    }).then(function (result) {
-        alert("I'm really sorry but we can't complete payment at this time");
-    });
-    </script>
-    ''',authori=authorize)
+    authorize={'public_key':auth.auth_data['stripe_auth']['public'],'CHECKOUT_SESSION_ID':sess.id}
+    return render_template("stripe_payment.html",authori=authorize)
 @app.route("/adwithgroup")
 @login_required
 def adwithgroup():

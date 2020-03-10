@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<Html>
+<head>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+    var stripe = Stripe('{{authori.public_key}}');
+    stripe.redirectToCheckout({sessionId: '{{authori.CHECKOUT_SESSION_ID}}'}).then(function (result) {
+        alert("I'm really sorry but we can't complete payment at this time");
+    });
+    </script>
+</head>
+
+</Html>
