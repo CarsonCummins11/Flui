@@ -100,7 +100,7 @@ class YoutubeBot:
 		video_details['RATING'] = math.log2((likes - dislikes + views) / Subs**0.8)
 		print(video_details['RATING'])
 
-		return video_details
+		return video_details['RATING']
 
 	
 	def get_captions(self,url):

@@ -1,5 +1,6 @@
 from jinja2 import Environment, BaseLoader
 from werkzeug.security import generate_password_hash
+from app.scraping import youtube,twitter,instagram
 
 #Creates a Jinja template from an advertiser profile object
 #'Loaders are responsible for loading templates from a resource such as the file system.'
@@ -85,8 +86,14 @@ class Influencer:
             "votes":self.votes
         }
     def findCost(self):
-        #TODO make this calculate the cost of an influencer based on engagement ratios
-        print('FUNCTION NOT COMPLETED')
+        yt = youtube.YoutubeBot()
+        tw = twitter.TweepyBot()
+        insta = instagram.InstagramBot()
+        eng_yt = yt.get_yt_data()
+        eng_tw = tw.set_engagement_ratio()
+        eng_insta = insta.set_engagement_ratio()
+        avg_eng = (eng_tw+eng_yt+eng_insta)/3
+        return 50*avg_eng
     @staticmethod
     def from_dict(dicti):
         return Influencer(name=dicti['name'],username=dicti['user'],password='', desc=dicti['desc'], email=dicti['email'], img=dicti['img'], insta=dicti['insta'], yt=dicti['yt'], tw=dicti['tw'], tags=dicti['tags'],votes=dicti['votes'])

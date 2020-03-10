@@ -37,8 +37,8 @@ class TweepyBot:
 			
 	#updates the engagement ratio
 	#also dumps the text of all tweets analyzed to a json file for ML and language processing
-    def set_engagement_ratio(self, influencer):
-        tweets = get_tweets(self.api, influencer.tw)
+    def set_engagement_ratio(self, user):
+        tweets = get_tweets(self.api, user)
         self.twdata = json.load(open(data_file))
         count=0
         engagement_scores = []
@@ -53,11 +53,7 @@ class TweepyBot:
                     'engagement_score': engagement_scores[-1]
 				}
                 count+=1
-        influencer.engagement_ratio_tw = sum(engagement_scores) / len(engagement_scores)
-        self.twdata = {k: v for k, v in sorted(self.twdata.items(), key=lambda item: item[1])} #sorts by engagement
-        with open(data_file, 'w') as f:
-            f.write(json.dumps(self.twdata))
-        self.twdata.clear() #for ram
+        return sum(engagement_scores) / len(engagement_scores)
     def get_tweets(self,user):
         statuses =  self.api.user_timeline(screen_name=user, count=100)
         ret = []
