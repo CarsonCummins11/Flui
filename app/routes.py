@@ -27,7 +27,7 @@ def about(): #returns the about page
     return render_template('about.html')
 @app.route("/checkusername",methods=['POST'])
 def checkusername():
-    if db['influencers'].find_one({'user':request.form['user']}) is None and db['advertisers'].find_one({'user':request.form['user']}) is None:
+    if db['influencers'].find_one({'user':request.get_json()['user']}) is None and db['advertisers'].find_one({'user':request.get_json()['user']}) is None:
         return 'Username is available'
     else:
         return 'That username is in use'

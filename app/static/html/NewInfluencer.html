@@ -27,11 +27,17 @@
 	}
 </style>
 <script>
-    function checkAvailability(){
-        console.log('test')
-        $('#create').attr("action", "/checkusername")
-        console.log($('#user').submit())
-        $('#create').attr("action", "/newinfluencer")
+    function checkavailability(){
+        console.log('function called')
+        $.ajax({
+            url: '/checkusername',
+            type: 'POST',
+            contentType: 'application/json; charset=UTF-8',
+            data: JSON.stringify({'user':$('#user').val()}),
+            success: function(response) {
+                $('#availability').html(response)
+            }
+        });
     }
     function checkstrength(){
             pas = $('#secret-password').val()
@@ -68,7 +74,8 @@
             <form id="create" createstyle="text-align:center"action="/newinfluencer" method="post">
                 <input type="text" name="name" placeholder="Name"><br>
                 <input type="text" name="email" placeholder="Email"><br>
-                <input id="user" type="text" name="user" onkeypress="checkAvailability()" placeholder="Username"><br>
+                <input id="user" type="text" name="user" onkeydown="checkavailability()" placeholder="Username">
+                <i id="availability"></i><br>
                 <input id="secret-password" onkeypress="checkstrength()" type="password" name="pass" placeholder="Password">
                 <span style="margin-right: -26px;" toggle="#secret-password" class="fa fa-fw fa-eye field-icon toggle-password"></span><br>
                 <input class="new" style="cursor:pointer"type="submit" value="Create">
