@@ -27,6 +27,12 @@
 	}
 </style>
 <script>
+    function checkAvailability(){
+        console.log('test')
+        $('#create').attr("action", "/checkusername")
+        console.log($('#user').submit())
+        $('#create').attr("action", "/newinfluencer")
+    }
     function checkstrength(){
             pas = $('#secret-password').val()
             var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
@@ -59,10 +65,10 @@
 </div>
     <div style="float:right;margin-right:15%;position: relative;top: 50%;transform: translateY(20%);">
         <div id="left" style="text-align:center">
-            <form style="text-align:center"action="/newinfluencer" method="post">
+            <form id="create" createstyle="text-align:center"action="/newinfluencer" method="post">
                 <input type="text" name="name" placeholder="Name"><br>
                 <input type="text" name="email" placeholder="Email"><br>
-                <input type="text" name="user" placeholder="Username"><br>
+                <input id="user" type="text" name="user" onkeypress="checkAvailability()" placeholder="Username"><br>
                 <input id="secret-password" onkeypress="checkstrength()" type="password" name="pass" placeholder="Password">
                 <span style="margin-right: -26px;" toggle="#secret-password" class="fa fa-fw fa-eye field-icon toggle-password"></span><br>
                 <input class="new" style="cursor:pointer"type="submit" value="Create">
