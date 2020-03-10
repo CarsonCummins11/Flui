@@ -120,11 +120,11 @@ def influencerprofilechange(): #Changes the influencer based on a request form
     db['influencers'].update({'user':current_user.username},{'$set':{"name":escape(request.form['fname']),
     "desc":escape(request.form['desc']),"email":escape(request.form['email']),"instagram":escape(request.form['instagram']),
     "youtube":escape(request.form['youtube']),"twitter":escape(request.form['twitter'])}})
-    if db['influencers'].find_one({'user':current_user.username})['twitter']!='':
+    if (' ' not in db['influencers'].find_one({'user':current_user.username})['twitter']):
         ml.tagTWUser(current_user.username)
-    if db['influencers'].find_one({'user':current_user.username})['instagram']!='':
+    if (' ' not in db['influencers'].find_one({'user':current_user.username})['instagram']):
         ml.tagInstaUser(current_user.username)
-    if db['influencers'].find_one({'user':current_user.username})['youtube']!='':
+    if (' ' not in db['influencers'].find_one({'user':current_user.username})['youtube']):
         ml.tagYTUser(current_user.username)
     
     return redirect('/influencerprofile')
@@ -203,7 +203,10 @@ def adwithgroup():
 def viewrequest():
     prof = db['influencers'].find_one({'user':request.args.get('user')})['request']
     if type(prof) is not dict:
-        prof = prof[int(request.args.get('r'))]
+        try:
+            prof = prof[int(request.args.get('r'))]
+        except:
+            return render_template('no_ads.html')
     r= Request(
         budget=prof['budget'],
         link=prof['link'],
