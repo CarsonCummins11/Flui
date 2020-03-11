@@ -177,7 +177,7 @@ class Request:
 			<div style="float:right;margin-right:15vw; margin-top:70px;">
 				<div class='outbox'style='text-align:center'><div class='textt'>{{request.budget}}</div></div>
 				<div class='outbox'style='text-align:center'><div class='textt'>{{request.contact}}</div></div>
-				<div class='outbox'style='text-align:center'><div class='textt'>{{request.description}}</div></div>
+				<div class='outbox'style='text-align:center'><div class='textt'>{{request.link}}</div></div>
 				<form action="/submitad?r={{request.r}}" method="post">
 					<div class='outbox'style='text-align:center'><input name='link' class='inp' style='text-align:center' type='text' placeholder='Link to ad'></input></div>
 					<div class='outbox'style='text-align:center'><input class='inp' value='submit' type='submit' style='text-align:center'></input></div>
@@ -190,3 +190,67 @@ class Request:
 		'''
 		rtemplate = Environment(loader=BaseLoader).from_string(template) 
 		return rtemplate.render(request=request)
+	def get_render_template_complete(self):
+		template = '''
+<!DOCTYPE html>
+<html>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
+    <style>
+        body{
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 100;
+            color:#707070;
+            font-size: 5vw;
+            text-align:center;
+            overflow-x: hidden;
+            background-image: url("/static/images/adback.png");
+            background-position: center center;
+        }
+        h1{
+        font-family: 'Montserrat', sans-serif;
+        color:white;
+        font-style:italic;
+        text-align:left;
+        background:#212121;
+        font-size: 70px;
+        margin-top: -10px;
+        margin-right:-10px;
+        margin-left:-10px;
+        margin-bottom: 0px;
+        padding: -5px;
+        font-weight:100;
+        }
+        input{
+            font-family: 'Montserrat', sans-serif;
+            border: 2px solid white;
+            color: white;
+            padding: 8px 16px;
+            font-size: 16px;
+            border-radius: 50px;
+            text-align:center;
+            font-style: italic;
+            float:center;
+            background-color: transparent;
+        }
+        .proflabel{
+        font-size:30%;
+        padding:0;
+        font-weight: 100;
+       
+        margin-right:0;
+    }
+    </style>
+    <body>
+        <h1>
+            <span style="cursor:pointer;float:left" onclick="window.location.href = '/'">Flui</span>
+            <span class="proflabel">Message</span>
+        </h1>
+        <br>
+        <br>
+        This ad has already been completed
+    </body>
+</html>
+		'''
+		rtemplate = Environment(loader=BaseLoader).from_string(template) 
+		return rtemplate.render()

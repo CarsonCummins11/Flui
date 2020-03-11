@@ -212,7 +212,7 @@ def viewrequest():
         user=request.args.get('user'),
         r=int(request.args.get('r'))
     )
-    return r.get_render_template()
+    return r.get_render_template_complete() if prof['completed']==1 else r.get_render_template()
 @app.route("/viewadvertiserprofile")
 def viewadvertiserprofile():
     prof = db['advertisers'].find_one({'user':request.args.get('user')})
@@ -222,10 +222,13 @@ def viewinfluencerprofile():
     prof = db['influencers'].find_one({'user':request.args.get('user')})
     return render_template('StaticInfluencer.html',profile=prof)
 @app.route('/submitad',methods=['POST'])
+@login_required
 def submitad():
     link = request.form['link']
     db['influencers'].update({'user':current_user.username},{'$push':{'link':link}})
     adnumber = request.args.get('r')
+    stripe_payment.pay_influencer(db['influencers'].find_one({'user':current_user.username}))
+    db['influencers'].update({'user':current_user.username},{'$set':{'complete':1}})
 @app.route('/submitinfluencer')
 def submitinfluencer():
     return render_template('submit.html')
