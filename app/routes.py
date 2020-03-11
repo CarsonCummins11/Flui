@@ -327,3 +327,7 @@ def success():
 @app.route('/cancel')
 def cancel():
     return  render_template('payment_cancel.html')
+#untested app route, I didn't have a enough time to test yet
+#@app.route('/notificationsrequest',methods=['GET'])
+#def notificationsrequest():
+#    return request.item.notification.render_template()
