@@ -4,13 +4,7 @@ import requests
 
 #returns true if the page of the url is one of youtube's 2 404 page
 def is404(url):
-	page = requests.get(url).text #sets the page
-	soup = BeautifulSoup(page, 'html.parser')
-	error_404 = soup.find(id="error-page-hh-illustration") #broad 404 error
-	error_404_channel = soup.find(class_="channel-empty-message banner-message") #channel 404 error
-	if error_404 != None or error_404_channel != None:
-		return False
-	return True
+	return requests.get(url).status_code!=404 #sets the page
 
 def string_to_int(string):
 	print(string)
@@ -39,6 +33,7 @@ class Pytube:
 		if(username is not None):
 			id = idFromUsername(username)
 			username = None
+		'''
 		user_obj = { #object of the yt user to be returned
 			"username": username,
 			"channel-name": None,
@@ -48,7 +43,7 @@ class Pytube:
 			"total-votes": None,
 			"engagement-ratio": None
 		}
-		
+		'''
 		#make sure the channel exists
 		u_exists = is404(self.youtubeuser + str(username))
 		id_exists = is404(self.youtubeid + str(id))
@@ -69,24 +64,23 @@ class Pytube:
 		videos = requests.get(root_url + "videos/").text
 
 		#set's the two pages needed for scraping user info
-		soup_root = BeautifulSoup(root, 'html.parser')
+		#soup_root = BeautifulSoup(root, 'html.parser')
 		soup_videos = BeautifulSoup(videos, 'html.parser')
-		
+		'''
 		#setting the channel name, subscribers and username
 		user_obj['channel-name'] = soup_root.find('a', class_="spf-link branded-page-header-title-link yt-uix-sessionlink").text
 		if username == None:
 			user_obj['username'] = user_obj['channel-name'].replace(' ', '')
 		user_obj['subscribers'] = string_to_int(soup_root.find('span', class_="yt-subscription-button-subscriber-count-branded-horizontal subscribed yt-uix-tooltip").text)
-		
+		'''
 		#get all the videos in the channels video tab
 		video_elms = soup_videos.find_all('h3', class_="yt-lockup-title")
 		videos = []
 		
 		#iterate over the videos
 		for v in video_elms:
-			print('in video elms')
-			v_url = "https://youtube.com" + v.find('a')['href']
-
+			videos.append("https://youtube.com" + v.find('a')['href'])
+			'''
 			#creates the bs4 object for the videos page
 			videopage = requests.get(v_url).text
 			soup_videopage = BeautifulSoup(videopage, 'html.parser')
@@ -163,8 +157,8 @@ class Pytube:
 		
 		#engagement score
 		user_obj['engagement-ratio'] = engagement_ratio_total / len(user_obj['videos'])
-		
-		return user_obj
+		'''
+		return videos
 	
 	#returns all channels from a google search
 	def search_channels(self, youtuber):

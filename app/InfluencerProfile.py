@@ -89,9 +89,9 @@ class Influencer:
         yt = youtube.YoutubeBot()
         tw = twitter.TweepyBot()
         insta = instagram.InstagramBot()
-        eng_yt = yt.get_yt_data()
-        eng_tw = tw.set_engagement_ratio()
-        eng_insta = insta.set_engagement_ratio()
+        eng_yt = yt.get_yt_data(self.yt)
+        eng_tw = tw.set_engagement_ratio(self.tw)
+        eng_insta = insta.set_engagement_ratio(self.insta)
         avg_eng = (eng_tw+eng_yt+eng_insta)/3
         return 50*avg_eng
     @staticmethod

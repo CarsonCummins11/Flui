@@ -17,15 +17,19 @@ import os
 import math
 from urllib.request import Request, urlopen
 class YoutubeBot:
+	def get_yt_data(self,username):
+		score=0
+		count = 0
+		for vid in self.all_videos(username):
+			count+=1
+			score+=get_vid_data(vid)
+		return score/count
 		
-	def get_yt_data(self):
+	def get_vid_data(self,url):
 		# For ignoring SSL certificate errors
 		ctx = ssl.create_default_context()
 		ctx.check_hostname = False
 		ctx.verify_mode = ssl.CERT_NONE
-
-		#Input link for now
-		url = input('Enter Youtube Video Url- ')
 
 		#Mozilla browser
 		req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -102,7 +106,9 @@ class YoutubeBot:
 
 		return video_details['RATING']
 
-	
+	def all_videos(self,username):
+		pt = Pytube()
+		return pt.user(username)
 	def get_captions(self,url):
 		ydl = youtube_dl.YoutubeDL({'writesubtitles': True, 'allsubtitles': True, 'writeautomaticsub': True})
 		res = ydl.extract_info(url, download=False)
