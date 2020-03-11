@@ -25,9 +25,24 @@
 		z-index: 2;
 		color: white;
 	}
+    #availability{
+        position:absolute;
+    }
     </style>
     <script>
-        function checkstrength(){
+        $('#user').on("input",
+        function (e){
+            $.ajax({
+                url: '/checkusername',
+                type: 'POST',
+                contentType: 'application/json; charset=UTF-8',
+                data: JSON.stringify({'user':$('#user').val()}),
+                success: function(response) {
+                    $('#availability').html(response)
+                }
+            });
+    });
+        $('#secret-password').on("input",function (){
             pas = $('#secret-password').val()
             var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
             var mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
@@ -38,7 +53,7 @@
                     } else {
                         $('#secret-password').css("background-color","#ff080052")
                     }
-        }
+        })
         $(".toggle-password").click(function() {
             $(this).toggleClass("fa-eye fa-eye-slash");
             var input = $($(this).attr("toggle"));
@@ -54,7 +69,7 @@
         <div id="left" style="text-align:center">
             <form style="text-align:center"action="/newadvertiser" method="post">
                 <input type="text" name="company" placeholder="Company"><br>
-                <input type="text" name="user" placeholder="Username"><br>
+                <input type="text" name="user" placeholder="Username"><i id="availability"></i></input><br>
                 <input  id="secret-password" onkeypress="checkstrength()" type="password" name="pass" placeholder="Password">
                 <span style="margin-right: -26px;" toggle="#secret-password" class="fa fa-fw fa-eye field-icon toggle-password"></span><br>
                 <input class="new" style="cursor:pointer"type="submit" value="Create">
