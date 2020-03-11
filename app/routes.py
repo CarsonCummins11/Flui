@@ -16,6 +16,8 @@ import yagmail
 from app.scraping import scraping_workflow
 from app.scraping.tagger import Tagger
 from app.scraping.authentication import auth
+import stripe
+import json
 searchtagger = Tagger()
 ml = scraping_workflow.WorkflowController()
 @app.route("/")
@@ -39,11 +41,11 @@ def newinfluencer(): #Creates a new influencer with blank information from the r
             username = request.form['user'],
             password = request.form['pass'], #generates hash in __init__()
             email = escape(request.form['email']),
-            desc = '',
+            desc = 'No description',
             img = '/static/images/default_profile_image.png',
-            insta = '',
-            yt = '',
-            tw = '',
+            insta = 'No Instagram',
+            yt = 'No Youtube',
+            tw = 'No Twitter',
             tags = '',
             votes={}
         )
@@ -68,15 +70,13 @@ def newadvertiser(): #Creates a new advertiser
             company=escape(request.form['company']),
             username = request.form['user'],
             password = request.form['pass'], #generates hash in __init__()
-            desc = '',
+            desc = 'No Description',
             email = 'No Email',
             img = '/static/images/default_profile_image.png'
         )
         db['advertisers'].insert_one(new_advertiser.to_dict()) #Adds the profile to db, needs to be a dict
         use = User.User(username=new_advertiser.username) #Sets the user to the newly created user
-        print(current_user)
         login_user(use)#Logins in through Flask's LoginManager
-        print(current_user)
         return redirect('/advertiserprofile')#Redirects to their profile
     else:
         return 'That username is in use'
@@ -106,9 +106,7 @@ def loginadvertiser(): #Logs an advertiser in
 @app.route("/advertiserprofile")
 @login_required
 def advertiserprofile(): #If the user isn't null, then return a rendered template(using Jinja), this is used in rendering to browser
-    print(current_user)
     profile = db['advertisers'].find_one({'user':current_user.username})
-    print(profile)
     return render_template('AdvertiserProfile.html',profile=profile) 
 @app.route("/influencerprofile")
 @login_required
@@ -327,6 +325,27 @@ def success():
 @app.route('/cancel')
 def cancel():
     return  render_template('payment_cancel.html')
+@app.route('/connect_stripe',methods=['GET'])
+def connect_stripe():
+    stripe.api_key=auth.auth_data['stripe_auth']['secret']
+        # Assert the state matches the state you provided in the OAuth link (optional).
+    state = request.args.get("state")
+    # Send the authorization code to Stripe's API.
+    code = request.args.get("code")
+    try:
+        response = stripe.OAuth.token(grant_type="authorization_code", code=code,)
+    except stripe.oauth_error.OAuthError as e:
+        return json.dumps({"error": "Invalid authorization code: " + code}), 400
+    except Exception as e:
+        return json.dumps({"error": "An unknown error occurred."}), 500
+
+    connected_account_id = response["stripe_user_id"]
+    def save_account_id(account_id):
+        db['advertisers'].update({'user':current_user.username},{'$set':{'stripe_id':account_id}})
+    save_account_id(connected_account_id)
+
+    # Render some HTML or redirect to a different page.
+    return redirect('/advertiserprofile')
 #untested app route, I didn't have a enough time to test yet
 #@app.route('/notificationsrequest',methods=['GET'])
 #def notificationsrequest():

@@ -20,3 +20,6 @@ def payment(amount):
   ],
   )
   return session
+def pay_influencer():
+  #TODO
+  print('https://stripe.com/docs/connect/charges-transfers')
