@@ -289,13 +289,14 @@
     }
     .notif{
         max-width: 200px;
+        padding: 1px;
     }
     p.notif{
         text-align:center;
-        font-size: 17px;
+        font-size: 10px;
         cursor: pointer;
-        border-bottom:1px solid #707070;
-        padding-bottom:10px;
+        /*border-bottom:1px solid #707070;*/
+        padding-bottom:1px;
     }
     #notif-body{
         background:white;
@@ -319,6 +320,9 @@
         margin-left: 87px;
         /*margin-top: -12px;*/
     }
+    hr{
+        margin: 10px;
+    }
 
     </style>
 </head>
@@ -332,6 +336,7 @@
     <span class = search onclick="window.location.href='/viewrequest?user={{profile.user}}&r=0'"><i class="las la-tv"></i></span>
     </h1>
     <br>
+    <!-- commented this out for bug testing and making the example notification better
     <div class="notif-page" id="notif-body">
         {% if variable is defined and variable|length %}
             {% for item in profile.notifications %}
@@ -340,6 +345,32 @@
         {% else %}
         <p class="notif" style="font-size:17px"> No Notifications!</p>
         {% endif %}
+    </div>
+    -->
+
+    <!-- 
+        <div class="notif-page" id="notif-body">
+            {% if variable is defined and variable|length %}
+                {% for item in profile.notifications %}
+                {{fetch('/notificationsrequest', { <-- would this work for interfacing with the render_template function?
+                    method: "GET",
+                    body: str(item)
+                });}}
+                {% endfor %}
+            {% else %}
+            <p class="notif" style="font-size:17px; margin-top: 100px;"> No Notifications!</p>
+            {% endif %}
+    </div>
+    -->
+
+
+    -->
+    <div class="notif-page" id="notif-body">
+        <hr />
+        <p class="notif" style="font-size:10px; color: #696969; margin-top:3px;margin-bottom: -24px;padding-bottom:0px;margin-left: -32px;">Ad Request</p>
+        <img id="notif-img" src="/static/images/default_profile_image.png" width="25px" height="25px" style="margin-bottom:3px;vertical-align: middle;">
+        <span class="notif" style="font-size:17px;margin-bottom:3px;"> Example Notification | $.01/User</span>
+        <hr />
     </div>
     <form id="userprofile" action="/influencerprofilechange" method="post">
         <span class="media">
@@ -382,7 +413,6 @@
     </form>
 </body>
 <script>
-    var notifs_open = false;
 	//Sizing code for emailtext, companytext, instatext, twittertext, youtubetext
     $('#emailtext').autoresize({padding:0,minWidth:40});
     $('#companytext').autoresize({padding:0,minWidth:40});
@@ -405,6 +435,8 @@
         $("textarea").height( $("textarea")[0].scrollHeight);
         console.log(key);
     });
+    //Toggles the notification bar
+    var notifs_open = false;
     function notif_bar(){
         if(!notifs_open){
             $("#notif-body").animate({
