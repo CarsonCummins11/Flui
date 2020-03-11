@@ -28,6 +28,22 @@
 		appId: "1:677999224598:web:78ceac8ce37e8936ebd237",
 		measurementId: "G-23F80LNX69"
 	  };
+      var actionCodeSettings = {
+        // URL you want to redirect back to. The domain (www.example.com) for this
+        // URL must be whitelisted in the Firebase Console.
+        url: 'https://www.flui.co',
+        // This must be true.
+        handleCodeInApp: true,
+        iOS: {
+            bundleId: 'com.example.ios'
+        },
+        android: {
+            packageName: 'com.example.android',
+            installApp: true,
+            minimumVersion: '12'
+        },
+        dynamicLinkDomain: 'example.page.link'
+        };
 	  // Initialize Firebase
 	  firebase.initializeApp(firebaseConfig);
 	  firebase.analytics();
@@ -47,6 +63,16 @@
         return this;
     }
     function resetemail(){
+        firebase.auth().sendSignInLinkToEmail(email, actionCodeSettings)
+        .then(function() {
+            // The link was successfully sent. Inform the user.
+            // Save the email locally so you don't need to ask the user for it again
+            // if they open the link on the same device.
+            window.localStorage.setItem('emailForSignIn', email);
+        })
+        .catch(function(error) {
+            // Some error occurred, you can inspect the code: error.code
+        });
         $('#emailtext').prop("readonly", true);
         $('body').focus();
         $('#ec').html('<span id="emailchange" class="change" onclick="changemail()">Change</span>');
@@ -336,7 +362,6 @@
     <span class = search onclick="window.location.href='/viewrequest?user={{profile.user}}&r=0'"><i class="las la-tv"></i></span>
     </h1>
     <br>
-    <!-- commented this out for bug testing and making the example notification better
     <div class="notif-page" id="notif-body">
         {% if variable is defined and variable|length %}
             {% for item in profile.notifications %}
@@ -346,22 +371,7 @@
         <p class="notif" style="font-size:17px"> No Notifications!</p>
         {% endif %}
     </div>
-    -->
 
-    <!-- possibly this would work? didn't have time to test it
-        <div class="notif-page" id="notif-body">
-            {% if variable is defined and variable|length %}
-                {% for item in profile.notifications %}
-                {{fetch('/notificationsrequest', { <-- would this work for interfacing with the render_template function?
-                    method: "GET",
-                    body: str(item)
-                });}}
-                {% endfor %}
-            {% else %}
-            <p class="notif" style="font-size:17px; margin-top: 100px;"> No Notifications!</p>
-            {% endif %}
-    </div>
-    -->
     <div class="notif-page" id="notif-body">
         <hr />
         <p class="notif" style="font-size:10px; color: #696969; margin-top:3px;margin-bottom: -24px;padding-bottom:0px;margin-left: -32px;">Ad Request</p>
