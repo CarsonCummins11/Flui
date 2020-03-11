@@ -28,6 +28,22 @@
 		appId: "1:677999224598:web:78ceac8ce37e8936ebd237",
 		measurementId: "G-23F80LNX69"
 	  };
+      var actionCodeSettings = {
+        // URL you want to redirect back to. The domain (www.example.com) for this
+        // URL must be whitelisted in the Firebase Console.
+        url: 'https://www.flui.co',
+        // This must be true.
+        handleCodeInApp: true,
+        iOS: {
+            bundleId: 'com.example.ios'
+        },
+        android: {
+            packageName: 'com.example.android',
+            installApp: true,
+            minimumVersion: '12'
+        },
+        dynamicLinkDomain: 'example.page.link'
+        };
 	  // Initialize Firebase
 	  firebase.initializeApp(firebaseConfig);
 	  firebase.analytics();
@@ -47,6 +63,16 @@
         return this;
     }
     function resetemail(){
+        firebase.auth().sendSignInLinkToEmail(email, actionCodeSettings)
+        .then(function() {
+            // The link was successfully sent. Inform the user.
+            // Save the email locally so you don't need to ask the user for it again
+            // if they open the link on the same device.
+            window.localStorage.setItem('emailForSignIn', email);
+        })
+        .catch(function(error) {
+            // Some error occurred, you can inspect the code: error.code
+        });
         $('#emailtext').prop("readonly", true);
         $('body').focus();
         $('#ec').html('<span id="emailchange" class="change" onclick="changemail()">Change</span>');
