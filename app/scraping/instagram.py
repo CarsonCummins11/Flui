@@ -1,6 +1,5 @@
 #scraping bot for instagram
 #uncomment this when running with python3 -m flask run(running the whole app)
-#from app.scraping.authentication.auth import auth_data
 from app.scraping.authentication.auth import auth_data #this is for local testing with the command python3 instagram.py(testing just this script)
 from instagram_private_api import Client, ClientCompatPatch, ClientError, ClientLoginError
 import json

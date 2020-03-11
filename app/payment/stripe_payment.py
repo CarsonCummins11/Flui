@@ -20,3 +20,9 @@ def payment(amount):
   ],
   )
   return session
+def pay_influencer(influencer):
+  transfer = stripe.Transfer.create(
+  amount=1000,
+  currency="usd",
+  destination=influencer['stripe_id'],
+)
