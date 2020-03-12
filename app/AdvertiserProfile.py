@@ -64,6 +64,7 @@ class Advertiser():
         self.email = email
         self.img = img
         self.company = company
+        self.campaign = []
     def to_dict(self):
         return {
             "user": self.username,
@@ -71,5 +72,6 @@ class Advertiser():
             "description": self.desc,
             "email": self.email,
             "img": self.img,
-            "company":self.company
+            "company":self.company,
+            "campaign":self.campaign
         }
