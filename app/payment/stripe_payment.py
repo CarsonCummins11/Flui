@@ -1,6 +1,7 @@
 from paypalrestsdk import Payment
 from app.scraping.authentication import auth
 import stripe
+from app import InfluencerProfile
 def payment(amount):
   stripe.api_key = auth.auth_data['stripe_auth']['secret']
   print(stripe.api_key)
@@ -21,8 +22,10 @@ def payment(amount):
   )
   return session
 def pay_influencer(influencer):
+  stripe.api_key = auth.auth_data['stripe_auth']['secret']
+  val = InfluencerProfile.Influencer.from_dict(influencer).findCost()
   transfer = stripe.Transfer.create(
-  amount=1000,
+  amount=val,
   currency="usd",
   destination=influencer['stripe_id'],
 )
