@@ -78,17 +78,17 @@ class WorkflowController:
     def tagTWUser(self,user):
         self.twwork.append(user)
         if(self.twthread==False):
-            threading.Thread(self.dotwwork).start()
+            #threading.Thread(self.dotwwork).start()
             self.twthread=True
     def tagYTUser(self,user):
         self.ytwork.append(user)
         if(self.ytthread==False):
-            threading.Thread(target=self.doytwork).start()
+            #threading.Thread(target=self.doytwork).start()
             self.ytthread=True
     def tagInstaUser(self,user):
         self.instawork.append(user)
         if(self.instathread==False):
-            threading.Thread(self.doinstawork).start()
+            #threading.Thread(self.doinstawork).start()
             self.instathread=True
         
 
