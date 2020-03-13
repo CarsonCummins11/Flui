@@ -5,6 +5,11 @@ from instagram_private_api import Client, ClientCompatPatch, ClientError, Client
 import json
 from lxml import html
 import requests
+from app.scraping.regex import extract_urls
+
+def user_data(username):
+    return requests.get('https://www.instagram.com/' + username +'/?__a=1').json()
+
 class InstagramBot:
     #Log into instagram and init api object with auth data
     def __init__(self):
@@ -26,11 +31,22 @@ class InstagramBot:
         self.engagement_score = round(self.engagement_score, 4)
         return self.engagement_score
 
+    #for returning text without added captions to improve ML models
     def make_ml_friendly(self,text):
         text = text.replace('Image may contain: ','')
         text = text.replace('one or more people','')
         return text
 
+    #Sends a message to a user
+    def send_message(self, message, target):
+        urls = extract_urls(message) #gets urls from text with hellish regex
+        item_type = "link" if urls else "text" #sets the type of message depending on if the 'message' contains urls
+        user = user_data(target) #get's the user object
+        try:
+            self.api.send_direct_item(item_type, user['graphq1']['id'], text=message, thread=None, urls=urls) #sendsthe message
+        except:
+            print("Failed to send message")
+    
     def get_data(self, username):
         posts = self.api.username_feed(username)
         i = 0
