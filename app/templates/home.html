@@ -89,26 +89,42 @@
     i {
         display: none !important;
     }
+    #center{
+        background-image:none !important;
+    }
+}
+#center{
+    position: fixed;
+  top: 70px;
+  left: 0;
+  bottom:0;
+  right:0;
+    background-image: linear-gradient(#FFF, #FFF);
+  background-size: 2px 90%;
+  background-repeat: no-repeat;
+  background-position: center bottom 80px;
 }
     </style>
 </head>
-<body id=center>
+<body>
     <h1 onclick="location.reload()">Flui</h1>
-    <div style="float:left;margin-left:15%;position: relative;top: 50%;transform: translateY(50%);">
+    <div id="center">
+        <div style="float:left;margin-left:15%;position: relative;top: 50%;transform: translateY(-50%);">
         <div id="left" style="text-align:center">
             <div><img onclick='$("#center").load("/static/html/InfluencerLogin.html");'src="/static/images/Minimal_Camera.png"></img></div>
             <i style="font-size: 40px;">Influencer</i>
             <div><button class="btn new" onclick='$("#center").load("/static/html/NewInfluencer.html");'>New Profile</button></div>
         </div>
     </div>
-    <div style="float:right;margin-right:15%;position: relative;top: 50%;transform: translateY(50%);">
+    <div style="float:right;margin-right:15%;position: relative;top: 50%;transform: translateY(-50%);">
         <div id="right" style="text-align: center;">
             <div><img onclick='$("#center").load("/static/html/AdvertiserLogin.html");' src="/static/images/Minimal_Graph.png"></img></div>
             <i style="font-size: 40px;">Advertiser</i>
             <div><button class="btn new" onclick='$("#center").load("/static/html/NewAdvertiser.html");'>New Profile</button></div>
         </div>
     </div>
-    <div class = submitinfluencer><div onclick="window.location.href = '/submitinfluencer'" style="margin-top: 15px;cursor: pointer;">Submit Influencer</div></div>
+</div>
+<div class = submitinfluencer><div onclick="window.location.href = '/submitinfluencer'" style="margin-top: 15px;cursor: pointer;">Submit Influencer</div></div>
     <div class = about><div onclick="window.location.href = '/about'" style="margin-top: 15px;cursor: pointer;">About Flui</div></div>
 </body>
 </html>
