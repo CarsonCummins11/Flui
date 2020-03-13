@@ -375,15 +375,15 @@ def tw_auth():
     print(request.get_json())
     token = request.get_json()['token']
     secret = request.get_json()['secret']
-    #try:
-    oauth_user = OAuth1Session(client_key=auth.auth_data['tw_auth']['api_key'],
-                               client_secret=auth.auth_data['tw_auth']['api_secret'],
-                               resource_owner_key=token,
-                               resource_owner_secret=secret)
-    url_user = 'https://api.twitter.com/1.1/account/verify_credentials.json'
-    user_data = oauth_user.get(url_user)
-    db['influencers'].update({'user':current_user.username},{'$set':{'twitter':json.loads(user_data.text)['screen_name']}})
-    print(db['influencers'].find_one({'user':current_user.username})['twitter'])
-    return 'got tw'
-    #except:
-     #   return 'failed tw', 500
+    try:
+        oauth_user = OAuth1Session(client_key=auth.auth_data['tw_auth']['api_key'],
+                                client_secret=auth.auth_data['tw_auth']['api_secret'],
+                                resource_owner_key=token,
+                                resource_owner_secret=secret)
+        url_user = 'https://api.twitter.com/1.1/account/verify_credentials.json'
+        user_data = oauth_user.get(url_user)
+        db['influencers'].update({'user':current_user.username},{'$set':{'twitter':json.loads(user_data.text)['screen_name']}})
+        print(db['influencers'].find_one({'user':current_user.username})['twitter'])
+        return 'got tw'
+    except:
+        return 'failed tw', 500
