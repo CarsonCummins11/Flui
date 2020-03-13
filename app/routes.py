@@ -362,9 +362,8 @@ def tw_auth():
                                resource_owner_key=token,
                                resource_owner_secret=secret)
     url_user = 'https://api.twitter.com/1.1/account/verify_credentials.json'
-    params = {"include_email": 'true'}
-    user_data = oauth_user.get(url_user, params=params)
-    db['influencers'].update({'user':current_user.username},{'$set':{'twitter':request.get_json()['username']}})
+    user_data = oauth_user.get(url_user)
+    db['influencers'].update({'user':current_user.username},{'$set':{'twitter':json.loads(user_data.text)['screen_name']}})
     print(db['influencers'].find_one({'user':current_user.username})['twitter'])
     return 'got tw'
     #except:

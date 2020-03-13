@@ -173,15 +173,14 @@
 		  // You can use these server side with your app's credentials to access the Twitter API.
 		  var token = result.credential.accessToken;
 		  var secret = result.credential.secret;
-		  dat = JSON.stringify({'token':token,'secret':secret,'username':result.user.displayName});
+		  dat = JSON.stringify({'token':token,'secret':secret});
         $.ajax({
             url:'/tw_auth',
             type:'POST',
             data: dat,
             contentType:'application/json; charset=UTF-8',
-            success:function(data){console.log('fuck yea')}
+            success:function(data){location.reload()}
         });
-        location.reload();
 		}).catch(function(error) {
 		  // Handle Errors here.
 		  var errorCode = error.code;
