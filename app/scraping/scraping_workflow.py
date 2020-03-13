@@ -1,8 +1,17 @@
 import threading
+from app.scraping.instagram import InstagramBot
 from app.scraping import twitter_tagger
-from app import db
+from app import db, instagram
 from app.scraping import youtube_tagger
 from app.scraping import instagram_tagger
+from random import randint
+from datetime import timedelta, date
+
+#found this on stackoverflow
+def random_with_N_digits(n):
+    range_start = 10**(n-1)
+    range_end = (10**n)-1
+    return randint(range_start, range_end)
 
 def combine_vote_tables(t_new,t_cur):
     ret = {}
@@ -21,6 +30,9 @@ class WorkflowController:
         self.twthread = False
         self.ytthread=False
         self.instathread=False
+        self.code_length = 6
+        self.code_valid_time = 5
+        
     def dotwwork(self):
         twtag = twitter_tagger.TW_tagger()
         while True:
@@ -90,5 +102,33 @@ class WorkflowController:
         if(self.instathread==False):
             #threading.Thread(self.doinstawork).start()
             self.instathread=True
-        
+    
+    #creates a json object with the message to be sent and returns a code
+    def get_code_message(self):
+        code = random_with_N_digits(self.code_length)
+        code_message = '''
+            Here is your temporary code: ''' + code + '''
 
+            If you did not link your account to Flui, ignore this message.
+        '''
+        return {
+            "message": code_message,
+            "code": code
+        }
+
+    # sends a message with a confirmation code to their account
+    # fluiuser = their flui username
+    # username = instagram username
+    # influencer specifies if the user is an influencer or not
+    # instagram, twitter, youtube specify the platform
+    #
+    # Ex:
+    #   ...code setting their instagram username....
+    #   create_user_code(their-flui-username, their-instagram-username, instagram=True)
+    #
+    def create_user_code(self, fluiuser, username, influencer=True, instagram=False, twitter=False, youtube=False):
+        if instagram: 
+            message = self.get_code_message()
+            instagram.send_message(message['message'], username)
+            db['influencers' if influencer else 'advertisers'].update({'user':fluiuser},{'$set':{'insta-confirm-code':message['code']}})
+            db['influencers' if influencer else 'advertisers'].update({'user':fluiuser},{'$set':{'confirm-code-validuntil': date.today() + timedelta(days=self.code_valid_time)}})

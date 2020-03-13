@@ -3,9 +3,11 @@
 from flask import Flask #Web application framework
 from pymongo import MongoClient #Python library for MongoDB
 from flask_login import LoginManager #For managing flask, handles logging in, out, and remembering sessions(cookies wooooo)
+from app.scraping.instagram import InstagramBot
 import os
 
 client = MongoClient() #Creates the MongoDB instance
+instagram = InstagramBot()
 db = client['matcher'] 
 app = Flask(__name__, static_url_path='/static')#Instane of a Flask class, uses __name__ since we're using a single module
 login=LoginManager(app) #init LoginManager configured with the flask app(must use flask app)

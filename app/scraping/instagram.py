@@ -7,17 +7,9 @@ import json
 from lxml import html
 import requests
 from app.scraping.regex import extract_urls
-from random import randint
-from datetime import timedelta, date
 
 def user_data(username):
     return requests.get('https://www.instagram.com/' + username +'/?__a=1').json()
-
-#found this on stackoverflow
-def random_with_N_digits(n):
-    range_start = 10**(n-1)
-    range_end = (10**n)-1
-    return randint(range_start, range_end)
 
 class InstagramBot:
     #Log into instagram and init api object with auth data
@@ -27,8 +19,6 @@ class InstagramBot:
         self.potential_influencers = []
         self.indata = {}
         self.engagement_score = 0
-        self.code_length = 6
-        self.code_valid_time = 5
 
     #calculate the engagement ratio for a specific user
     def set_engagement_ratio(self, username):
@@ -49,45 +39,21 @@ class InstagramBot:
         text = text.replace('one or more people','')
         return text
 
-    #creates a json object with the message to be sent and returns a code
-    def get_code_message(self):
-        code = random_with_N_digits(self.code_length)
-        code_message = '''
-            Here is your temporary code: ''' + code + '''
-
-            If you did not link your account to Flui, ignore this message.
-        '''
-        return {
-            "message": code_message,
-            "code": code
-        }
-
-    # sends a message with a confirmation code to their account
-    # fluiuser = their flui username
-    # username = instagram username
-    # influencer specifies if the user is an influencer or not
-    # instagram, twitter, youtube specify the platform
-    #
-    # Ex:
-    #   ...code setting their instagram username....
-    #   create_user_code(their-flui-username, their-instagram-username, instagram=True)
-    #
-    def create_user_code(self, fluiuser, username, influencer=True, instagram=False, twitter=False, youtube=False):
-        if instagram:
-            message = self.get_code_message()
-            self.send_message(message['message'], username)
-            db['influencers' if influencer else 'advertisers'].update({'user':fluiuser},{'$set':{'insta-confirm-code':message['code']}})
-            db['influencers' if influencer else 'advertisers'].update({'user':fluiuser},{'$set':{'confirm-code-validuntil': date.today() + timedelta(days=self.code_valid_time)}})
-
     #Sends a message to a user
     def send_message(self, message, target):
         urls = extract_urls(message) #gets urls from text with hellish regex
         item_type = "link" if urls else "text" #sets the type of message depending on if the 'message' contains urls
         user = user_data(target) #get's the user object
-        try:
-            self.api.send_direct_item(item_type, user['graphq1']['id'], text=message, thread=None, urls=urls) #sendsthe message
-        except:
-            print("Failed to send message")
+        
+        if user['graphq1']['user']['follows_viewer'] == False:
+            self.api.friendships_create(user['graphq1']['user']['id'])
+
+        #Need to revisit this when they follow back
+        if user['graphq1']['user']['followed_by_viewer'] == False:            
+            try:
+                self.api.send_direct_item(item_type, user['graphq1']['user']['id'], text=message, thread=None, urls=urls) #sends the message
+            except:
+                print("Failed to send message")
     
     def get_data(self, username):
         posts = self.api.username_feed(username)
