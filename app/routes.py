@@ -193,6 +193,25 @@ def create_request(): #Creates a request object from a form submission
 @login_required
 def adwithgroup():
     return render_template('buygroup.html')
+@app.route("/viewcampaign")
+@login_required
+def viewcampaign():
+    prof = db['advertisers'].find_one({'user':request.args.get('user')})['campaign']
+    if type(prof) is not dict:
+        try:
+            prof = prof[int(request.args.get('r'))]
+        except:
+            return render_template('no_campaigns.html')
+    r= Request(
+        budget=prof['budget'],
+        link=prof['link'],
+        tags=prof['tags'],
+        contact=prof['contact'],
+        author=prof['author'],
+        user=request.args.get('user'),
+        r=int(request.args.get('r'))
+    )
+    return r.get_render_template_complete() if prof['completed']==1 else r.get_render_template()
 @app.route("/viewrequest")
 @login_required
 def viewrequest():
