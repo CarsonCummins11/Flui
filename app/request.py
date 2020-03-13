@@ -258,7 +258,7 @@ class Request:
         </h1>
         <br>
         <br>
-        This ad has already been completed
+        This ad has already been completed.
     </body>
 </html>
 		'''

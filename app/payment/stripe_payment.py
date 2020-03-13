@@ -1,4 +1,3 @@
-from paypalrestsdk import Payment
 from app.scraping.authentication import auth
 import stripe
 from app import InfluencerProfile

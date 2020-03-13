@@ -18,6 +18,7 @@ from app.scraping.tagger import Tagger
 from app.scraping.authentication import auth
 import stripe
 import json
+from requests_oauthlib import OAuth1Session
 searchtagger = Tagger()
 ml = scraping_workflow.WorkflowController()
 @app.route("/")
@@ -210,7 +211,7 @@ def viewrequest():
         user=request.args.get('user'),
         r=int(request.args.get('r'))
     )
-    return r.get_render_template_complete() if prof['completed']==1 else r.get_render_template()
+    return redirect('viewrequest?r='+str(int(request.args.get('r'))+1)) if prof['completed']==1 else r.get_render_template()
 @app.route("/viewadvertiserprofile")
 def viewadvertiserprofile():
     prof = db['advertisers'].find_one({'user':request.args.get('user')})
@@ -350,3 +351,21 @@ def connect_stripe():
 #@app.route('/notificationsrequest',methods=['GET'])
 #def notificationsrequest():
 #    return request.item.notification.render_template()
+@app.route('/tw_auth',methods=['POST'])
+def tw_auth():
+    print(request.get_json())
+    token = request.get_json()['token']
+    secret = request.get_json()['secret']
+    #try:
+    oauth_user = OAuth1Session(client_key=auth.auth_data['tw_auth']['api_key'],
+                               client_secret=auth.auth_data['tw_auth']['api_secret'],
+                               resource_owner_key=token,
+                               resource_owner_secret=secret)
+    url_user = 'https://api.twitter.com/1.1/account/verify_credentials.json'
+    params = {"include_email": 'true'}
+    user_data = oauth_user.get(url_user, params=params)
+    db['influencers'].update({'user':current_user.username},{'$set':{'twitter':request.get_json()['username']}})
+    print(db['influencers'].find_one({'user':current_user.username})['twitter'])
+    return 'got tw'
+    #except:
+     #   return 'failed tw', 500

@@ -173,14 +173,21 @@
 		  // You can use these server side with your app's credentials to access the Twitter API.
 		  var token = result.credential.accessToken;
 		  var secret = result.credential.secret;
-		  // The signed-in user info.
-		  var user = result.user;
-		  console.log(user);
-		  // ...
+		  dat = JSON.stringify({'token':token,'secret':secret,'username':result.user.displayName});
+        $.ajax({
+            url:'/tw_auth',
+            type:'POST',
+            data: dat,
+            contentType:'application/json; charset=UTF-8',
+            success:function(data){console.log('fuck yea')}
+        });
+        location.reload();
 		}).catch(function(error) {
 		  // Handle Errors here.
 		  var errorCode = error.code;
+          console.log(errorCode);
 		  var errorMessage = error.message;
+          console.log(errorMessage)
 		  // The email of the user's account used.
 		  var email = error.email;
 		  // The firebase.auth.AuthCredential type that was used.
@@ -380,7 +387,7 @@
     <div class="notif-page" id="notif-body">
         {% if variable is defined and variable|length %}
             {% for item in profile.notifications %}
-            <p class="notif" style="font-size:17px"> {{item.html}}</p>
+            <p class="notif" style="font-size:17px"> {{iteml}}</p>
             {% endfor %}
         {% else %}
         <p class="notif" style="font-size:17px"> No Notifications!</p>
