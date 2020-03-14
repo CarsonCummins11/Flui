@@ -17,3 +17,7 @@ wikipedia2Vec
 numpy
 lxml
 stripe
+google-api-python-client
+google-auth 
+google-auth-oauthlib
+google-auth-httplib2

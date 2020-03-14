@@ -78,67 +78,6 @@
       }
 	</script>
 	<script>
-    $.fn.textWidth = function(_text, _font){//get width of text with font.  usage: $("div").textWidth();
-        var fakeEl = $('<span>').hide().appendTo(document.body).text(_text || this.val() || this.text()).css({font: _font || this.css('font'), whiteSpace: "pre"}),
-                    width = fakeEl.width();
-        fakeEl.remove();
-        return width;
-    };
-    $.fn.autoresize = function(options){//resizes elements based on content size.  usage: $('input').autoresize({padding:10,minWidth:0,maxWidth:100});
-        options = $.extend({padding:0,minWidth:0,maxWidth:500}, options||{});
-        $(this).on('input', function() {
-            $(this).css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$(this).textWidth() + options.padding)));
-        }).trigger('input');
-        return this;
-    }
-    function resetemail(){
-        console.log("reset called");
-        firebase.auth().sendSignInLinkToEmail('t.r.greenwood.pdx@gmail.com', actionCodeSettings)
-        .then(function() {
-            // The link was successfully sent. Inform the user.
-            // Save the email locally so you don't need to ask the user for it again
-            // if they open the link on the same device.
-            window.localStorage.setItem('emailForSignIn', email);
-            console.log("Email should be sent to: " + email);
-        })
-        .catch(function(error) {
-            // Some error occurred, you can inspect the code: error.code
-            console.log("Error occured: " + error.code);
-        });
-        $('#emailtext').prop("readonly", true);
-        $('body').focus();
-        console.log("before");
-        $('#ec').html('<span id="emailchange" class="change" onclick="changemail()">Change</span>');
-        console.log("after");
-    }
-    function resetcompany(){
-        $('#companytext').prop("readonly", true);
-        $('body').focus();
-        $('#cc').html('<span id="companychange" class="change" onclick="changecompany()">Change</span>');
-    }
-    function resetdesc(){
-        $('#desctext').prop("readonly", true);
-        $('body').focus();
-        $('#dc').html('<span id="descchange" class="change" onclick="changedesc()">Change</span>');
-    }
-    function resetinsta(){
-        $('#instatext').prop("readonly", true);
-        $('body').focus();
-        $('#ic').html('<span id="instachange" class="change" onclick="changinsta()">Change</span>');
-
-    }
-    function resettwitter(){
-        $('#twittertext').prop("readonly", true);
-        $('body').focus();
-        $('#tc').html('<span id="twitterchange" class="change" onclick="changtwitter()">Change</span>');
-
-    }
-    function resetyoutube(){
-        $('#youtubetext').prop("readonly", true);
-        $('body').focus();
-        $('#yc').html('<span id="youtubechange" class="change" onclick="changeyoutube()">Change</span>');
-
-    }
     function getDataUri(url,callback) {
         var image = new Image();
 
@@ -171,35 +110,68 @@
         $('#ic').html('<span id="imagechange" class="change" onclick="changeimage()">Change</span>');
     }
     function changedesc(){
-        $('#desctext').prop('readonly',false);
-        $('#dc').html('<input onsubmit="resetdesc()" type="submit" value="Save Changes">');
-        $('#desctext').focus();
+        if($('#desc').prop('contenteditable')=='true'){
+            $('#desc').prop('contenteditable',false);
+            $('body').focus();
+            dat=JSON.stringify({'desc':$('#desc').html()});
+            $.ajax({
+                url:'/changedesc',
+                type:'POST',
+                data: dat,
+                contentType:'application/json; charset=UTF-8',
+                success:function(data){console.log('fuck yea')}
+            });
+        }else{
+            $('#desc').prop('contenteditable',true);
+            $('#desc').focus();
+        }
     }
     function changemail(){
-        $('#emailtext').prop('readonly',false);
-        $('#ec').html('<input onsubmit="resetemail()" type="submit" value="Save Changes">');
-        $('#emailtext').focus();
-        console.log('before before');
+        if($('#emailtext').prop('contenteditable')=='true'){
+            $('#emailtext').prop('contenteditable',false);
+            $('#emailtext').css('text-decoration','none')
+            $('body').focus();
+            dat=JSON.stringify({'email':$('#emailtext').html()});
+            $.ajax({
+                url:'/changemail',
+                type:'POST',
+                data: dat,
+                contentType:'application/json; charset=UTF-8',
+                success:function(data){console.log('fuck yea')}
+            });
+        }else{
+            $('#emailtext').prop('contenteditable',true);
+            $('#emailtext').css('text-decoration','underline')
+            $('#emailtext').focus();
+        }
     }
-    function changecompany(){
-        $('#companytext').prop('readonly',false);
-        $('#cc').html('<input onsubmit="resetcompany()" type="submit" value="Save Changes">');
-        $('#companytext').focus();
+    function changename(){
+        if($('#nametext').prop('contenteditable')=='true'){
+            $('#nametext').prop('contenteditable',false);
+            $('#nametext').css('text-decoration','none')
+            $('body').focus();
+            dat=JSON.stringify({'name':$('#nametext').html()});
+            $.ajax({
+                url:'/changename',
+                type:'POST',
+                data: dat,
+                contentType:'application/json; charset=UTF-8',
+                success:function(data){console.log('fuck yea')}
+            });
+        }else{
+            $('#nametext').prop('contenteditable',true);
+            $('#nametext').css('text-decoration','underline')
+            $('#nametext').focus();
+        }
     }
     function changeinsta(){
-		$(location).attr('href', 'https://www.instagram.com/oauth/authorize/?client_id=1672949341&redirect_uri=https://flui.co&response_type=code')
-        $('#instatext').prop('readonly',false)
-        $('#ic').html('<input onsubmit="resetinsta()" type="submit" value="Save Changes">')
-        $('#instatext').focus();
+		
     }
     function changeyoutube(){
-        $('#youtubetext').prop('readonly',false)
-        $('#yc').html('<input onsubmit="resetyoutube()" type="submit" value="Save Changes">')
-        $('#youtubetext').focus();
+       
     }
     function changeimage(){
-        console.log('Console logging 1');
-        $('#ic').html('<input id="fileinput" type="file" accept="image/png, image/jpeg" multiple=false></input><span class="subimage" onclick="resetimage()">| Update profile picture</span>');
+        $('#ic').html('<input id="fileinput" type="file" accept="image/png, image/jpeg" multiple=false></input><span class="subimage" onclick="resetimage()">Update profile picture</span>');
     }
     function changetwitter(){
 		var provider = new firebase.auth.TwitterAuthProvider();
@@ -232,8 +204,8 @@
     </script>
     <style>
     #fileinput{
-        font-size: 1vw;
-        max-width:16vw;
+        font-size: 20px;
+        max-width:300px;
     }
     button{
         cursor:pointer;
@@ -246,22 +218,22 @@
         color:white;
         border-radius: 30px;
         font-family: 'Montserrat', sans-serif;
-        font-size: 20px;
+        font-size: 15px;
         font-style: italic;
+        margin-right:60px;
     }
     body{
         font-family: 'Montserrat', sans-serif;
         font-weight: 100;
         color:#707070;
         background-color: white;
-        font-size: 5vw;
-        overflow: hidden;
+        overflow-x: hidden;
     }
     .change{
         font-family: 'Montserrat', sans-serif;
         color:#7B7B7B;
         font-style: italic;
-        font-size: 1vw;
+        font-size: 20%;
         cursor: pointer;
     }
 	.inputTags{
@@ -276,10 +248,7 @@
         font-weight: 100;
         padding: 0px;
         background: none;
-        font-size: 5vw;
-    }
-    #ic{
-        float:none;
+        font-size: 30px;
     }
     .pickfile{
         font-family: 'Montserrat', sans-serif;
@@ -294,38 +263,6 @@
         font-size: 1vw;
         cursor: pointer;
     }
-    input[type=submit]{
-        font-family: 'Montserrat', sans-serif;
-        color:#7B7B7B;
-        font-style: italic;
-        font-size: 1vw;
-        cursor: pointer;
-    }
-    input[type=text]:focus:read-write{
-        outline: 0px;
-        border-top: none;
-        border-left: none;
-        border-right: none;
-        border-bottom: 3px solid #707070;
-    }
-    .descriptiontext{
-        font-family: 'Montserrat', sans-serif;
-        color:#707070;
-        font-weight: lighter;
-        font-size: 50%;
-        text-align:left;
-        border: 0px;
-        outline: 0px;
-        resize: none;
-        overflow:auto;
-    }
-    /*
-    h1:after {
-        display: block;
-        clear: both;
-        visibility: hidden;
-    }
-    */
     h1{
         font-family: 'Montserrat', sans-serif;
         color:white;
@@ -391,20 +328,64 @@
         border-radius: 15px;
         max-height:300px;
     }
-    #arrow-up {
-        width: 0; 
-        height: 0; 
-        border-left: 13px solid transparent;
-        border-right: 13px solid transparent;        
-        border-bottom: 13px solid white;
-        position: absolute;
-        margin-left: 87px;
-        /*margin-top: -12px;*/
-    }
     hr{
         margin: 10px;
     }
-
+    .wrapper{
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 2fr;
+        position: fixed;
+        min-width: 1200px;
+        top: 100px;
+        height:1000px;
+        left:0;
+        right:0;
+        justify-items: center;
+    }
+    .upper{
+        grid-row: 1;
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: 2fr 8fr;
+        grid-template-rows: 50% 50%;
+        justify-items: center;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .names{
+        grid-row:1;
+        grid-column: 2;
+        margin:auto;
+        font-size:40px;
+    }
+    .socials{
+        grid-row: 2/2;
+        grid-column: 2/2;
+    }
+    .profimg{
+        grid-column: 1/1;
+        grid-row:1/ span 2;
+        margin:auto;
+    }
+    .description{
+        background-color: none;
+        grid-column: 1/1;
+        grid-row:2/2;
+    }
+    .descinside{
+        font-size:30px;
+        margin-left:20%;
+        margin-right:20%;
+        border-top: 2px solid #707070;
+        text-align: center;
+    }
+    .descchange{
+        margin-left:20%;
+        margin-right:20%;
+        text-align: center;
+    }
     </style>
 </head>
 <body>
@@ -430,69 +411,48 @@
     <div class="notif-page" id="notif-body">
         
     </div>
-    <form id="userprofile" action="/influencerprofilechange" method="post">
-        <span class="media">
-            <div>
+    <div class="wrapper">
+            <div class = "upper">
+            <div class='profimg'>
                 <img id="imagecontent" style="width:150px;height:150px;" src="{{profile.img}}">
                 <span id='ic'>
                     <span id="imagechange" class="change" onclick="changeimage()">Change</span>
                 </span>
             </div>
-            <div id="insta">
-                <img style="width:45px;height:45px" src="/static/images/Instagram_Logo.png">
-                <input id="instatext" type="text" name="instagram" value="{{profile.instagram}}" readonly=true>
-                <span id='ic'><span id="instachange" class="change" onclick="changeinsta()">Change</span></span>
+            <div class="names">
+                <span id="name">
+                    <span id="nametext" onpaste="return false;"onkeypress="return (this.innerText.length <= 25)"contenteditable=false>{{profile.name}}</span>
+                    <span id="namechange" class="change" onclick="changename()" >Change</span>
+                </span>
+                <span id="email">
+                    <span id="emailtext" onpaste="return false;"onkeypress="return (this.innerText.length <= 15)"contenteditable=false>{{profile.email}}</span>
+                    <span id="emailchange" class="change" onclick="changemail()" >Change</span>
+                </span>
+                </div>
+            <div class='socials'>
+                <span id="insta">
+                    <img style="width:45px;height:45px" src="/static/images/Instagram_Logo.png">
+                    <span onclick="changeinsta()">{{profile.instagram}}</span>
+                </span>
+                <span style="padding-left:40px;padding-right:40px;"id="twitter">
+                    <img style="width:45px;height:45px;" src="/static/images/Twitter_Logo.png">
+                    <span onclick="changetwitter()">{{profile.twitter}}</span>
+                </span>
+                <span id="youtube">
+                    <img style="width:64px;height:45px;" src="/static/images/Youtube_Logo.png">
+                    <span onclick="changeyoutube()">{{profile.youtube}}</span>
+                </span>
             </div>
-            <div id="twitter">
-                <img style="width:45px;height:45px;" src="/static/images/Twitter_Logo.png">
-                <input id="twittertext" type="text" name="twitter" value="{{profile.twitter}}" readonly=true>
-                <span id='tc'><span id="twitterchange" class="change" onclick="changetwitter()">Change</span></span>
+        </div>
+        <div class="description">
+            <div id="desc" onpaste="return false;"onkeypress="return (this.innerText.length <= 100)" class = descinside contenteditable=false>
+            {{profile.desc}}
             </div>
-            <div id="youtube">
-                <img style="width:64px;height:45px;" src="/static/images/Youtube_Logo.png">
-                <input id="youtubetext" type="text" name="youtube" value="{{profile.youtube}}" readonly=true>
-                <span id='yc'><span id="youtubechange" class="change" onclick="changeyoutube()">Change</span></span>
-            </div>
-            
-        </span>
-        <span id="company">
-            <input id="companytext"type="text" name="fname" value="{{profile.name}}" readonly=true>
-            <span id='cc'><span id="companychange" class="change" onclick="changecompany()">Change</span></span>
-        </span><br>
-        <span id="email">
-            <input id="emailtext"type="text" name="email" value="{{profile.email}}" readonly=true>
-            <span id='ec'><span id="emailchange" class="change" onclick="changemail()">Change</span></span>
-        </span><br>
-        <span style="float:left" id="description">
-            <i>Description</i>
-            <span id='dc'><span id="descchange" class="change" onclick="changedesc()">Change</span></span><br>
-            <textarea rows=200 id='desctext'readonly=true maxlength=150 name=desc class="descriptiontext">{{profile.desc}}</textarea>
-        </span>
-    </form>
+            <span class="change descchange" onclick="changedesc()">Change</span>
+        </div>
+    </div>
 </body>
 <script>
-	//Sizing code for emailtext, companytext, instatext, twittertext, youtubetext
-    $('#emailtext').autoresize({padding:0,minWidth:40});
-    $('#companytext').autoresize({padding:0,minWidth:40});
-    $('#instatext').autoresize({padding:0,minWidth:40});
-    $('#twittertext').autoresize({padding:0,minWidth:40});
-    $('#youtubetext').autoresize({padding:0,minWidth:40});
-    options = {padding:0,minWidth:40};
-    options = $.extend({padding:0,minWidth:0,maxWidth:500}, options||{});
-    //Resize text based on window size
-	$(window).on('resize',function(){
-        $('#emailtext').css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$('#emailtext').textWidth() + options.padding)));
-        $('#companytext').css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$('#companytext').textWidth() + options.padding)));
-        $('#instatext').css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$('#instatext').textWidth() + options.padding)));
-        $('#twittertext').css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$('#twittertext').textWidth() + options.padding)));
-        $('#youtubetext').css('width', Math.min(options.maxWidth,Math.max(options.minWidth,$('#youtubetext').textWidth() + options.padding)));
-        
-    });
-	//Changes text area on key released
-    $("textarea").on('keyup',function(){
-        $("textarea").height( $("textarea")[0].scrollHeight);
-        console.log(key);
-    });
     //Toggles the notification bar
     var notifs_open = false;
     function notif_bar(){

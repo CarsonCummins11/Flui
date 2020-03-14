@@ -387,3 +387,21 @@ def tw_auth():
         return 'got tw'
     except:
         return 'failed tw', 500
+@app.route('/changemail',methods=['POST'])
+@login_required
+def changemail():
+    mail = request.get_json()['email']
+    db['influencers'].update({'user':current_user.username},{'$set':{'email':mail}})
+    return 'good'
+@app.route('/changename',methods=['POST'])
+@login_required
+def changename():
+    name = request.get_json()['name']
+    db['influencers'].update({'user':current_user.username},{'$set':{'name':name}})
+    return 'good'
+@app.route('/changedesc',methods=['POST'])
+@login_required
+def changedesc():
+    desc = request.get_json()['desc']
+    db['influencers'].update({'user':current_user.username},{'$set':{'desc':desc}})
+    return 'good'

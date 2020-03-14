@@ -1,7 +1,7 @@
 import threading
 from app.scraping.instagram import InstagramBot
 from app.scraping import twitter_tagger
-from app import db, instagram
+from app import db
 from app.scraping import youtube_tagger
 from app.scraping import instagram_tagger
 from random import randint
