@@ -1,0 +1,378 @@
+<!--
+	Profile for an Advertiser
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.10.0/firebase-app.js"></script>
+	
+	<script src="https://www.gstatic.com/firebasejs/7.10.0/firebase-auth.js"></script>
+
+	<script>
+	  // Your web app's Firebase configuration
+	  var firebaseConfig = {
+		apiKey: "AIzaSyDI0refre2q46_-Po8udToxs_aFWkYZcDQ",
+		authDomain: "flui-3f8fe.firebaseapp.com",
+		databaseURL: "https://flui-3f8fe.firebaseio.com",
+		projectId: "flui-3f8fe",
+		storageBucket: "flui-3f8fe.appspot.com",
+		messagingSenderId: "677999224598",
+		appId: "1:677999224598:web:78ceac8ce37e8936ebd237",
+		measurementId: "G-23F80LNX69"
+	  };
+      var actionCodeSettings = {
+        // URL you want to redirect back to. The domain (www.example.com) for this
+        // URL must be whitelisted in the Firebase Console.
+        url: 'https://www.flui.co',
+        // This must be true.
+        handleCodeInApp: true,
+        iOS: {
+            bundleId: 'com.example.ios'
+        },
+        android: {
+            packageName: 'com.example.android',
+            installApp: true,
+            minimumVersion: '12'
+        },
+        dynamicLinkDomain: 'example.page.link'
+        };
+	  // Initialize Firebase
+	  firebase.initializeApp(firebaseConfig);
+	  firebase.analytics();
+	</script>
+	<script>
+    function getDataUri(url,callback) {
+        var image = new Image();
+
+        image.onload = function () {
+            var canvas = document.createElement('canvas');
+            canvas.width = this.naturalWidth; // or 'width' if you want a special/scaled size
+            canvas.height = this.naturalHeight; // or 'height' if you want a special/scaled size
+
+            canvas.getContext('2d').drawImage(this, 0, 0);
+
+            // Get raw image data
+            callback(canvas.toDataURL('image/png'));
+
+        };
+
+        image.src = url;
+    }
+    function resetimage(){
+        if($('#fileinput')[0].files.length > 0) {
+            console.log($('#fileinput')[0].files[0]);
+            getDataUri(URL.createObjectURL($('#fileinput')[0].files[0]), function(dataUri) {$('#imagecontent').attr("src", dataUri)      
+            dat = JSON.stringify({'img':dataUri});
+            $.ajax({
+                url:'/uploadimage',
+                type:'POST',
+                data: dat,
+                contentType:'application/json; charset=UTF-8',
+                success:function(data){console.log('fuck yea')}
+            });
+            });
+        }
+        $('#ic').html('<span id="imagechange" class="change" onclick="changeimage()">Change</span>');
+    }
+    function changedesc(){
+        if($('#desc').prop('contenteditable')=='true'){
+            $('#desc').prop('contenteditable',false);
+            $('body').focus();
+            dat=JSON.stringify({'desc':$('#desc').html()});
+            $.ajax({
+                url:'/changedesc',
+                type:'POST',
+                data: dat,
+                contentType:'application/json; charset=UTF-8',
+                success:function(data){console.log('fuck yea')}
+            });
+        }else{
+            $('#desc').prop('contenteditable',true);
+            $('#desc').focus();
+        }
+    }
+    function changemail(){
+        if($('#emailtext').prop('contenteditable')=='true'){
+            $('#emailtext').prop('contenteditable',false);
+            $('#emailtext').css('text-decoration','none')
+            $('body').focus();
+            dat=JSON.stringify({'email':$('#emailtext').html()});
+            $.ajax({
+                url:'/changemail',
+                type:'POST',
+                data: dat,
+                contentType:'application/json; charset=UTF-8',
+                success:function(data){console.log('fuck yea')}
+            });
+        }else{
+            $('#emailtext').prop('contenteditable',true);
+            $('#emailtext').css('text-decoration','underline')
+            $('#emailtext').focus();
+        }
+    }
+    function changecompany(){
+        if($('#companytext').prop('contenteditable')=='true'){
+            $('#companytext').prop('contenteditable',false);
+            $('#companytext').css('text-decoration','none')
+            $('body').focus();
+            dat=JSON.stringify({'name':$('#companytext').html()});
+            $.ajax({
+                url:'/changename',
+                type:'POST',
+                data: dat,
+                contentType:'application/json; charset=UTF-8',
+                success:function(data){console.log('fuck yea')}
+            });
+        }else{
+            $('#companytext').prop('contenteditable',true);
+            $('#companytext').css('text-decoration','underline')
+            $('#companytext').focus();
+        }
+    }
+    function changeimage(){
+        $('#ic').html('<input id="fileinput" type="file" accept="image/png, image/jpeg" multiple=false></input><span class="subimage" onclick="resetimage()">Update profile picture</span>');
+    }
+    function changetwitter(){
+		var provider = new firebase.auth.TwitterAuthProvider();
+		firebase.auth().signInWithPopup(provider).then(function(result) {
+		  // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
+		  // You can use these server side with your app's credentials to access the Twitter API.
+		  var token = result.credential.accessToken;
+		  var secret = result.credential.secret;
+		  dat = JSON.stringify({'token':token,'secret':secret});
+        $.ajax({
+            url:'/tw_auth',
+            type:'POST',
+            data: dat,
+            contentType:'application/json; charset=UTF-8',
+            success:function(data){location.reload()}
+        });
+		}).catch(function(error) {
+		  // Handle Errors here.
+		  var errorCode = error.code;
+          console.log(errorCode);
+		  var errorMessage = error.message;
+          console.log(errorMessage)
+		  // The email of the user's account used.
+		  var email = error.email;
+		  // The firebase.auth.AuthCredential type that was used.
+		  var credential = error.credential;
+		  // ...
+        });
+    }
+    </script>
+    <style>
+    #fileinput{
+        font-size: 20px;
+        max-width:300px;
+    }
+    button{
+        cursor:pointer;
+        float:right;
+        font-size:56%;
+        margin-right:30px;
+        margin-top:20px;
+        background:transparent;
+        border:2px solid white;
+        color:white;
+        border-radius: 30px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 15px;
+        font-style: italic;
+        margin-right:60px;
+    }
+    body{
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 100;
+        color:#707070;
+        background-color: white;
+        overflow-x: hidden;
+    }
+    .change{
+        font-family: 'Montserrat', sans-serif;
+        color:#7B7B7B;
+        font-style: italic;
+        font-size: 20%;
+        cursor: pointer;
+    }
+	.inputTags{
+		color:white;
+		font-size:30%;
+	}
+    input{
+        font-family: 'Montserrat', sans-serif;
+        color:#707070;
+        border:0;
+        font-style: italic;
+        font-weight: 100;
+        padding: 0px;
+        background: none;
+        font-size: 30px;
+    }
+    .pickfile{
+        font-family: 'Montserrat', sans-serif;
+        color:#7B7B7B;
+        font-style: italic;
+        cursor: pointer;
+    }
+    .subimage{
+        font-family: 'Montserrat', sans-serif;
+        color:#7B7B7B;
+        font-style: italic;
+        font-size: 1vw;
+        cursor: pointer;
+    }
+    h1{
+        font-family: 'Montserrat', sans-serif;
+        color:white;
+        font-style:italic;
+        text-align:left;
+        background:#212121;
+        font-size: 70px;
+        margin-top: -10px;
+        margin-right:-10px;
+        margin-left:-10px;
+        margin-bottom: 0px;
+        padding: -5px;
+        font-weight:100;
+        box-shadow: 0px 12px 17px  #707070;
+        width: 102%;
+        z-index: 5000;
+        display: inline-block;
+        position:absolute;
+    }
+    #imagecontent{
+        border-radius: 20px;
+    }
+    .proflabel{
+        font-size:30%;
+        padding:0;
+        font-weight: 100;
+        margin:-15px;
+        margin-right: 0;
+    }
+    .search{
+        cursor:pointer;
+        float:right;
+        font-size:56%;
+        margin-right:30px;
+        margin-top:20px;
+        white-space: pre;
+        
+    }
+    .media{
+        float:right;
+        margin-top: 15px;
+    }
+    .notif{
+        max-width: 200px;
+        padding: 1px;
+    }
+    p.notif{
+        text-align:center;
+        font-size: 10px;
+        cursor: pointer;
+        /*border-bottom:1px solid #707070;*/
+        padding-bottom:1px;
+    }
+    #notif-body{
+        background:white;
+        min-height: 300px;
+        min-width: 200px;
+        margin-top: -400px;
+        right:13px;
+        box-shadow: 0px 12px 17px  #707070;
+        overflow: auto;
+        position:absolute;
+        border-radius: 15px;
+        max-height:300px;
+    }
+    hr{
+        margin: 10px;
+    }
+    .wrapper{
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 2fr;
+        position: fixed;
+        min-width: 1200px;
+        top: 100px;
+        height:1000px;
+        left:0;
+        right:0;
+    }
+    .names{
+        grid-row:1;
+        grid-column: 1/span 2;
+        margin-top:auto;
+        margin-bottom:auto;
+        font-size:40px;
+        justify-self: center;
+        font-size: 20px;
+    }
+    .profimg{
+        grid-column: 1/1;
+        grid-row:1/1;
+        margin-top:auto;
+        margin-bottom: auto;
+        justify-self: center;
+    }
+    .description{
+        background-color: none;
+        grid-column: 1/span 2;
+        grid-row:2/2;
+    }
+    .descinside{
+        font-size:30px;
+        margin-left:20%;
+        margin-right:20%;
+        border-top: 2px solid #707070;
+        text-align: center;
+    }
+    .descchange{
+        margin-left:20%;
+        margin-right:20%;
+        text-align: center;
+    }
+    </style>
+</head>
+<body>
+    <h1>
+    <span style="cursor:pointer" onclick="window.location.href = '/'">Flui</span>
+    <span class="proflabel">Advertiser Profile</span>
+    <span title="Search Influencers" class=search onclick="window.location.href='/searchforinfluencers'"><i class="las la-search"></i></span>
+    <span title="Control your Campaigns" class=search onclick="window.location.href='/viewcampaign'"><i class="las la-project-diagram"></i></span>
+    <span title="Settings" class=search onclick="window.location.href='/advertisersettings'"><i class="las la-cog"></i></span>
+    </h1>
+    <div class="wrapper">
+            <div class='profimg'>
+                <img id="imagecontent" style="width:150px;height:150px;" src="{{profile.img}}">
+                <span id='ic'>
+                    <span id="imagechange" class="change" onclick="changeimage()">Change</span>
+                </span>
+            </div>
+            <div class="names">
+                <span id="name">
+                    <span id="companytext" onpaste="return false;"onkeypress="return (this.innerText.length <= 25)"contenteditable=false>{{profile.company}}</span>
+                    <span id="companychange" class="change" onclick="changecompany()" >Change</span>
+                </span>
+                <span id="email">
+                    <span id="emailtext" onpaste="return false;"onkeypress="return (this.innerText.length <= 25)"contenteditable=false>{{profile.email}}</span>
+                    <span id="emailchange" class="change" onclick="changemail()" >Change</span>
+                </span>
+            </div>
+        <div class="description">
+            <div id="desc" onpaste="return false;"onkeypress="return (this.innerText.length <= 100)" class = descinside contenteditable=false>
+            {{profile.desc}}
+            </div>
+            <span class="change descchange" onclick="changedesc()">Change</span>
+        </div>
+    </div>
+</body>
+</html>

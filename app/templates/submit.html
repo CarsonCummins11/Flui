@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+        h1{
+            font-family: 'Montserrat', sans-serif;
+            background-color: #212121;
+            text-align: left;
+            font-style: italic;
+            color:white;
+            font-weight: 100;
+            margin-top:-5px;
+            margin-left:20px;
+        }
+        body{
+            font-family: 'Montserrat', sans-serif;
+            background-color: #212121;
+            text-align: center;
+            font-style: italic;
+        }
+        input[type=text]{
+            font-family: 'Montserrat', sans-serif;
+            border:none;
+            border-bottom:  2px solid white;
+            background-color: #212121;
+            color: white;
+            padding: 8px 16px;
+            font-size: 16px;
+            text-align:left;
+            font-style: italic;
+            
+        }
+        input[type=submit]{
+            font-family: 'Montserrat', sans-serif;
+            border:none;
+            border-bottom:  2px solid white;
+            background-color: #212121;
+            color: white;
+            padding: 8px 16px;
+            font-size: 16px;
+            text-align:center;
+            font-style: italic;
+            
+        }
+        input{
+            margin-top: 40px;
+            outline:0;
+        }
+        
+        .ddlist{
+            width:200px;
+            outline:0;
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 40px;
+            background-color: #212121;
+            color:white;
+            padding: 8px 16px;
+            font-size: 16px;
+            font-style: italic;
+        }
+        .submit{
+            font-style: normal;
+        }
+        .submit:hover {
+        background-color: #FFF;
+        color: white;
+        }
+    </style>
+</head>
+<h1>
+    Submit Influencer
+</h1>
+<body>
+    <form style="text-align:center; margin-top:10%"action="/gosubmitinfluencer" method="post">
+        <input type="text" name="name" placeholder="Name"><br>
+        <input type="text" name="email" placeholder="Email"><br>
+        <select class = ddlist name="tags" size = "4" placeholder="Influencer Type" multiple>
+            <option value=Running>Running</option>
+            <option value=Photography>Photography</option>
+            <option value=Gaming>Gaming</option>
+            <option value=Soccer>Soccer</option>
+            <option value=Fencing>Fencing</option>
+            <option value=Tennis>Tennis</option>
+            <option value=Microsoft>Microsoft</option>
+            <option value=Xbox>Xbox</option>
+            <option value=Playstation>Playstation</option>
+            <option value=PC>PC</option>
+            <option value=CPU>CPU</option>
+            <option value=Nike>Nike</option>
+            <option value=Intel>Intel</option>
+            <option value=Politics>Politics</option>
+            <option value=White House>White House</option>
+            <option value=Real Estate>Real Estate</option>
+            <option value=Architecture>Architecture</option>
+            <option value=Psychiatry>Psychiatry</option>
+            <option value=Brexit>Brexit</option>
+            <option value=Sunset>Sunset</option>
+            <option value=Clothing>Clothing</option>
+            <option value=Handyman>Handyman</option>
+            <option value=Cars>Cars</option>
+            <option value=Mail>Mail</option>
+            <option value=Police>Police</option>
+            <option value=Singing>Singing</option>
+            <option value=Water Polo>Water Polo</option>
+            <option value=Biking>Biking</option>
+            <option value=Racing>Racing</option>
+            <option value=Swimming>Swimming</option>
+            <option value=Theater>Theater</option>
+            <option value=Computer Science>Computer Science</option>
+            <option value=Programming>Programming</option>
+            <option value=Web Development>Web Development</option>
+            <option value=CEO>CEO</option>
+            <option value=Business>Business</option>
+            <option value=Electric Cars>Electric Cars</option>
+            <option value=Astronaut>Astronaut</option>
+            <option value=Robotics>Robotics</option>
+            <option value=Planet>Planet</option>
+            <option value=Astronomy>Astronomy</option>
+            <option value=Stars>Stars</option>
+            <option value=Model>Model</option>
+            <option value=Education>Education</option>
+            <option value=Physics>Physics</option>
+            <option value=Chemistry>Chemistry</option>
+            <option value=Writing>Writing</option>
+            <option value=History>History</option>
+            <option value=Finance>Finance</option>
+            <option value=Landscaping>Landscaping</option>
+            <option value=Construction>Construction</option>
+            <option value=Comedy>Comedy</option>
+            <option value=News>News</option>
+            <option value=Health>Health</option>
+            <option value=Medical>Medical</option>
+            <option value=Democrat>Democrat</option>
+            <option value=Republican>Republican</option>
+            <option value=Guns>Guns</option>
+            <option value=Camping>Camping</option>
+            <option value=Equipment>Equipment</option>
+            <option value=Technology>Technology</option>
+            <option value=Gadgets>Gadgets</option>
+            <option value=Engineering>Engineering</option>
+            <option value=Stock>Stock</option>
+            <option value=Economy>Economy</option>
+            <option value=Accounting>Accounting</option>
+            <option value=Holiday>Holiday</option>
+            <option value=Decorating>Decorating</option>
+            <option value=Food>Food</option>
+            <option value=Cooking>Cooking</option>
+            <option value=Chef>Chef</option>
+            <option value=PhD>PhD</option>
+            <option value=Liberal Arts>Liberal Arts</option>
+            <option value=Biology>Biology</option>
+            <option value=Pharmacy>Pharmacy</option>
+            <option value=Premed>Premed</option>
+            <option value=Dentist>Dentist</option>
+            <option value=Orthodontist>Orthodontist</option>
+            <option value=Climate Change>Climate Change</option>
+            <option value=Patient>Patient</option>
+            <option value=Rock and Roll>Rock and Roll</option>
+            <option value=Jewelry>Jewelry</option>
+            <option value=Human Resources>Human Resources</option>
+            <option value=Checkers>Checkers</option>
+            <option value=Board Games>Board Games</option>
+            <option value=Taekwondo>Taekwondo</option>
+            <option value=Judo>Judo</option>
+            <option value=Jujitsu>Jujitsu</option>
+            <option value=Karate>Karate</option>
+            <option value=Kung Fu>Kung Fu</option>
+            <option value=Aikido>Aikido</option>
+            <option value=Shaolin>Shaolin</option>
+            <option value=Monk>Monk</option>
+            <option value=Psychic>Psychic</option>
+            <option value=Pokemon>Pokemon</option>
+            <option value=Cosplay>Cosplay</option>
+            <option value=Superhero>Superhero</option>
+            <option value=Marvel>Marvel</option>
+            <option value=DC>DC</option>
+            <option value=Improv>Improv</option>
+            <option value=Library>Library</option>
+            <option value=Publication>Publication</option>
+            <option value=Journalist>Journalist</option>
+            <option value=Pop>Pop</option>
+            <option value=Rap>Rap</option>
+            <option value=Hip Hop>Hip Hop</option>
+            <option value=Classical>Classical</option>
+            <option value=Music>Music</option>
+            <option value=Suffrage>Suffrage</option>
+            <option value=Jewish>Jewish</option>
+            <option value=Budhist>Budhist</option>
+            <option value=Hindu>Hindu</option>
+            <option value=Culture>Culture</option>
+            <option value=Pilot>Pilot</option>
+            <option value=Airline>Airline</option>
+            <option value=Beauty>Beauty</option>
+            <option value=Makeup>Makeup</option>
+            <option value=Alcohol>Alcohol</option>
+            <option value=Travel>Travel</option>
+            <option value=Surfing>Surfing</option>
+            <option value=Basketball>Basketball</option>
+            <option value=Baseball>Baseball</option>
+            <option value=Football>Football</option>
+            <option value=Badminton>Badminton</option>
+            <option value=Rugby>Rugby</option>
+            <option value=Computers>Computers</option>
+            <option value=MacOS>MacOS</option>
+            <option value=Linux>Linux</option>
+            <option value=Celebrity>Celebrity</option>
+            <option value=Gossip>Gossip</option>
+            <option value=Google>Google</option>
+            <option value=Facebook>Facebook</option>
+            <option value=Youtube>Youtube</option>
+            <option value=Twitter>Twitter</option>
+            <option value=Graphics Card>Graphics Card</option>
+            <option value=AMD>AMD</option>
+            <option value=Adidas>Adidas</option>
+            <option value=Sneakers>Sneakers</option>
+            <option value=Shoes>Shoes</option>
+            <option value=Congress>Congress</option>
+            <option value=Television>Television</option>
+            <option value=Parliament>Parliament</option>
+            <option value=Fashion>Fashion</option>
+            <option value=DIY>DIY</option>
+            <option value=Segways>Segways</option>
+            <option value=Bathing>Bathing</option>
+            <option value=Skateboard>Skateboard</option>
+            <option value=F1>F1</option>
+            <option value=Painting>Painting</option>
+            <option value=Art>Art</option>
+            <option value=Band>Band</option>
+            <option value=Marching Band>Marching Band</option>
+            <option value=Music>Music</option>
+            <option value=Podcast>Podcast</option>
+            <option value=Tesla>Tesla</option>
+            <option value=Outer Space>Outer Space</option>
+            <option value=NASA>NASA</option>
+            <option value=College>College</option>
+            <option value=Farming>Farming</option>
+            <option value=Gardening>Gardening</option>
+            <option value=Interior Design>Interior Design</option>
+            <option value=Brewing>Brewing</option>
+            <option value=Outdoors>Outdoors</option>
+            <option value=Hiking>Hiking</option>
+            <option value=Backpacking>Backpacking</option>
+            <option value=Electronics>Electronics</option>
+            <option value=Airplanes>Airplanes</option>
+            <option value=Birds>Birds</option>
+            <option value=Startups>Startups</option>
+            <option value=Film>Film</option>
+            <option value=Psychology>Psychology</option>
+            <option value=Anthropology>Anthropology</option>
+            <option value=World War Two>World War Two</option>
+            <option value=Philosophy>Philosophy</option>
+            <option value=Environment>Environment</option>
+            <option value=Math>Math</option>
+            <option value=Physics>Physics</option>
+            <option value=Communism>Communism</option>
+            <option value=Feminism>Feminism</option>
+            <option value=Socialism>Socialism</option>
+            <option value=Dubstep>Dubstep</option>
+            <option value=Jazz>Jazz</option>
+            <option value=Real Estate>Real Estate</option>
+            <option value=Religion>Religion</option>
+            <option value=Christian>Christian</option>
+            <option value=Muslim>Muslim</option>
+            <option value=Fitness>Fitness</option>
+            <option value=Diet>Diet</option>
+            <option value=Nutrition>Nutrition</option>
+            <option value=Entrepreneur>Entrepreneur</option>
+            <option value=Graffiti>Graffiti</option>
+            <option value=Writing>Writing</option>
+            <option value=Languages>Languages</option>
+            <option value=Archery>Archery</option>
+            <option value=Boxing>Boxing</option>
+            <option value=Golf>Golf</option>
+            <option value=Wii>Wii</option>
+            <option value=Hockey>Hockey</option>
+            <option value=Lacrosse>Lacrosse</option>
+            <option value=Tennis>Tennis</option>
+            <option value=Chess>Chess</option>
+            <option value=Mixed martial arts>Mixed martial arts</option>
+            <option value=Apple>Apple</option>
+            <option value=Software>Software</option>
+            <option value=Law>Law</option>
+            <option value=Legal>Legal</option>
+            <option value=Graphic Novels>Graphic Novels</option>
+            <option value=Standup>Standup</option>
+            <option value=Authors>Authors</option>
+          </select><br>
+        <input class="submit" style="cursor:pointer;"type="submit" value="Submit">
+    </form>
+</body>
+</html>

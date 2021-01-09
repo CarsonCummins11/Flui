@@ -1,0 +1,468 @@
+<!--
+	Profile for an Influencer
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.10.0/firebase-app.js"></script>
+	
+	<script src="https://www.gstatic.com/firebasejs/7.10.0/firebase-auth.js"></script>
+
+	<script>
+	  // Your web app's Firebase configuration
+	  var firebaseConfig = {
+		apiKey: "AIzaSyDI0refre2q46_-Po8udToxs_aFWkYZcDQ",
+		authDomain: "flui-3f8fe.firebaseapp.com",
+		databaseURL: "https://flui-3f8fe.firebaseio.com",
+		projectId: "flui-3f8fe",
+		storageBucket: "flui-3f8fe.appspot.com",
+		messagingSenderId: "677999224598",
+		appId: "1:677999224598:web:78ceac8ce37e8936ebd237",
+		measurementId: "G-23F80LNX69"
+	  };
+      var actionCodeSettings = {
+        // URL you want to redirect back to. The domain (www.example.com) for this
+        // URL must be whitelisted in the Firebase Console.
+        url: 'https://www.flui.co',
+        // This must be true.
+        handleCodeInApp: true,
+        iOS: {
+            bundleId: 'com.example.ios'
+        },
+        android: {
+            packageName: 'com.example.android',
+            installApp: true,
+            minimumVersion: '12'
+        },
+        dynamicLinkDomain: 'example.page.link'
+        };
+	  // Initialize Firebase
+	  firebase.initializeApp(firebaseConfig);
+	  firebase.analytics();
+	</script>
+	<script>
+    function getDataUri(url,callback) {
+        var image = new Image();
+
+        image.onload = function () {
+            var canvas = document.createElement('canvas');
+            canvas.width = this.naturalWidth; // or 'width' if you want a special/scaled size
+            canvas.height = this.naturalHeight; // or 'height' if you want a special/scaled size
+
+            canvas.getContext('2d').drawImage(this, 0, 0);
+
+            // Get raw image data
+            callback(canvas.toDataURL('image/png'));
+
+        };
+
+        image.src = url;
+    }
+    function resetimage(){
+        if($('#fileinput')[0].files.length > 0) {
+            console.log($('#fileinput')[0].files[0]);
+            getDataUri(URL.createObjectURL($('#fileinput')[0].files[0]), function(dataUri) {$('#imagecontent').attr("src", dataUri)      
+            dat = JSON.stringify({'img':dataUri});
+            $.ajax({
+                url:'/uploadimage',
+                type:'POST',
+                data: dat,
+                contentType:'application/json; charset=UTF-8',
+                success:function(data){console.log('fuck yea')}
+            });
+            });
+        }
+        $('#ic').html('<span id="imagechange" class="change" onclick="changeimage()">Change</span>');
+    }
+    function changedesc(){
+        if($('#desc').prop('contenteditable')=='true'){
+            $('#desc').prop('contenteditable',false);
+            $('body').focus();
+            dat=JSON.stringify({'desc':$('#desc').html()});
+            $.ajax({
+                url:'/changedesc',
+                type:'POST',
+                data: dat,
+                contentType:'application/json; charset=UTF-8',
+                success:function(data){console.log('fuck yea')}
+            });
+        }else{
+            $('#desc').prop('contenteditable',true);
+            $('#desc').focus();
+        }
+    }
+    function changemail(){
+        if($('#emailtext').prop('contenteditable')=='true'){
+            $('#emailtext').prop('contenteditable',false);
+            $('#emailtext').css('text-decoration','none')
+            $('body').focus();
+            dat=JSON.stringify({'email':$('#emailtext').html()});
+            $.ajax({
+                url:'/changemail',
+                type:'POST',
+                data: dat,
+                contentType:'application/json; charset=UTF-8',
+                success:function(data){console.log('fuck yea')}
+            });
+        }else{
+            $('#emailtext').prop('contenteditable',true);
+            $('#emailtext').css('text-decoration','underline')
+            $('#emailtext').focus();
+        }
+    }
+    function changename(){
+        if($('#nametext').prop('contenteditable')=='true'){
+            $('#nametext').prop('contenteditable',false);
+            $('#nametext').css('text-decoration','none')
+            $('body').focus();
+            dat=JSON.stringify({'name':$('#nametext').html()});
+            $.ajax({
+                url:'/changename',
+                type:'POST',
+                data: dat,
+                contentType:'application/json; charset=UTF-8',
+                success:function(data){console.log('fuck yea')}
+            });
+        }else{
+            $('#nametext').prop('contenteditable',true);
+            $('#nametext').css('text-decoration','underline')
+            $('#nametext').focus();
+        }
+    }
+    function changeinsta(){
+		//window.location.href = 'https://api.instagram.com/oauth/authorize?client_id={{instagram_app_id}}&redirect_uri=https://www.flui.co/insta_auth&scope=user_profile&response_type=code'
+        window.location.href = 'https://api.instagram.com/oauth/authorize?client_id={{instagram_app_id}}&redirect_uri=https://127.0.0.1:5000/insta_auth&scope=user_profile&response_type=code'
+    }
+    function changeyoutube(){
+        //window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube.readonly&access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=https%3A%2F%2Fwww.flui.co%2Fyt_auth&response_type=code&client_id={{yt_client_id}}'
+        window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube.readonly&access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=https%3A%2F%2F127.0.0.1%3A5000%2Fyt_auth&response_type=code&client_id={{yt_client_id}}'
+    }
+    function changeimage(){
+        $('#ic').html('<input id="fileinput" type="file" accept="image/png, image/jpeg" multiple=false></input><span class="subimage" onclick="resetimage()">Update profile picture</span>');
+    }
+    function changetwitter(){
+		var provider = new firebase.auth.TwitterAuthProvider();
+		firebase.auth().signInWithPopup(provider).then(function(result) {
+		  // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
+		  // You can use these server side with your app's credentials to access the Twitter API.
+		  var token = result.credential.accessToken;
+		  var secret = result.credential.secret;
+		  dat = JSON.stringify({'token':token,'secret':secret});
+        $.ajax({
+            url:'/tw_auth',
+            type:'POST',
+            data: dat,
+            contentType:'application/json; charset=UTF-8',
+            success:function(data){window.location.reload()}
+        });
+		}).catch(function(error) {
+		  // Handle Errors here.
+		  var errorCode = error.code;
+          console.log(errorCode);
+		  var errorMessage = error.message;
+          console.log(errorMessage)
+		  // The email of the user's account used.
+		  var email = error.email;
+		  // The firebase.auth.AuthCredential type that was used.
+		  var credential = error.credential;
+		  // ...
+        });
+    }
+    </script>
+    <style>
+    #fileinput{
+        font-size: 20px;
+        max-width:300px;
+    }
+    button{
+        cursor:pointer;
+        float:right;
+        font-size:56%;
+        margin-right:30px;
+        margin-top:20px;
+        background:transparent;
+        border:2px solid white;
+        color:white;
+        border-radius: 30px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 15px;
+        font-style: italic;
+        margin-right:60px;
+    }
+    body{
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 100;
+        color:#707070;
+        background-color: white;
+    }
+    .change{
+        font-family: 'Montserrat', sans-serif;
+        color:#7B7B7B;
+        font-style: italic;
+        font-size: 20%;
+        cursor: pointer;
+    }
+	.inputTags{
+		color:white;
+		font-size:30%;
+	}
+    input{
+        font-family: 'Montserrat', sans-serif;
+        color:#707070;
+        border:0;
+        font-style: italic;
+        font-weight: 100;
+        padding: 0px;
+        background: none;
+        font-size: 30px;
+    }
+    .pickfile{
+        font-family: 'Montserrat', sans-serif;
+        color:#7B7B7B;
+        font-style: italic;
+        cursor: pointer;
+    }
+    .subimage{
+        font-family: 'Montserrat', sans-serif;
+        color:#7B7B7B;
+        font-style: italic;
+        font-size: 1vw;
+        cursor: pointer;
+    }
+    h1{
+        font-family: 'Montserrat', sans-serif;
+        color:white;
+        font-style:italic;
+        text-align:left;
+        background:#212121;
+        font-size: 70px;
+        margin-top: -10px;
+        margin-right:-10px;
+        margin-left:-10px;
+        margin-bottom: 0px;
+        padding: -5px;
+        font-weight:100;
+        box-shadow: 0px 12px 17px  #707070;
+        width: 102%;
+        z-index: 5000;
+        display: inline-block;
+        position:absolute;
+        min-width: 1200px;
+    }
+    #imagecontent{
+        border-radius: 20px;
+    }
+    .search{
+        cursor:pointer;
+        float:right;
+        font-size:56%;
+        margin-right:30px;
+        margin-top:20px;
+        white-space: pre;
+        
+    }
+    .media{
+        float:right;
+        margin-top: 15px;
+    }
+    .notif{
+        max-width: 200px;
+        padding: 1px;
+    }
+    p.notif{
+        text-align:center;
+        font-size: 10px;
+        cursor: pointer;
+        /*border-bottom:1px solid #707070;*/
+        padding-bottom:1px;
+    }
+    #notif-body{
+        background:white;
+        min-height: 300px;
+        min-width: 200px;
+        margin-top: -400px;
+        right:13px;
+        box-shadow: 0px 12px 17px  #707070;
+        overflow: auto;
+        position:absolute;
+        border-radius: 15px;
+        max-height:300px;
+    }
+    hr{
+        margin: 10px;
+    }
+    .wrapper{
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 2fr;
+        position: absolute;
+        top: 100px;
+        height:1000px;
+        width:100%;
+        left:0;
+        right:0;
+        justify-items:center;
+    }
+    .upper{
+        grid-row: 1;
+        display: grid;
+        grid-gap: 10px;
+        position: fixed;
+        min-width: 1200px;
+        position:absolute;
+        width:100%;
+        top:100px;
+    }
+    .names{
+        grid-row:1;
+        grid-column: 2;
+        margin-right:auto;
+        font-size:20px;
+    }
+    .socials{
+        grid-row: 2/2;
+        grid-column: 2/2;
+    }
+    .profimg{
+        grid-column: 1/1;
+        grid-row:1/ span 2;
+        margin-left:auto;
+    }
+    .proflabel{
+        font-size:30%;
+        padding:0;
+        font-weight: 100;
+       
+        margin-right:0;
+    }
+    .description{
+        background-color: transparent;
+        grid-column: 1/1;
+        grid-row:2/2;
+        min-width: 800px;
+        width:100%;
+        position:absolute;
+        top:0px;
+    }
+    .descinside{
+        font-size:30px;
+        margin-left:20%;
+        margin-right:20%;
+        border-top: 2px solid #707070;
+        text-align: center;
+    }
+    .descchange{
+        margin-left:20%;
+        margin-right:20%;
+        text-align: center;
+    }
+    .change-social{
+        padding-left: 10px;
+        cursor: pointer;
+    }
+    </style>
+</head>
+<body>
+    <h1>
+    <span style="cursor:pointer" onclick="window.location.href = '/'">Flui</span>
+    <span class="proflabel">Influencer Profile</span>
+    <button title="Connect Stripe" style="margin-top: 30px;"onclick="window.location.href='https://connect.stripe.com/express/oauth/authorize?client_id=ca_GqSMdAmB6DWaKw91ftdWmRpbLjrX0F8B&suggested_capabilities[]=transfers'">Connect Stripe</button>
+    <span title="Settings" class=search onclick="window.location.href='/influencersettings'"><i class="las la-cog"></i></span>
+    <!---<span id="notifbell" class = search onclick="notif_bar()"><i class="las la-bell"></i></span>-->
+    <span title="Collaboration Search" class = search onclick="window.location.href='/searchforinfluencers'"><i class="las la-search"></i></span>
+    <span title="Your Ad Requests" class = search onclick="window.location.href='/viewrequest?user={{profile.user}}&r=0'"><i class="las la-tv"></i></span>
+    </h1>
+    <br>
+    <!---
+    <div class="notif-page" id="notif-body">
+        {% if variable is defined and variable|length %}
+            {% for item in profile.notifications %}
+            <p class="notif" style="font-size:17px"> {{iteml}}</p>
+            {% endfor %}
+        {% else %}
+        <p class="notif" style="font-size:17px"> No Notifications!</p>
+        {% endif %}
+    </div>
+    <div class="notif-page" id="notif-body">
+        
+    </div>
+    -->
+    <div class="wrapper">
+            <div class = "upper">
+            <div class='profimg'>
+                <img id="imagecontent" style="width:150px;height:150px;" src="{{profile.img}}">
+                <span id='ic'>
+                    <span id="imagechange" class="change" onclick="changeimage()">Change</span>
+                </span>
+            </div>
+            <div class="names">
+                <span id="name">
+                    <span id="nametext" onpaste="return false;"onkeypress="return (this.innerText.length <= 25)"contenteditable=false>{{profile.name}}</span>
+                    <span id="namechange" class="change" onclick="changename()" >Change</span>
+                </span>
+                <span id="email">
+                    <span id="emailtext" onpaste="return false;"onkeypress="return (this.innerText.length <= 15)"contenteditable=false>{{profile.email}}</span>
+                    <span id="emailchange" class="change" onclick="changemail()" >Change</span>
+                </span>
+                </div>
+            <div class='socials'>
+                <span id="insta">
+                    <img style="width:45px;height:45px" src="/static/images/Instagram_Logo.png">
+                    <span class='change-social' onclick="changeinsta()">{% if profile.instagram|length%}
+                        {{profile.instagram}}
+                    {% else %}
+                        No Instagram
+                    {% endif %}</span>
+                </span>
+                <span style="padding-left:40px;padding-right:40px;"id="twitter">
+                    <img style="width:45px;height:45px;" src="/static/images/Twitter_Logo.png">
+                    <span class='change-social' onclick="changetwitter()">{% if profile.twitter|length %}
+                        {{profile.twitter}}
+                    {% else %}
+                        No Twitter
+                    {% endif %}</span>
+                </span>
+                <span id="youtube">
+                    <img style="width:64px;height:45px;" src="/static/images/Youtube_Logo.png">
+                    <span class='change-social'onclick="changeyoutube()">{% if profile.yt_display is defined %}
+                        {{profile.yt_display}}
+                    {% else %}
+                        No Youtube
+                    {% endif %}</span>
+                </span>
+            </div>
+        </div>
+        <div class="description">
+            <div id="desc" class = descinside contenteditable=false>
+            {{profile.desc}}
+            </div>
+            <span class="change descchange" onclick="changedesc()">Change</span>
+        </div>
+    </div>
+</body>
+<script>
+    //Toggles the notification bar
+    var notifs_open = false;
+    function notif_bar(){
+        if(!notifs_open){
+            $("#notif-body").animate({
+                marginTop: '10px'
+            }, { duration: 400});
+            notifs_open = true;
+        }else{
+            $("#notif-body").animate({
+                marginTop: '-400px'
+            }, { duration: 400},function() {
+                $('#notif-body').css('display','none');
+            });
+            notifs_open = false;
+        }
+    };
+</script>
+</html>

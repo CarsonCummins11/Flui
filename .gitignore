@@ -1,0 +1,6 @@
+*.log
+__pycache__/
+app/__pycache__/
+app/scraping/authentication/
+*.pkl
+*/__pycache__/

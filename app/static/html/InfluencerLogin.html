@@ -1,0 +1,66 @@
+<style>
+    input{
+        font-family: 'Montserrat', sans-serif;
+        border: 2px solid white;
+        background-color: transparent;
+        color: white;
+        padding: 8px 16px;
+        font-size: 16px;
+        border-radius: 50px;
+        text-align:center;
+        margin-bottom:20%;
+        font-style: italic;
+    }
+    @media screen and (max-width: 1024px) {
+    img {
+        display: none !important;
+    }
+    
+}
+@media screen and (max-width: 1024px) {
+    i {
+        display: none !important;
+    }
+}
+    .new{
+            font-style: normal;
+    }
+    .new:hover {
+        background-color: #FFF;
+        color: white;
+    }
+	.field-icon {
+		float: right;
+		z-index: 2;
+		color: white;
+	}
+</style>
+<script>
+	$(".toggle-password").click(function() {
+		$(this).toggleClass("fa-eye fa-eye-slash");
+		var input = $($(this).attr("toggle"));
+		if (input.attr("type") == "password") {
+			input.attr("type", "text");
+		}
+		else {
+			input.attr("type", "password");
+		}
+	});
+</script>
+<div style="float:left;margin-left:15%;position: relative;top: 50%;transform: translateY(-50%);">
+    <div id="left" style="text-align:center">
+        <div><img onclick='$("#center").load("/static/html/InfluencerLogin.html",function() {$("#right").css({"position": "absolute", "right": "-700px","top":"-150px"});$("#right").animate({"right":"0px"})});'src="/static/images/Minimal_Camera.png"></img></div>
+        <i style="font-size: 40px;">Influencer</i>
+    </div>
+</div>
+    <div style="float:right;margin-right:15%;position: relative;top: 50%;transform: translateY(-40%);">
+        <div id="right" style="text-align:center; min-width:300px;">
+            <form style="text-align:center"action="/logininfluencer" method="post">
+                <input type="text" name="user" placeholder="Username"><br>
+                <input style="margin-left: 14px;"id="secret-password" type="password" name="pass"  placeholder="Password">
+				<span toggle="#secret-password" class="fa fa-fw fa-eye field-icon toggle-password"></span><br>
+                <input class = "new" style="cursor:pointer"type="submit" value="Login">
+            </form>
+        </div>
+    </div>
+</div>

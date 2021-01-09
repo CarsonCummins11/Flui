@@ -1,0 +1,97 @@
+<style>
+    input{
+        font-family: 'Montserrat', sans-serif;
+        border: 2px solid white;
+        background-color: transparent;
+        color: white;
+        padding: 8px 16px;
+        font-size: 16px;
+        border-radius: 50px;
+        text-align:center;
+        margin-bottom:20%;
+        font-style: italic;
+    }
+        .new{
+            font-style: normal;
+        }
+        .new:hover {
+        background-color: #FFF;
+        color: white;
+        }
+        .field-icon {
+		float: right;
+		position: relative;
+		z-index: 2;
+		color: white;
+	}
+    #availability{
+        position:absolute;
+    }
+    @media screen and (max-width: 1024px) {
+    img {
+        display: none !important;
+    }
+    
+}
+@media screen and (max-width: 1024px) {
+    i {
+        display: none !important;
+    }
+}
+</style>
+<script>
+    $('#user').on("input",
+        function (e){
+            $.ajax({
+                url: '/checkusername',
+                type: 'POST',
+                contentType: 'application/json; charset=UTF-8',
+                data: JSON.stringify({'user':$('#user').val()}),
+                success: function(response) {
+                    $('#availability').html(response)
+                }
+            });
+    });
+    $('#secret-password').on("input",function(){
+            pas = $('#secret-password').val()
+            var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+            var mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+            if(strongRegex.test(pas)) {
+                $('#secret-password').css("background-color","rgba(30, 255, 0, 0.493)")
+                    } else if(mediumRegex.test(pas)) {
+                        $('#secret-password').css("background-color","rgba(255, 238, 0, 0.493)")
+                    } else {
+                        $('#secret-password').css("background-color","#ff080052")
+                    }
+        });
+    $(".toggle-password").click(function() {
+        $(this).toggleClass("fa-eye fa-eye-slash");
+        var input = $($(this).attr("toggle"));
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        }
+        else {
+            input.attr("type", "password");
+        }
+    });
+	//Use regex for python to make sure the password strength is good
+</script>
+<div style="float:left;margin-left:15%;position: relative;top: 50%;transform: translateY(-50%);">
+    <div id="left" style="text-align:center">
+        <div><img onclick='$("#center").load("/static/html/InfluencerLogin.html",function() {$("#right").css({"position": "absolute", "right": "-700px","top":"-150px"});$("#right").animate({"right":"0px"})});'src="/static/images/Minimal_Camera.png"></img></div>
+        <i style="font-size: 40px;">Influencer</i>
+    </div>
+</div>
+    <div style="float:right;margin-right:15%;position: relative;top: 50%;transform: translateY(-50%);">
+        <div id="right" style="text-align:center">
+            <form id="create" createstyle="text-align:center"action="/newinfluencer" method="post">
+                <input type="text" name="name" placeholder="Name"><br>
+                <input type="text" name="email" placeholder="Email"><br>
+                <input id="user" type="text" name="user" placeholder="Username"><i id="availability"></i></input><br>
+                <input id="secret-password" onkeypress="checkstrength()" type="password" name="pass" placeholder="Password">
+                <span style="margin-right: -26px;" toggle="#secret-password" class="fa fa-fw fa-eye field-icon toggle-password"></span><br>
+                <input class="new" style="cursor:pointer"type="submit" value="Create">
+            </form>
+        </div>
+    </div>
+</div>

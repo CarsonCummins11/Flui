@@ -1,0 +1,65 @@
+<canvas id="myChart" width="100px" height="500px"></canvas>
+<script>
+function rendergraph(){
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: tags,
+        datasets: [{
+            label: 'How Many People Think you Relate to this Category',
+            data: votes,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        legend: {
+    display: false
+},
+        title:{display:true,text:"How the community views your profile"},
+        maintainAspectRatio:false,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+}
+function getInfluencerData(){
+return $.getJSON('/tagsvoting',function(data){
+    tags=[]
+    votes=[]
+    let count = 0;
+    for (var tag of Object.keys(data)) {
+        var vote = data[tag]
+        tags.push(tag)
+        votes.push(vote)
+        count+=1
+        if(count>5){
+            break;
+        }
+    }
+    rendergraph();
+});
+}
+getInfluencerData();
+</script>

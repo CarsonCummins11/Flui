@@ -1,0 +1,284 @@
+<!--
+	Profile for an Influencer
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.10.0/firebase-app.js"></script>
+	
+	<!-- TODO: Add SDKs for Firebase products that you want to use
+		 https://firebase.google.com/docs/web/setup#available-libraries -->
+	<script src="https://www.gstatic.com/firebasejs/7.10.0/firebase-analytics.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.10.0/firebase-auth.js"></script>
+
+	<script>
+	  // Your web app's Firebase configuration
+	  var firebaseConfig = {
+		apiKey: "AIzaSyDI0refre2q46_-Po8udToxs_aFWkYZcDQ",
+		authDomain: "flui-3f8fe.firebaseapp.com",
+		databaseURL: "https://flui-3f8fe.firebaseio.com",
+		projectId: "flui-3f8fe",
+		storageBucket: "flui-3f8fe.appspot.com",
+		messagingSenderId: "677999224598",
+		appId: "1:677999224598:web:78ceac8ce37e8936ebd237",
+		measurementId: "G-23F80LNX69"
+	  };
+      var actionCodeSettings = {
+        // URL you want to redirect back to. The domain (www.example.com) for this
+        // URL must be whitelisted in the Firebase Console.
+        url: 'https://www.flui.co',
+        // This must be true.
+        handleCodeInApp: true,
+        iOS: {
+            bundleId: 'com.example.ios'
+        },
+        android: {
+            packageName: 'com.example.android',
+            installApp: true,
+            minimumVersion: '12'
+        },
+        dynamicLinkDomain: 'example.page.link'
+        };
+	  // Initialize Firebase
+	  firebase.initializeApp(firebaseConfig);
+	  firebase.analytics();
+    </script>
+    <style>
+    #fileinput{
+        font-size: 20px;
+        max-width:300px;
+    }
+    button{
+        cursor:pointer;
+        float:right;
+        font-size:56%;
+        margin-right:30px;
+        margin-top:20px;
+        background:transparent;
+        border:2px solid white;
+        color:white;
+        border-radius: 30px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 15px;
+        font-style: italic;
+        margin-right:60px;
+    }
+    body{
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 100;
+        color:#707070;
+        background-color: white;
+    }
+    .change{
+        font-family: 'Montserrat', sans-serif;
+        color:#7B7B7B;
+        font-style: italic;
+        font-size: 20%;
+        cursor: pointer;
+    }
+	.inputTags{
+		color:white;
+		font-size:30%;
+	}
+    input{
+        font-family: 'Montserrat', sans-serif;
+        color:#707070;
+        border:0;
+        font-style: italic;
+        font-weight: 100;
+        padding: 0px;
+        background: none;
+        font-size: 30px;
+    }
+    .pickfile{
+        font-family: 'Montserrat', sans-serif;
+        color:#7B7B7B;
+        font-style: italic;
+        cursor: pointer;
+    }
+    .subimage{
+        font-family: 'Montserrat', sans-serif;
+        color:#7B7B7B;
+        font-style: italic;
+        font-size: 1vw;
+        cursor: pointer;
+    }
+    h1{
+        font-family: 'Montserrat', sans-serif;
+        color:white;
+        font-style:italic;
+        text-align:left;
+        background:#212121;
+        font-size: 70px;
+        margin-top: -10px;
+        margin-right:-10px;
+        margin-left:-10px;
+        margin-bottom: 0px;
+        padding: -5px;
+        font-weight:100;
+        box-shadow: 0px 12px 17px  #707070;
+        width: 102%;
+        z-index: 5000;
+        display: inline-block;
+        position:absolute;
+        min-width: 1200px;
+    }
+    #imagecontent{
+        border-radius: 20px;
+    }
+    .proflabel{
+        font-size:30%;
+        padding:0;
+        font-weight: 100;
+        margin:-15px;
+        margin-right: 0;
+    }
+    .search{
+        cursor:pointer;
+        float:right;
+        font-size:56%;
+        margin-right:30px;
+        margin-top:20px;
+        white-space: pre;
+        
+    }
+    .media{
+        float:right;
+        margin-top: 15px;
+    }
+    .notif{
+        max-width: 200px;
+        padding: 1px;
+    }
+    p.notif{
+        text-align:center;
+        font-size: 10px;
+        cursor: pointer;
+        /*border-bottom:1px solid #707070;*/
+        padding-bottom:1px;
+    }
+    #notif-body{
+        background:white;
+        min-height: 300px;
+        min-width: 200px;
+        margin-top: -400px;
+        right:13px;
+        box-shadow: 0px 12px 17px  #707070;
+        overflow: auto;
+        position:absolute;
+        border-radius: 15px;
+        max-height:300px;
+    }
+    hr{
+        margin: 10px;
+    }
+    .wrapper{
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 2fr;
+        position: absolute;
+        min-width: 1200px;
+        top: 100px;
+        height:1000px;
+        left:0;
+        right:0;
+        justify-items:center;
+    }
+    .upper{
+        grid-row: 1;
+        display: grid;
+        grid-gap: 10px;
+        position: fixed;
+        width: 1200px;
+        position:absolute;
+        top:100px;
+    }
+    .names{
+        grid-row:1;
+        grid-column: 2;
+        margin-right:auto;
+        font-size:40px;
+    }
+    .socials{
+        grid-row: 2/2;
+        grid-column: 2/2;
+    }
+    .profimg{
+        grid-column: 1/1;
+        grid-row:1/ span 2;
+        margin-left:auto;
+    }
+    .description{
+        background-color: transparent;
+        grid-column: 1/1;
+        grid-row:2/2;
+        width: 1200px;
+        position:absolute;
+        top:0px;
+    }
+    .descinside{
+        font-size:30px;
+        margin-left:20%;
+        margin-right:20%;
+        border-top: 2px solid #707070;
+        text-align: center;
+    }
+    .descchange{
+        margin-left:20%;
+        margin-right:20%;
+        text-align: center;
+    }
+    .change-social{
+        padding-left: 10px;
+        cursor: pointer;
+    }
+    </style>
+</head>
+<body>
+    <h1>
+    <span style="cursor:pointer" onclick="window.location.href = '/'">Flui</span>
+    <span class="proflabel">Influencer Profile</span>
+    <span class = search onclick="window.location.href='/searchforinfluencers'"><i class="las la-search"></i></span>
+    </h1>
+    <div class="wrapper">
+            <div class = "upper">
+            <div class='profimg'>
+                <img id="imagecontent" style="width:150px;height:150px;" src="{{profile.img}}">
+            </div>
+            <div class="names">
+                <span id="name">
+                    <span id="nametext" onpaste="return false;"onkeypress="return (this.innerText.length <= 25)"contenteditable=false>{{profile.name}}</span>
+                </span> /
+                <span id="email">
+                    <span id="emailtext" onpaste="return false;"onkeypress="return (this.innerText.length <= 15)"contenteditable=false>{{profile.email}}</span>
+                </span>
+                </div>
+            <div class='socials'>
+                <span id="insta">
+                    <img style="width:45px;height:45px" src="/static/images/Instagram_Logo.png">
+                    <span>{{profile.instagram}}</span>
+                </span>
+                <span style="padding-left:40px;padding-right:40px;"id="twitter">
+                    <img style="width:45px;height:45px;" src="/static/images/Twitter_Logo.png">
+                    <span>{{profile.twitter}}</span>
+                </span>
+                <span id="youtube">
+                    <img style="width:64px;height:45px;" src="/static/images/Youtube_Logo.png">
+                    <span>{{profile.youtube}}</span>
+                </span>
+            </div>
+        </div>
+        <div class="description">
+            <div id="desc" onpaste="return false;"onkeypress="return (this.innerText.length <= 100)" class = descinside contenteditable=false>
+            {{profile.desc}}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

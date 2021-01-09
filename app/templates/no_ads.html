@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <style>
+        body{
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 100;
+            color:#707070;
+            font-size: 5vw;
+            text-align:center;
+            overflow-x: hidden;
+            background-image: url("/static/images/adback.png");
+            background-position: center center;
+        }
+        h1{
+        font-family: 'Montserrat', sans-serif;
+        color:white;
+        font-style:italic;
+        text-align:left;
+        background:#212121;
+        font-size: 70px;
+        margin-top: -10px;
+        margin-right:-10px;
+        margin-left:-10px;
+        margin-bottom: 0px;
+        padding: -5px;
+        font-weight:100;
+        }
+        input{
+            font-family: 'Montserrat', sans-serif;
+            border: 2px solid white;
+            color: white;
+            padding: 8px 16px;
+            font-size: 16px;
+            border-radius: 50px;
+            text-align:center;
+            font-style: italic;
+            float:center;
+            background-color: transparent;
+        }
+        .proflabel{
+        font-size:30%;
+        padding:0;
+        font-weight: 100;
+        margin-right:0;
+        }
+        .search{
+        cursor:pointer;
+        float:right;
+        font-size:56%;
+        margin-right:30px;
+        margin-top:20px;
+        white-space: pre;
+        }
+    
+    </style>
+    <body>
+        <h1>
+            <span style="cursor:pointer;float:left" onclick="window.location.href = '/'">Flui</span>
+            <span class="proflabel">Message</span>
+            <span class = search onclick="window.location.href='/influencerprofile'"><i class="las la-user"></i></span>
+        </h1>
+        <br>
+        <br>
+        Looks like you don't have any ad requests:(
+    </body>
+</html>

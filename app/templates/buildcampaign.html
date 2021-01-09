@@ -1,0 +1,132 @@
+<!-- 
+	allows advertisers to search for influencers
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+        <style>
+        body{
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 100;
+            color:#707070;
+            background-image:url("/static/images/adback.png");
+            font-size: 5vw;
+            text-align:center;
+            overflow-x: hidden;
+        }
+        .proflabel{
+        font-size:30%;
+        padding:0;
+        font-weight: 100;
+        margin:-15px;
+        margin-right: 0;
+    }
+        h1{
+            font-family: 'Montserrat', sans-serif;
+            color:white;
+            font-style:italic;
+            text-align:left;
+            background:#212121;
+            font-size: 70px;
+            margin-top: -20px;
+            margin-right:-10px;
+            margin-left:-10px;
+            margin-bottom:0;
+            padding: -5px;
+            font-weight:100;
+            text-align: center;
+            overflow-x: hidden;
+            position: fixed;
+            width:100%;
+            z-index: 5;
+        }
+        input{
+            font-family: 'Montserrat', sans-serif;
+            border: 2px solid white;
+            background-color: white;
+            color: #707070;
+            padding: 8px 16px;
+            font-size: 16px;
+            border-radius: 50px;
+            text-align:left;
+            font-style: italic;
+            float:center;
+    
+        }
+        textarea{
+            font-family: 'Montserrat', sans-serif;
+            color: #707070;
+            font-size: 16px;
+            border-radius: 15px;
+            font-style: italic;
+        }
+        p{
+            font-family: 'Montserrat', sans-serif;
+            color: #707070;
+            font-size: 50px; 
+            font-style: italic;
+        }
+        label{
+            font-family: 'Montserrat', sans-serif;
+            color: #707070;
+            font-size: 50px; 
+            font-style: italic;
+        }
+        ::placeholder {
+            color: #DADADA;
+            opacity: 1;
+        }
+        .searcharea{
+            text-align:center;
+            margin:auto;
+            margin-top: 30px;
+        }
+        .adstyle{
+            text-align: center;
+            font-style:italic;
+            font-size: 2.5vw;
+            margin-top: 20px;
+            color:#bfbfbf;
+            font-weight: lighter;
+        }
+        .search{
+        cursor:pointer;
+        float:right;
+        font-size:56%;
+        margin-right:30px;
+        outline:none !important;
+        margin-top:20px;
+    }
+        </style>
+    </head>
+    <body>
+        <h1>
+        <span style="cursor:pointer;float:left" onclick="window.location.href = '/'">Flui</span>
+        <span class="proflabel">Campaigns</span>
+        <span title = "Return to Profile" class = search onclick="window.location.href='/advertiserprofile'"><i class="las la-user"></i></span>
+        </h1>
+        <form style = "width: 100%;"action="/createcampaign" method="post">
+            <div style="position:absolute;left:40%; text-align: left;"><br>
+            <input type="text" name='link' placeholder="Link to an ad template"><br>
+            <input type="text" name='contact' placeholder="An email to contact you at"><br>
+            <input type="text" name='budget' placeholder="Your budget (USD)">
+            <!----
+            <p>Select a platform</p>
+            <input type="checkbox" id="tw" name="platform" value="tw">
+            <label for="tw">Twitter</label><br>
+            <input type="checkbox" id="yt" name="platform" value="yt">
+            <label for="yt">Youtube</label><br>
+            <input type="checkbox" id="insta" name="platform" value="insta">
+            <label for="insta">Instagram</label><br>
+            -->
+            <p>Describe your ideal influencer</p>
+            <textarea id="desc" name="desc" rows="10" cols="30"></textarea><br>
+            <input type="submit" value="submit"></input>
+        </div>
+        </form>
+    </body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Flui</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="A platform to save social media. Flui uses artificial intelligence to help small creators and advertisers connect in meaningful, profitable ways. Let's save social media.">
+        <meta name="keywords" content="Flui,social media,artificial intelligence,advertising,advertisements,influencers,creators,YouTube,Twitter,Instagram,Portland,Startup">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:100i&display=swap" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <style>
+            body{
+                text-align: left;
+                font-family: 'Montserrat', sans-serif;
+                font-weight: 100;
+                margin: auto;
+                color:white;
+                cursor: default;
+                font-style: italic;  
+                font-size: 30px; 
+                background-image: url("/static/images/homeback.png");
+                background-position: center center;
+            }
+            .content{
+                padding: 0 18px;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 1s ease-out;
+                background-color: transparent;
+            }
+            .collapsible{
+                padding-left: 10px;
+                font-size: 100px;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div class="collapsible">What</div>
+        <div class="content">Flui connects advertisers to groups of similar influencers. It allows small time influencers to get brand deals that are typically reserved for those with a larger audience, and allows advertisers to reach high engagement, niche markets. Flui will fix social media marketing.</div>
+        <div class="collapsible">Who</div>
+        <div class="content">Flui was created by a group of Portland teenagers with one goal: fixing social media. We want to help small influencers focus on what matters: creativity, and advertisers find audiences that will be receptive, rather than annoyed, by their advertisements.</div>
+        <div class="collapsible">Why</div>
+        <div class="content">Social media is broken. The small time influencers are forced to work inhumane hours to make just enough revenue to live. Some don't even have the ability to monetize. Flui is here to fix that.</div>
+        <div class="collapsible">How</div>
+        <div class="content">Flui uses industry standard machine learning to build groups of influencers tailored exactly to match the requests of advertisers. Flui's custom algorithm takes away the stress of finding an influencer to run your ad.</div>
+        <div class="collapsible">Contact</div>
+        <div class="content">Our founder can be contacted by email at carson@flui.co. You can find us on Instagram at flui.co, and Twitter at flui_co</div>
+        <div class="collapsible">New</div>
+        <div class="content">Flui launched on March 21st. Currently, it is only available for desktop. Try it out!</div>
+    </body>
+    <script>
+  $('.collapsible').on("click", function() {
+      console.log('click')
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    } 
+  });
+    </script>
+</html>
